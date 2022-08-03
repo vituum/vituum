@@ -11,6 +11,7 @@ import postcssCustomMedia from 'postcss-custom-media'
 import postcssCustomSelectors from 'postcss-custom-selectors'
 import fs from 'fs'
 import run from 'vite-plugin-run'
+import { tailwindAnimations, tailwindColorsAccent, tailwindColors, tailwindColorsCurrent, tailwindVariables } from './utils/tailwind.js'
 
 const optionalPlugin = {}
 
@@ -55,6 +56,12 @@ const config = {
         distDir: ''
     },
     vite: {
+        server: {
+            host: true,
+            fsServe: {
+                strict: false
+            }
+        },
         build: {
             manifest: true,
             emptyOutDir: false,
@@ -158,4 +165,4 @@ function userConfig(userConfig) {
     }, config.vite))
 }
 
-export { userConfig as defineConfig, config }
+export { userConfig as defineConfig, config, tailwindAnimations, tailwindColorsAccent, tailwindColors, tailwindColorsCurrent, tailwindVariables }
