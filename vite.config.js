@@ -1,35 +1,22 @@
 import { defineConfig } from './index.js'
 import { resolve } from 'path'
 
-// Vituum defaults
 export default defineConfig({
-    input: ['./src/views/**/*.html', './src/styles/**/*.css', './src/scripts/**/*.js'],
-    output: 'public',
-    root: resolve(process.cwd(), 'src'),
+    input: ['./playground/views/**/*.html', './playground/styles/**/*.css', './playground/scripts/**/*.js'],
+    root: resolve(process.cwd(), 'playground'),
     server: {
-        open: '/',
         https: true,
-        cert: 'localhost',
-        reload: file => (file.endsWith('.php') && !file.includes('temp/')),
         run: {}
     },
     templates: {
         format: 'latte',
         latte: {
-            functions: {
-                pages: () => {}
-            }
+            globals: {
+                template: resolve(process.cwd(), 'playground/templates/latte/Layout/Main.latte'),
+                srcPath: resolve(process.cwd(), 'playground')
+            },
+            data: './playground/data/**/*.json'
         }
-    },
-    styles: {
-        autoimport: ['Components/**/*.css', 'Sections/**/*.css', 'Layout/**/*.css', 'Libraries/**/*.css', 'Ui/**/*.css'],
-        postcss: {}
-    },
-    scripts: {
-        autoImport: ['Components/**/*.js', 'Sections/**/*.js', 'Layout/**/*.js', 'Libraries/**/*.js', 'Utils/Functions/**/*.js', 'Ui/**/*.js']
-    },
-    emails: {
-        distDir: ''
     },
     vite: {}
 })

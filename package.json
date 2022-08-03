@@ -1,0 +1,35 @@
+{
+  "name": "vituum",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "vituum": "bin/index.js"
+  },
+  "scripts": {
+    "dev": "vite dev",
+    "build": "node bin build",
+    "preview": "vite preview",
+    "eslint": "eslint '**/*.js' --fix"
+  },
+  "dependencies": {
+    "vite": "^3.0.4",
+    "vite-plugin-latte": "^0.1.2",
+    "vite-plugin-twig": "^2.0.0",
+    "vite-plugin-run":"^0.1.1",
+    "fast-glob": "^3.2.11",
+    "lodash": "^4.17.21",
+    "chalk": "^5.0.1",
+    "fs-extra": "^10.1.0",
+    "tailwindcss": "^3.1.7",
+    "autoprefixer": "^10.4.8",
+    "postcss-custom-media": "^8.0.2",
+    "postcss-custom-selectors": "^6.0.3",
+    "postcss-import": "^14.1.0",
+    "postcss-nesting": "^10.1.10"
+  },
+  "devDependencies": {
+    "eslint": "^8.21.0",
+    "eslint-config-standard": "^17.0.0"
+  }
+}

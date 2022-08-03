@@ -1,0 +1,24 @@
+{
+  "prefetch": [
+    "https://cdn.jsdelivr.net",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com"
+  ],
+  "assets": {
+    "css": {
+      "all": [
+        "/src/styles/main.css"
+      ]
+    },
+    "js": {
+      "main": "/src/scripts/main.js"
+    }
+  },
+  "media": {
+    "min-1280": "(min-width: 1280px)",
+    "min-960": "(min-width: 960px)",
+    "min-768": "(min-width: 768px)",
+    "max-400": "(max-width: 767px)",
+    "min-320": "(min-width: 320px)"
+  }
+}
