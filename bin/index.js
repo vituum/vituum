@@ -14,3 +14,7 @@ if (arg === 'build') {
     execSync('vite build')
     execSync('mv public/views/* public && rm -rf public/views') // TODO
 }
+
+if (arg === 'email-send') {
+
+}

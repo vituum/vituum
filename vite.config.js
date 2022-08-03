@@ -18,5 +18,13 @@ export default defineConfig({
             data: './playground/data/**/*.json'
         }
     },
+    emails: {
+        copyDir: '',
+        send: {
+            template: '',
+            from: '',
+            to: ''
+        }
+    },
     vite: {}
 })

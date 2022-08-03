@@ -1,6 +1,6 @@
 {
   "name": "vituum",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "main": "index.js",
   "bin": {
@@ -26,10 +26,26 @@
     "postcss-custom-media": "^8.0.2",
     "postcss-custom-selectors": "^6.0.3",
     "postcss-import": "^14.1.0",
-    "postcss-nesting": "^10.1.10"
+    "postcss-nesting": "^10.1.10",
+    "juice": "^8.0.0",
+    "posthtml-include": "^1.7.4",
+    "nodemailer": "^6.7.7"
   },
   "devDependencies": {
     "eslint": "^8.21.0",
     "eslint-config-standard": "^17.0.0"
+  },
+  "files": [
+    "index.js",
+    "bin",
+    "utils"
+  ],
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vituum/vituum.git"
   }
 }

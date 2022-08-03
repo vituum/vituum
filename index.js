@@ -145,6 +145,7 @@ function userConfig(userConfig) {
     }
 
     return defineConfig(lodash.merge({
+        vituum: config,
         plugins,
         resolve: {
             alias: {
