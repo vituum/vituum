@@ -43,6 +43,7 @@ const config = {
     },
     templates: {
         format: 'latte',
+        contentTypeJson: [],
         latte: {},
         twig: {}
     },
@@ -70,33 +71,54 @@ const config = {
     }
 }
 
-const middleware = {
-    name: 'middleware',
-    apply: 'serve',
-    configureServer(viteDevServer) {
-        return () => {
-            viteDevServer.middlewares.use(async(req, res, next) => {
-                if (!req.originalUrl.startsWith('/views')) {
-                    req.originalUrl = '/views' + req.originalUrl
-                }
-
-                if (!req.originalUrl.endsWith('.html') &&
-                    (req.originalUrl !== '/' && !req.originalUrl.endsWith('/'))) {
-                    req.originalUrl = req.originalUrl + '.html'
-                } else if (!req.originalUrl.endsWith('.html')) {
-                    req.originalUrl = req.originalUrl + 'index.html'
-                }
-
-                req.url = req.originalUrl
-
-                next()
-            })
-        }
-    }
-}
-
 function userConfig(userConfig) {
     lodash.merge(config, userConfig)
+
+    const middleware = {
+        name: 'middleware',
+        apply: 'serve',
+        configureServer(viteDevServer) {
+            return () => {
+                viteDevServer.middlewares.use(async(req, res, next) => {
+                    if (!req.originalUrl.startsWith('/views')) {
+                        req.originalUrl = '/views' + req.originalUrl
+                    }
+
+                    if (!req.originalUrl.endsWith('.html') &&
+                        (req.originalUrl !== '/' && !req.originalUrl.endsWith('/'))) {
+                        req.originalUrl = req.originalUrl + `.${config.templates.format}.html`
+                    } else if (!req.originalUrl.endsWith('.html')) {
+                        req.originalUrl = req.originalUrl + `index.${config.templates.format}.html`
+                    } else if (req.originalUrl.endsWith('.html')) {
+                        req.originalUrl = req.originalUrl.replace('.html', `.${config.templates.format}.html`)
+                    }
+
+                    const templatePath = join(viteDevServer.config.root, req.originalUrl.replace('.html', ''))
+
+                    if (fs.existsSync(templatePath)) {
+                        const output = await viteDevServer.transformIndexHtml(req.originalUrl.replace('.html', ''), '')
+
+                        if (req.originalUrl.startsWith('/views/dialog')) {
+                            res.setHeader('Content-Type', 'application/json')
+                        }
+
+                        res.statusCode = 200
+                        res.end(output)
+                    } else if (fs.existsSync(templatePath + '.html')) {
+                        req.url = req.originalUrl
+
+                        next()
+                    } else {
+                        req.originalUrl = req.originalUrl.replace(`.${config.templates.format}`, '')
+
+                        req.url = req.originalUrl
+
+                        next()
+                    }
+                })
+            }
+        }
+    }
 
     const plugins = [
         middleware
@@ -106,7 +128,6 @@ function userConfig(userConfig) {
         if (optionalPlugin['vite-plugin-latte']) {
             plugins.push(optionalPlugin['vite-plugin-latte'](lodash.merge({
                 globals: {
-                    template: resolve(process.cwd(), 'src/templates/latte/Layout/Main.latte'),
                     srcPath: resolve(process.cwd(), 'src')
                 },
                 data: './src/data/**/*.json'
