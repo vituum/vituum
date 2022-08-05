@@ -12,6 +12,7 @@ import postcssCustomSelectors from 'postcss-custom-selectors'
 import fs from 'fs'
 import run from 'vite-plugin-run'
 import { tailwindAnimations, tailwindColorsAccent, tailwindColors, tailwindColorsCurrent, tailwindVariables } from './utils/tailwind.js'
+import { supportedFormats } from './utils/common.js'
 
 const optionalPlugin = {}
 
@@ -45,7 +46,6 @@ const config = {
         filename: '+'
     },
     templates: {
-        format: 'latte',
         contentTypeJson: [],
         latte: {},
         twig: {}
@@ -82,9 +82,8 @@ function userConfig(userConfig) {
         apply: 'serve',
         configureServer(viteDevServer) {
             return () => {
-                let format = config.templates.format
-
                 viteDevServer.middlewares.use(async(req, res, next) => {
+                    let format = null
                     let transformedUrl = req.originalUrl.replace('.html', '')
 
                     if (req.originalUrl === '/' || req.originalUrl.endsWith('/')) {
@@ -95,25 +94,22 @@ function userConfig(userConfig) {
                         transformedUrl = '/views' + transformedUrl
                     }
 
-                    if (fs.existsSync(join(viteDevServer.config.root, `${transformedUrl}.latte`)) || fs.existsSync(join(viteDevServer.config.root, `${transformedUrl}.latte.html`))) {
-                        format = 'latte'
-                    } else if (fs.existsSync(join(viteDevServer.config.root, `${transformedUrl}.twig`)) || fs.existsSync(join(viteDevServer.config.root, `${transformedUrl}.twig.html`))) {
-                        format = 'twig'
-                    } else if (fs.existsSync(join(viteDevServer.config.root, `${transformedUrl}.json`)) || fs.existsSync(join(viteDevServer.config.root, `${transformedUrl}.json.html`))) {
-                        format = 'json'
-                    } else {
-                        format = ''
-                    }
+                    supportedFormats.every(supportedFormat => {
+                        if (fs.existsSync(join(viteDevServer.config.root, `${transformedUrl}.${supportedFormat}`)) || fs.existsSync(join(viteDevServer.config.root, `${transformedUrl}.${supportedFormat}.html`))) {
+                            format = supportedFormat
+                            return false
+                        } else {
+                            return true
+                        }
+                    })
 
-                    if (format !== '') {
+                    if (format) {
                         transformedUrl = transformedUrl + `.${format}.html`
                     } else {
                         transformedUrl = transformedUrl + '.html'
                     }
 
-                    const templatePath = join(viteDevServer.config.root, transformedUrl.replace('.html', ''))
-
-                    if (fs.existsSync(templatePath) && format !== '') {
+                    if (fs.existsSync(join(viteDevServer.config.root, transformedUrl.replace('.html', ''))) && format) {
                         const output = await viteDevServer.transformIndexHtml(transformedUrl.replace('.html', ''), '')
 
                         if (transformedUrl.startsWith('/views/dialog')) {

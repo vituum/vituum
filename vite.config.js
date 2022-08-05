@@ -12,7 +12,6 @@ export default defineConfig({
         run: {}
     },
     templates: {
-        format: 'latte',
         latte: {
             globals: {
                 template: resolve(process.cwd(), 'playground/templates/latte/Layout/Main.latte'),
