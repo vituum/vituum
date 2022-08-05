@@ -85,15 +85,15 @@ function userConfig(userConfig) {
                 let format = config.templates.format
 
                 viteDevServer.middlewares.use(async(req, res, next) => {
+                    let transformedUrl = req.originalUrl.replace('.html', '')
+
                     if (req.originalUrl === '/' || req.originalUrl.endsWith('/')) {
-                        req.originalUrl = req.originalUrl + 'index'
+                        transformedUrl = transformedUrl + 'index'
                     }
 
                     if (!req.originalUrl.startsWith('/views')) {
-                        req.originalUrl = '/views' + req.originalUrl
+                        transformedUrl = '/views' + transformedUrl
                     }
-
-                    const transformedUrl = req.originalUrl.replace('.html', '')
 
                     if (fs.existsSync(join(viteDevServer.config.root, `${transformedUrl}.latte`)) || fs.existsSync(join(viteDevServer.config.root, `${transformedUrl}.latte.html`))) {
                         format = 'latte'
@@ -106,21 +106,17 @@ function userConfig(userConfig) {
                     }
 
                     if (format !== '') {
-                        if (!req.originalUrl.endsWith('.html')) {
-                            req.originalUrl = req.originalUrl + `.${format}.html`
-                        } else if (req.originalUrl.endsWith('.html')) {
-                            req.originalUrl = req.originalUrl.replace('.html', `.${format}.html`)
-                        }
+                        transformedUrl = transformedUrl + `.${format}.html`
                     } else {
-                        req.originalUrl = req.originalUrl + '.html'
+                        transformedUrl = transformedUrl + '.html'
                     }
 
-                    const templatePath = join(viteDevServer.config.root, req.originalUrl.replace('.html', ''))
+                    const templatePath = join(viteDevServer.config.root, transformedUrl.replace('.html', ''))
 
-                    if (fs.existsSync(templatePath) && !req.originalUrl.includes('.latte.json') && format !== '') {
-                        const output = await viteDevServer.transformIndexHtml(req.originalUrl.replace('.html', ''), '')
+                    if (fs.existsSync(templatePath) && format !== '') {
+                        const output = await viteDevServer.transformIndexHtml(transformedUrl.replace('.html', ''), '')
 
-                        if (req.originalUrl.startsWith('/views/dialog')) {
+                        if (transformedUrl.startsWith('/views/dialog')) {
                             res.setHeader('Content-Type', 'application/json')
                         } else {
                             res.setHeader('Content-Type', 'text/html')
@@ -128,20 +124,8 @@ function userConfig(userConfig) {
 
                         res.statusCode = 200
                         res.end(output)
-                    } else if (fs.existsSync(templatePath + '.html')) {
-                        req.url = req.originalUrl
-
-                        console.log(req.url)
-
-                        next()
                     } else {
-                        if (format !== '') {
-                            req.url = req.originalUrl.replace(`.${format}`, '')
-                        } else {
-                            req.url = req.originalUrl.replace('.html', '')
-                        }
-
-                        console.log(req.url)
+                        req.url = transformedUrl
 
                         next()
                     }
