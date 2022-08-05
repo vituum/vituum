@@ -31,6 +31,9 @@ const config = {
     output: resolve(process.cwd(), 'public'),
     root: resolve(process.cwd(), 'src'),
     plugins: [],
+    build: {
+        log: false
+    },
     server: {
         open: '/',
         https: false,
