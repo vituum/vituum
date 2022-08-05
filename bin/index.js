@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import childProcess from 'child_process'
 import FastGlob from 'fast-glob'
 import { resolve } from 'path'
