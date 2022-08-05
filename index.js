@@ -111,11 +111,13 @@ function userConfig(userConfig) {
                         } else if (req.originalUrl.endsWith('.html')) {
                             req.originalUrl = req.originalUrl.replace('.html', `.${format}.html`)
                         }
+                    } else {
+                        req.originalUrl = req.originalUrl + '.html'
                     }
 
                     const templatePath = join(viteDevServer.config.root, req.originalUrl.replace('.html', ''))
 
-                    if (fs.existsSync(templatePath) && !req.originalUrl.includes('.latte.json')) {
+                    if (fs.existsSync(templatePath) && !req.originalUrl.includes('.latte.json') && format !== '') {
                         const output = await viteDevServer.transformIndexHtml(req.originalUrl.replace('.html', ''), '')
 
                         if (req.originalUrl.startsWith('/views/dialog')) {
@@ -129,11 +131,17 @@ function userConfig(userConfig) {
                     } else if (fs.existsSync(templatePath + '.html')) {
                         req.url = req.originalUrl
 
+                        console.log(req.url)
+
                         next()
                     } else {
-                        req.originalUrl = req.originalUrl.replace(`.${format}`, '')
+                        if (format !== '') {
+                            req.url = req.originalUrl.replace(`.${format}`, '')
+                        } else {
+                            req.url = req.originalUrl.replace('.html', '')
+                        }
 
-                        req.url = req.originalUrl
+                        console.log(req.url)
 
                         next()
                     }
@@ -146,25 +154,21 @@ function userConfig(userConfig) {
         middleware
     ]
 
-    if (config.templates.format.includes('twig')) {
-        if (optionalPlugin['vite-plugin-twig']) {
-            plugins.push(optionalPlugin['vite-plugin-twig'](lodash.merge({}, config.templates.twig)))
-        } else {
-            console.error(chalk.red('vite-plugin-twig not installed'))
-        }
+    if (optionalPlugin['vite-plugin-latte'] && config.templates.latte) {
+        plugins.push(optionalPlugin['vite-plugin-latte'](lodash.merge({
+            globals: {
+                srcPath: resolve(process.cwd(), 'src')
+            },
+            data: './src/data/**/*.json'
+        }, config.templates.latte)))
+    } else {
+        console.error(chalk.red('vite-plugin-latte not installed'))
     }
 
-    if (config.templates.format.includes('latte')) {
-        if (optionalPlugin['vite-plugin-latte']) {
-            plugins.push(optionalPlugin['vite-plugin-latte'](lodash.merge({
-                globals: {
-                    srcPath: resolve(process.cwd(), 'src')
-                },
-                data: './src/data/**/*.json'
-            }, config.templates.latte)))
-        } else {
-            console.error(chalk.red('vite-plugin-latte not installed'))
-        }
+    if (optionalPlugin['vite-plugin-twig'] && config.templates.twig) {
+        plugins.push(optionalPlugin['vite-plugin-twig'](lodash.merge({}, config.templates.twig)))
+    } else {
+        console.error(chalk.red('vite-plugin-twig not installed'))
     }
 
     if (config.styles.tailwindcss) {
