@@ -1,3 +1,3 @@
-const supportedFormats = ['json', 'latte', 'twig']
+const supportedFormats = ['json', 'latte', 'twig'] // TODO liquid, njk, hbs, pug
 
 export { supportedFormats }
