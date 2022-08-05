@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 import childProcess from 'child_process'
 import FastGlob from 'fast-glob'
-import { resolve } from 'path'
+import { dirname, resolve } from 'path'
 import fs from 'fs'
 import chalk from 'chalk'
 import { supportedFormats } from '../utils/common.js'
 import sendMail from './sendMail.js'
+import { fileURLToPath } from 'url'
 
-const { version } = JSON.parse(fs.readFileSync('./package.json').toString())
+const { version } = JSON.parse(fs.readFileSync(resolve(dirname((fileURLToPath(import.meta.url))), '../package.json')).toString())
 const vite = (await import(resolve(process.cwd(), 'vite.config.js'))).default
 const arg = process.argv[2]
 const config = vite.vituum
