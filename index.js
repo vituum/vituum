@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import { resolve, join } from 'path'
+import { resolve, join, dirname } from 'path'
 import os from 'os'
 import FastGlob from 'fast-glob'
 import lodash from 'lodash'
@@ -9,6 +9,10 @@ import postcssImport from 'postcss-import'
 import postcssNesting from 'postcss-nesting'
 import postcssCustomMedia from 'postcss-custom-media'
 import postcssCustomSelectors from 'postcss-custom-selectors'
+import posthtml from 'posthtml'
+import posthtmlInclude from 'posthtml-include'
+import posthtmlExtend from 'posthtml-extend'
+import juice from 'juice'
 import fs from 'fs'
 import run from 'vite-plugin-run'
 import { tailwindAnimations, tailwindColorsAccent, tailwindColors, tailwindColorsCurrent, tailwindVariables } from './utils/tailwind.js'
@@ -48,16 +52,25 @@ const config = {
     templates: {
         contentTypeJson: [],
         latte: {},
-        twig: {}
+        twig: {},
+        posthtml: {}
     },
     styles: {
+        tailwindcss: true,
         postcss: {
             plugins: [postcssImport, postcssNesting, postcssCustomMedia, postcssCustomSelectors, autoprefixer]
         },
-        tailwindcss: true
+        juice: {
+            paths: ['./src/emails'],
+            options: {}
+        }
     },
     emails: {
-        distDir: ''
+        send: {
+            template: '',
+            from: '',
+            to: ''
+        }
     },
     vite: {
         server: {
@@ -90,7 +103,7 @@ function userConfig(userConfig) {
                         transformedUrl = transformedUrl + 'index'
                     }
 
-                    if (!req.originalUrl.startsWith('/views')) {
+                    if (!req.originalUrl.startsWith('/views') && !req.originalUrl.startsWith('/emails')) {
                         transformedUrl = '/views' + transformedUrl
                     }
 
@@ -130,8 +143,50 @@ function userConfig(userConfig) {
         }
     }
 
+    const juicePlugin = (options = {}) => {
+        return {
+            name: 'vituum-plugin-juice',
+            enforce: 'post',
+            transformIndexHtml: {
+                enforce: 'post',
+                transform: (html, { path }) => {
+                    if (!path.startsWith('/emails')) {
+                        return html
+                    }
+
+                    html = html.replaceAll('<table', '<table border="0" cellpadding="0" cellspacing="0"')
+
+                    return juice(html, options)
+                }
+            }
+        }
+    }
+
+    const postHtmlPlugin = (params = {}) => {
+        params = lodash.merge({
+            options: {},
+            plugins: []
+        }, params)
+
+        return {
+            name: 'vituum-plugin-posthtml',
+            enforce: 'pre',
+            transformIndexHtml: {
+                enforce: 'pre',
+                transform: async(html, { filename }) => {
+                    const plugins = [posthtmlExtend({ encoding: 'utf8', root: dirname(filename) }), posthtmlInclude({ encoding: 'utf8', root: dirname(filename) })]
+                    const result = await posthtml(plugins.concat(...params.plugins)).process(html, params.options || {})
+
+                    return result.html
+                }
+            }
+        }
+    }
+
     const plugins = [
-        middleware
+        middleware,
+        postHtmlPlugin(config.templates.posthtml),
+        juicePlugin(config.styles.juice.options)
     ]
 
     if (optionalPlugin['vite-plugin-latte'] && config.templates.latte) {

@@ -1,0 +1,9 @@
+:root {
+  --blue: blue
+}
+
+body {
+  & header {
+    color: var(--blue)
+  }
+}

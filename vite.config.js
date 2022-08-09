@@ -2,7 +2,7 @@ import { defineConfig } from './index.js'
 import { resolve } from 'path'
 
 export default defineConfig({
-    input: ['./playground/views/**/*.html', './playground/styles/**/*.css', './playground/scripts/**/*.js'],
+    input: ['./playground/views/**/*.html', './playground/emails/*.html', './playground/styles/**/*.css', './playground/scripts/**/*.js'],
     root: resolve(process.cwd(), 'playground'),
     build: {
         log: true

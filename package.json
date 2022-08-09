@@ -25,10 +25,13 @@
     "autoprefixer": "^10.4.8",
     "postcss-custom-media": "^8.0.2",
     "postcss-custom-selectors": "^6.0.3",
+    "postcss-html": "^1.5.0",
     "postcss-import": "^14.1.0",
     "postcss-nesting": "^10.1.10",
-    "juice": "^8.0.0",
+    "posthtml": "^0.16.6",
     "posthtml-include": "^1.7.4",
+    "posthtml-extend": "^0.6.3",
+    "juice": "^8.0.0",
     "nodemailer": "^6.7.7"
   },
   "devDependencies": {

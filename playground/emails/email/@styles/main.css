@@ -1,0 +1,9 @@
+:root {
+  --blue: blue
+}
+
+body {
+  & td {
+    color: var(--blue)
+  }
+}
