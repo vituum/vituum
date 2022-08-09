@@ -9,12 +9,13 @@
   "scripts": {
     "dev": "vite dev",
     "build": "node bin build",
+    "cleanup": "node bin cleanup",
     "preview": "vite preview",
     "eslint": "eslint '**/*.js' --fix"
   },
   "dependencies": {
     "vite": "^3.0.4",
-    "vite-plugin-latte": "^0.1.6",
+    "vite-plugin-latte": "^0.1.7",
     "vite-plugin-twig": "^2.0.0",
     "vite-plugin-run":"^0.1.1",
     "fast-glob": "^3.2.11",
@@ -31,6 +32,7 @@
     "posthtml": "^0.16.6",
     "posthtml-include": "^1.7.4",
     "posthtml-extend": "^0.6.3",
+    "posthtml-expressions": "^1.9.0",
     "juice": "^8.0.0",
     "nodemailer": "^6.7.7"
   },

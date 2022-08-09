@@ -1,5 +1,5 @@
 import { defineConfig } from './index.js'
-import { resolve } from 'path'
+import { dirname, resolve } from 'path'
 
 export default defineConfig({
     input: ['./playground/views/**/*.html', './playground/emails/*.html', './playground/styles/**/*.css', './playground/scripts/**/*.js'],
@@ -15,9 +15,11 @@ export default defineConfig({
         latte: {
             globals: {
                 template: resolve(process.cwd(), 'playground/templates/latte/Layout/Main.latte'),
-                srcPath: resolve(process.cwd(), 'playground')
+                srcPath: resolve(process.cwd(), 'playground'),
+                baseUrl: 'https://www.seznam.cz'
             },
-            data: './playground/data/**/*.json'
+            data: './playground/data/**/*.json',
+            isStringFilter: (filename) => dirname(filename).endsWith('emails')
         }
     },
     emails: {

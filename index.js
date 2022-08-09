@@ -12,6 +12,7 @@ import postcssCustomSelectors from 'postcss-custom-selectors'
 import posthtml from 'posthtml'
 import posthtmlInclude from 'posthtml-include'
 import posthtmlExtend from 'posthtml-extend'
+import posthtmlExpressions from 'posthtml-expressions'
 import juice from 'juice'
 import fs from 'fs'
 import run from 'vite-plugin-run'
@@ -123,7 +124,7 @@ function userConfig(userConfig) {
                     }
 
                     if (fs.existsSync(join(viteDevServer.config.root, transformedUrl.replace('.html', ''))) && format) {
-                        const output = await viteDevServer.transformIndexHtml(transformedUrl.replace('.html', ''), '')
+                        const output = await viteDevServer.transformIndexHtml(transformedUrl.replace('.html', ''), fs.readFileSync(join(viteDevServer.config.root, transformedUrl.replace('.html', ''))).toString())
 
                         if (transformedUrl.startsWith('/views/dialog')) {
                             res.setHeader('Content-Type', 'application/json')
@@ -165,6 +166,7 @@ function userConfig(userConfig) {
     const postHtmlPlugin = (params = {}) => {
         params = lodash.merge({
             options: {},
+            locals: {},
             plugins: []
         }, params)
 
@@ -174,7 +176,12 @@ function userConfig(userConfig) {
             transformIndexHtml: {
                 enforce: 'pre',
                 transform: async(html, { filename }) => {
-                    const plugins = [posthtmlExtend({ encoding: 'utf8', root: dirname(filename) }), posthtmlInclude({ encoding: 'utf8', root: dirname(filename) })]
+                    const plugins = [
+                        posthtmlExpressions({ locals: params.locals }),
+                        posthtmlExtend({ encoding: 'utf8', root: dirname(filename) }),
+                        posthtmlInclude({ encoding: 'utf8', root: dirname(filename) })
+                    ]
+
                     const result = await posthtml(plugins.concat(...params.plugins)).process(html, params.options || {})
 
                     return result.html

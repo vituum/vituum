@@ -90,6 +90,11 @@ if (arg === 'build') {
     cleanupAfterBuild()
 }
 
+if (arg === 'cleanup') {
+    cleanupBeforeBuild()
+    cleanupAfterBuild()
+}
+
 if (arg === 'send-mail') {
     console.info(`${chalk.cyan(`vituum v${version}`)} ${chalk.green('sending test email...')}`)
 
