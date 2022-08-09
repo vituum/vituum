@@ -18,7 +18,6 @@ import fs from 'fs'
 import run from 'vite-plugin-run'
 import { tailwindAnimations, tailwindColorsAccent, tailwindColors, tailwindColorsCurrent, tailwindVariables } from './utils/tailwind.js'
 import { supportedFormats } from './utils/common.js'
-import b from 'postcss-custom-selectors'
 
 const optionalPlugin = {}
 
@@ -48,8 +47,15 @@ const config = {
         run: []
     },
     autoImport: {
-        paths: ['styles/**/*.css', 'scripts/**/*.js'],
-        filename: '+'
+        paths: ['./src/styles/**', './src/scripts/**'],
+        extnamePattern: {
+            styles: /.(css|less|scss|pcss)$/,
+            scripts: /.(js|mjs|ts)$/
+        },
+        filenamePattern: {
+            '+.css': 'src/styles',
+            '+.js': 'src/scripts'
+        }
     },
     templates: {
         contentTypeJson: [],
@@ -192,9 +198,9 @@ function userConfig(userConfig) {
     }
 
     const autoImport = (options = {}) => {
-        const getPaths = FastGlob.sync(options.paths).map(entry => resolve(process.cwd(), entry))
+        const getPaths = FastGlob.sync(options.paths, { onlyFiles: false }).map(entry => resolve(process.cwd(), entry))
         const paths = getPaths.filter(path => relative(config.root, dirname(path)).includes('/'))
-        const dirPaths = []
+        const dirPaths = {}
 
         paths.forEach((path) => {
             if (!dirPaths[dirname(path)]) {
@@ -202,6 +208,49 @@ function userConfig(userConfig) {
             } else {
                 dirPaths[dirname(path)].push(path)
             }
+        })
+
+        Object.keys(dirPaths).forEach(dir => {
+            const filenamePattern = config.autoImport.filenamePattern
+
+            Object.keys(filenamePattern).forEach(filename => {
+                if (dirPaths[dir].filter(path => path.includes(filenamePattern[filename])).length > 0) {
+                    let imports = ''
+                    const savePath = `${dir}/${filename}`
+
+                    if (config.autoImport.extnamePattern.styles.test(filename)) {
+                        dirPaths[dir].forEach(path => {
+                            const relativePath = relative(dirname(path), path)
+
+                            if (fs.statSync(path).isFile()) {
+                                imports = imports + `@import "${relativePath}";\r\n`
+                            } else {
+                                imports = imports + `@import "${relativePath}/${filename}";\r\n`
+                            }
+                        })
+                    }
+
+                    if (config.autoImport.extnamePattern.scripts.test(filename)) {
+                        dirPaths[dir].forEach(path => {
+                            const relativePath = relative(dirname(path), path)
+
+                            if (fs.statSync(path).isFile()) {
+                                if (fs.readFileSync(path).toString().includes('export default')) {
+                                    imports = imports + `export { default as ${relativePath.replace('.js', '')} } from './${relativePath}'\r\n`
+                                } else {
+                                    imports = imports + `import './${relativePath}'\r\n`
+                                }
+                            } else {
+                                imports = imports + `import './${relativePath}/${filename}'\r\n`
+                            }
+                        })
+                    }
+
+                    if (imports !== '' && ((fs.existsSync(savePath) && fs.readFileSync(savePath).toString() !== imports) || !fs.existsSync(savePath))) {
+                        fs.writeFileSync(savePath, imports)
+                    }
+                }
+            })
         })
     }
 

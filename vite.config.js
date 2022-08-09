@@ -12,8 +12,11 @@ export default defineConfig({
         run: {}
     },
     autoImport: {
-        paths: ['./playground/styles/**/*.css', './playground/scripts/**/*.js'],
-        filename: '+'
+        paths: ['./playground/styles/**', './playground/scripts/**'],
+        filenamePattern: {
+            '+.css': 'playground/styles',
+            '+.js': 'playground/scripts'
+        }
     },
     templates: {
         latte: {
