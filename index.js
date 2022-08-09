@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import { resolve, join, dirname } from 'path'
+import { resolve, join, dirname, relative } from 'path'
 import os from 'os'
 import FastGlob from 'fast-glob'
 import lodash from 'lodash'
@@ -18,6 +18,7 @@ import fs from 'fs'
 import run from 'vite-plugin-run'
 import { tailwindAnimations, tailwindColorsAccent, tailwindColors, tailwindColorsCurrent, tailwindVariables } from './utils/tailwind.js'
 import { supportedFormats } from './utils/common.js'
+import b from 'postcss-custom-selectors'
 
 const optionalPlugin = {}
 
@@ -190,10 +191,41 @@ function userConfig(userConfig) {
         }
     }
 
+    const autoImport = (options = {}) => {
+        const getPaths = FastGlob.sync(options.paths).map(entry => resolve(process.cwd(), entry))
+        const paths = getPaths.filter(path => relative(config.root, dirname(path)).includes('/'))
+        const dirPaths = []
+
+        paths.forEach((path) => {
+            if (!dirPaths[dirname(path)]) {
+                dirPaths[dirname(path)] = [path]
+            } else {
+                dirPaths[dirname(path)].push(path)
+            }
+        })
+    }
+
+    autoImport(config.autoImport)
+
+    const autoImportPlugin = () => {
+        return {
+            name: 'vituum-plugin-autoimport',
+            apply: 'serve',
+            handleHotUpdate({ file, server }) {
+                server.config.vituum.autoImport.paths.forEach(path => {
+                    if (path.startsWith(relative(server.config.root, dirname(file)))) {
+                        console.log('do something')
+                    }
+                })
+            }
+        }
+    }
+
     const plugins = [
         middleware,
         postHtmlPlugin(config.templates.posthtml),
-        juicePlugin(config.styles.juice.options)
+        juicePlugin(config.styles.juice.options),
+        autoImportPlugin()
     ]
 
     if (optionalPlugin['vite-plugin-latte'] && config.templates.latte) {

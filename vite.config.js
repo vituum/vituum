@@ -11,6 +11,10 @@ export default defineConfig({
         https: true,
         run: {}
     },
+    autoImport: {
+        paths: ['./playground/styles/**/*.css', './playground/scripts/**/*.js'],
+        filename: '+'
+    },
     templates: {
         latte: {
             globals: {
