@@ -30,7 +30,7 @@ await definePackage('vite-plugin-latte')
 await definePackage('vite-plugin-twig')
 
 const config = {
-    input: ['./src/views/**/*.html', './src/styles/**/*.css', './src/scripts/**/*.js'],
+    input: ['./src/views/**/*.html', './src/emails/*.html', './src/styles/*.css', './src/scripts/*.js'],
     output: resolve(process.cwd(), 'public'),
     root: resolve(process.cwd(), 'src'),
     plugins: [],
@@ -54,8 +54,12 @@ const config = {
             '+.js': 'src/scripts'
         }
     },
+    middleware: {
+        viewsDir: 'views',
+        viewsIgnoredPaths: ['emails'],
+        contentTypeJsonPaths: ['views/dialog']
+    },
     templates: {
-        contentTypeJson: [],
         latte: {},
         twig: {},
         posthtml: {}
@@ -66,15 +70,18 @@ const config = {
             plugins: [postcssImport, postcssNesting, postcssCustomMedia, postcssCustomSelectors, autoprefixer]
         },
         juice: {
-            paths: ['./src/emails'],
+            paths: ['emails'],
             options: {}
         }
     },
     emails: {
         send: {
-            template: '',
-            from: '',
-            to: ''
+            template: null,
+            from: 'example@example.com',
+            to: null,
+            host: null,
+            user: null,
+            pass: null
         }
     },
     vite: {
@@ -98,7 +105,7 @@ function userConfig(userConfig) {
     const plugins = [
         vitePluginMiddleware,
         vitePluginPosthtml(config.templates.posthtml),
-        vitePluginJuice(config.styles.juice.options),
+        vitePluginJuice(config.styles.juice),
         vitePluginImports()
     ]
 

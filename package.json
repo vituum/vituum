@@ -10,10 +10,12 @@
     "dev": "vite dev",
     "build": "node bin build",
     "cleanup": "node bin cleanup",
+    "send": "node bin send-mail",
     "preview": "vite preview",
     "eslint": "eslint '**/*.js' --fix"
   },
   "dependencies": {
+    "dotenv": "^16.0.1",
     "vite": "^3.0.4",
     "vite-plugin-latte": "^0.1.8",
     "vite-plugin-twig": "^2.0.0",

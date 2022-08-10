@@ -1,5 +1,5 @@
 import FastGlob from 'fast-glob'
-import { dirname, normalize, relative, resolve } from 'path'
+import { dirname, normalize, relative, resolve, extname } from 'path'
 import fs from 'fs'
 
 const imports = (options = {}, config) => {
@@ -41,7 +41,7 @@ const imports = (options = {}, config) => {
 
                         if (fs.statSync(path).isFile()) {
                             if (fs.readFileSync(path).toString().includes('export default')) {
-                                imports = imports + `export { default as ${relativePath.replace('.js', '')} } from './${relativePath}'\r\n`
+                                imports = imports + `export { default as ${relativePath.replace(extname(relativePath), '')} } from './${relativePath}'\r\n`
                             } else {
                                 imports = imports + `import './${relativePath}'\r\n`
                             }

@@ -2,7 +2,7 @@ import { defineConfig } from './index.js'
 import { dirname, resolve } from 'path'
 
 export default defineConfig({
-    input: ['./playground/views/**/*.html', './playground/emails/*.html', './playground/styles/**/*.css', './playground/scripts/**/*.js'],
+    input: ['./playground/views/**/*.html', './playground/emails/*.html', './playground/styles/*.css', './playground/scripts/*.js'],
     root: resolve(process.cwd(), 'playground'),
     build: {
         log: true
@@ -11,12 +11,15 @@ export default defineConfig({
         https: true,
         run: {}
     },
-    autoImport: {
+    imports: {
         paths: ['./playground/styles/**', './playground/scripts/**'],
         filenamePattern: {
             '+.css': 'playground/styles',
             '+.js': 'playground/scripts'
         }
+    },
+    middleware: {
+        contentTypeJsonPaths: ['views/dialog']
     },
     templates: {
         latte: {
@@ -32,9 +35,9 @@ export default defineConfig({
     emails: {
         copyDir: '',
         send: {
-            template: '',
-            from: '',
-            to: ''
+            template: 'public/example.html',
+            from: 'lubomir.blazek@newlogic.cz',
+            to: 'lubomir.blazek@newlogic.cz'
         }
     },
     vite: {}

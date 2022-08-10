@@ -10,7 +10,9 @@ const vitePluginJuice = (options = {}) => {
         transformIndexHtml: {
             enforce: 'post',
             transform: (html, { path }) => {
-                if (!path.startsWith('/emails')) {
+                const paths = options.paths
+
+                if (paths.filter(p => path.startsWith(`/${p}`)).length === 0) {
                     return html
                 }
 
@@ -20,7 +22,7 @@ const vitePluginJuice = (options = {}) => {
                     preserve: false
                 })]).process(html, { syntax: postcssHtml() })
 
-                return juice(result.content, options)
+                return juice(result.content, options.juice)
             }
         }
     }
