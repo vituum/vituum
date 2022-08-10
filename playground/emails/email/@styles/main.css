@@ -6,4 +6,8 @@ body {
   & td {
     color: var(--blue)
   }
+
+  @media all and (max-width: 600px) {
+    color: red;
+  }
 }

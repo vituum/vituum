@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import { resolve, join, dirname, relative, normalize } from 'path'
+import { resolve, join } from 'path'
 import os from 'os'
 import FastGlob from 'fast-glob'
 import lodash from 'lodash'
@@ -9,15 +9,12 @@ import postcssImport from 'postcss-import'
 import postcssNesting from 'postcss-nesting'
 import postcssCustomMedia from 'postcss-custom-media'
 import postcssCustomSelectors from 'postcss-custom-selectors'
-import posthtml from 'posthtml'
-import posthtmlInclude from 'posthtml-include'
-import posthtmlExtend from 'posthtml-extend'
-import posthtmlExpressions from 'posthtml-expressions'
-import juice from 'juice'
 import fs from 'fs'
 import run from 'vite-plugin-run'
-import { tailwindAnimations, tailwindColorsAccent, tailwindColors, tailwindColorsCurrent, tailwindVariables } from './utils/tailwind.js'
-import { supportedFormats } from './utils/common.js'
+import vitePluginJuice from './plugins/juice.js'
+import vitePluginPosthtml from './plugins/posthtml.js'
+import vitePluginImports from './plugins/imports.js'
+import vitePluginMiddleware from './plugins/middleware.js'
 
 const optionalPlugin = {}
 
@@ -46,7 +43,7 @@ const config = {
         cert: 'localhost',
         run: []
     },
-    autoImport: {
+    imports: {
         paths: ['./src/styles/**', './src/scripts/**'],
         extnamePattern: {
             styles: /.(css|less|scss|pcss)$/,
@@ -98,190 +95,11 @@ const config = {
 function userConfig(userConfig) {
     lodash.merge(config, userConfig)
 
-    const middleware = {
-        name: 'middleware',
-        apply: 'serve',
-        configureServer(viteDevServer) {
-            return () => {
-                viteDevServer.middlewares.use(async(req, res, next) => {
-                    let format = null
-                    let transformedUrl = req.originalUrl.replace('.html', '')
-
-                    if (req.originalUrl === '/' || req.originalUrl.endsWith('/')) {
-                        transformedUrl = transformedUrl + 'index'
-                    }
-
-                    if (!req.originalUrl.startsWith('/views') && !req.originalUrl.startsWith('/emails')) {
-                        transformedUrl = '/views' + transformedUrl
-                    }
-
-                    supportedFormats.every(supportedFormat => {
-                        if (fs.existsSync(join(viteDevServer.config.root, `${transformedUrl}.${supportedFormat}`)) || fs.existsSync(join(viteDevServer.config.root, `${transformedUrl}.${supportedFormat}.html`))) {
-                            format = supportedFormat
-                            return false
-                        } else {
-                            return true
-                        }
-                    })
-
-                    if (format) {
-                        transformedUrl = transformedUrl + `.${format}.html`
-                    } else {
-                        transformedUrl = transformedUrl + '.html'
-                    }
-
-                    if (fs.existsSync(join(viteDevServer.config.root, transformedUrl.replace('.html', ''))) && format) {
-                        const output = await viteDevServer.transformIndexHtml(transformedUrl.replace('.html', ''), fs.readFileSync(join(viteDevServer.config.root, transformedUrl.replace('.html', ''))).toString())
-
-                        if (transformedUrl.startsWith('/views/dialog')) {
-                            res.setHeader('Content-Type', 'application/json')
-                        } else {
-                            res.setHeader('Content-Type', 'text/html')
-                        }
-
-                        res.statusCode = 200
-                        res.end(output)
-                    } else {
-                        req.url = transformedUrl
-
-                        next()
-                    }
-                })
-            }
-        }
-    }
-
-    const juicePlugin = (options = {}) => {
-        return {
-            name: 'vituum-plugin-juice',
-            enforce: 'post',
-            transformIndexHtml: {
-                enforce: 'post',
-                transform: (html, { path }) => {
-                    if (!path.startsWith('/emails')) {
-                        return html
-                    }
-
-                    html = html.replaceAll('<table', '<table border="0" cellpadding="0" cellspacing="0"')
-
-                    return juice(html, options)
-                }
-            }
-        }
-    }
-
-    const postHtmlPlugin = (params = {}) => {
-        params = lodash.merge({
-            options: {},
-            locals: {},
-            plugins: []
-        }, params)
-
-        return {
-            name: 'vituum-plugin-posthtml',
-            enforce: 'pre',
-            transformIndexHtml: {
-                enforce: 'pre',
-                transform: async(html, { filename }) => {
-                    const plugins = [
-                        posthtmlExpressions({ locals: params.locals }),
-                        posthtmlExtend({ encoding: 'utf8', root: dirname(filename) }),
-                        posthtmlInclude({ encoding: 'utf8', root: dirname(filename) })
-                    ]
-
-                    const result = await posthtml(plugins.concat(...params.plugins)).process(html, params.options || {})
-
-                    return result.html
-                }
-            }
-        }
-    }
-
-    const autoImport = (options = {}) => {
-        const filenamePattern = config.autoImport.filenamePattern
-        const ignoredPaths = Object.keys(filenamePattern).map(filename => `!**/${filename}`)
-        const getPaths = FastGlob.sync(options.paths, { onlyFiles: false, ignore: ignoredPaths }).map(entry => resolve(process.cwd(), entry))
-        const paths = getPaths.filter(path => relative(config.root, dirname(path)).includes('/'))
-        const dirPaths = {}
-
-        paths.forEach((path) => {
-            if (!dirPaths[dirname(path)]) {
-                dirPaths[dirname(path)] = [path]
-            } else {
-                dirPaths[dirname(path)].push(path)
-            }
-        })
-
-        Object.keys(dirPaths).forEach(dir => {
-            Object.keys(filenamePattern).forEach(filename => {
-                if (dirPaths[dir].filter(path => path.includes(filenamePattern[filename])).length > 0) {
-                    let imports = ''
-                    const savePath = `${dir}/${filename}`
-
-                    if (config.autoImport.extnamePattern.styles.test(filename)) {
-                        dirPaths[dir].forEach(path => {
-                            const relativePath = relative(dirname(path), path)
-
-                            if (fs.statSync(path).isFile()) {
-                                imports = imports + `@import "${relativePath}";\r\n`
-                            } else {
-                                imports = imports + `@import "${relativePath}/${filename}";\r\n`
-                            }
-                        })
-                    }
-
-                    if (config.autoImport.extnamePattern.scripts.test(filename)) {
-                        dirPaths[dir].forEach(path => {
-                            const relativePath = relative(dirname(path), path)
-
-                            if (fs.statSync(path).isFile()) {
-                                if (fs.readFileSync(path).toString().includes('export default')) {
-                                    imports = imports + `export { default as ${relativePath.replace('.js', '')} } from './${relativePath}'\r\n`
-                                } else {
-                                    imports = imports + `import './${relativePath}'\r\n`
-                                }
-                            } else {
-                                imports = imports + `import './${relativePath}/${filename}'\r\n`
-                            }
-                        })
-                    }
-
-                    if (imports !== '' && ((fs.existsSync(savePath) && fs.readFileSync(savePath).toString() !== imports) || !fs.existsSync(savePath))) {
-                        fs.writeFileSync(savePath, imports)
-                    }
-                }
-            })
-        })
-    }
-
-    autoImport(config.autoImport)
-
-    const autoImportPlugin = () => {
-        const filenamePattern = config.autoImport.filenamePattern
-
-        return {
-            name: 'vituum-plugin-autoimport',
-            apply: 'serve',
-            handleHotUpdate({ file, server }) {
-                server.config.vituum.autoImport.paths.forEach(path => {
-                    const autoImportPath = relative(server.config.root, dirname(normalize(path)))
-                    const filePath = relative(server.config.root, dirname(file))
-
-                    if (filePath.startsWith(autoImportPath) && Object.keys(filenamePattern).filter(filename => file.endsWith(filename)).length === 0) {
-                        autoImport(Object.assign(config.autoImport, {
-                            paths: [`${dirname(file)}/**`]
-                        }))
-                    }
-                })
-            }
-        }
-    }
-
     const plugins = [
-        middleware,
-        postHtmlPlugin(config.templates.posthtml),
-        juicePlugin(config.styles.juice.options),
-        autoImportPlugin()
+        vitePluginMiddleware,
+        vitePluginPosthtml(config.templates.posthtml),
+        vitePluginJuice(config.styles.juice.options),
+        vitePluginImports()
     ]
 
     if (optionalPlugin['vite-plugin-latte'] && config.templates.latte) {
@@ -343,4 +161,4 @@ function userConfig(userConfig) {
     }, config.vite))
 }
 
-export { userConfig as defineConfig, config, tailwindAnimations, tailwindColorsAccent, tailwindColors, tailwindColorsCurrent, tailwindVariables }
+export { userConfig as defineConfig, config }
