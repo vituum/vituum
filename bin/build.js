@@ -3,9 +3,9 @@ import FastGlob from 'fast-glob'
 import { resolve } from 'path'
 import { supportedFormats, vituumVersion as version } from '../utils/common.js'
 import fs from 'fs'
-import { resolveConfig, build as viteBuild } from 'vite'
+import { build as viteBuild } from 'vite'
 
-const vite = await resolveConfig({}, 'build')
+const vite = (await import(resolve(process.cwd(), 'vite.config.js'))).default
 const config = vite.vituum
 
 const build = async(headless = false) => {

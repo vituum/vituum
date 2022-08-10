@@ -1,12 +1,11 @@
 import nodemailer from 'nodemailer'
 import chalk from 'chalk'
-import path from 'path'
+import path, { resolve } from 'path'
 import fs from 'fs'
 import { config as dotenv } from 'dotenv'
 import { vituumVersion as version } from '../utils/common.js'
-import { resolveConfig } from 'vite'
 
-const vite = await resolveConfig({}, 'build')
+const vite = (await import(resolve(process.cwd(), 'vite.config.js'))).default
 
 dotenv()
 
