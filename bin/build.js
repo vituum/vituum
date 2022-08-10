@@ -3,10 +3,26 @@ import FastGlob from 'fast-glob'
 import { resolve } from 'path'
 import { supportedFormats, vituumVersion as version } from '../utils/common.js'
 import fs from 'fs'
-import { resolveConfig } from 'vite'
+import { resolveConfig, build as viteBuild } from 'vite'
 
 const vite = await resolveConfig({}, 'build')
 const config = vite.vituum
+
+const build = async(headless = false) => {
+    let inlineConfig = {}
+
+    if (headless) {
+        inlineConfig = {
+            vituum: {
+                build: {
+                    headless: true
+                }
+            }
+        }
+    }
+
+    await viteBuild(inlineConfig)
+}
 
 const renameBeforeBuild = () => {
     console.info(`${chalk.cyan(`vituum v${version}`)} ${chalk.green('preparing for build...')}`)
@@ -70,4 +86,4 @@ const cleanupBeforeBuild = () => {
     fs.rmSync(`${config.output}/assets`, { recursive: true, force: true })
 }
 
-export { renameBeforeBuild, renameAfterBuild, cleanupAfterBuild, cleanupBeforeBuild }
+export { renameBeforeBuild, renameAfterBuild, cleanupAfterBuild, cleanupBeforeBuild, build }

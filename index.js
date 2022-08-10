@@ -35,7 +35,8 @@ const config = {
     root: resolve(process.cwd(), 'src'),
     plugins: [],
     build: {
-        log: false
+        log: false,
+        headless: false
     },
     server: {
         open: '/',
@@ -144,6 +145,10 @@ function userConfig(userConfig) {
                 cert: fs.readFileSync(join(os.homedir(), `.ssh/${config.server.cert}.pem`))
             }
         }
+    }
+
+    if (config.build.headless) {
+        config.input.push('!**/*.html')
     }
 
     return defineConfig(lodash.merge({
