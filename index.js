@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import { resolve, join, dirname, relative } from 'path'
+import { resolve, join, dirname, relative, normalize } from 'path'
 import os from 'os'
 import FastGlob from 'fast-glob'
 import lodash from 'lodash'
@@ -198,7 +198,9 @@ function userConfig(userConfig) {
     }
 
     const autoImport = (options = {}) => {
-        const getPaths = FastGlob.sync(options.paths, { onlyFiles: false }).map(entry => resolve(process.cwd(), entry))
+        const filenamePattern = config.autoImport.filenamePattern
+        const ignoredPaths = Object.keys(filenamePattern).map(filename => `!**/${filename}`)
+        const getPaths = FastGlob.sync(options.paths, { onlyFiles: false, ignore: ignoredPaths }).map(entry => resolve(process.cwd(), entry))
         const paths = getPaths.filter(path => relative(config.root, dirname(path)).includes('/'))
         const dirPaths = {}
 
@@ -211,8 +213,6 @@ function userConfig(userConfig) {
         })
 
         Object.keys(dirPaths).forEach(dir => {
-            const filenamePattern = config.autoImport.filenamePattern
-
             Object.keys(filenamePattern).forEach(filename => {
                 if (dirPaths[dir].filter(path => path.includes(filenamePattern[filename])).length > 0) {
                     let imports = ''
@@ -257,13 +257,20 @@ function userConfig(userConfig) {
     autoImport(config.autoImport)
 
     const autoImportPlugin = () => {
+        const filenamePattern = config.autoImport.filenamePattern
+
         return {
             name: 'vituum-plugin-autoimport',
             apply: 'serve',
             handleHotUpdate({ file, server }) {
                 server.config.vituum.autoImport.paths.forEach(path => {
-                    if (path.startsWith(relative(server.config.root, dirname(file)))) {
-                        console.log('do something')
+                    const autoImportPath = relative(server.config.root, dirname(normalize(path)))
+                    const filePath = relative(server.config.root, dirname(file))
+
+                    if (filePath.startsWith(autoImportPath) && Object.keys(filenamePattern).filter(filename => file.endsWith(filename)).length === 0) {
+                        autoImport(Object.assign(config.autoImport, {
+                            paths: [`${dirname(file)}/**`]
+                        }))
                     }
                 })
             }
