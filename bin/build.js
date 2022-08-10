@@ -7,6 +7,7 @@ import { build as viteBuild } from 'vite'
 
 const vite = (await import(resolve(process.cwd(), 'vite.config.js'))).default
 const config = vite.vituum
+const viewsDir = resolve(vite.root, config.middleware.viewsDir)
 
 const build = async(headless = false) => {
     let inlineConfig = {}
@@ -26,8 +27,6 @@ const build = async(headless = false) => {
 
 const renameBeforeBuild = () => {
     console.info(`${chalk.cyan(`vituum v${version}`)} ${chalk.green('preparing for build...')}`)
-
-    const viewsDir = resolve(vite.root, config.middleware.viewsDir)
 
     const files = FastGlob.sync([`${viewsDir}/**/*.{${supportedFormats.join(',')}}`, `!**/*.{${supportedFormats.join(',')}}.json`]).map(entry => resolve(process.cwd(), entry))
 
@@ -67,7 +66,7 @@ const renameAfterBuild = () => {
 const cleanupAfterBuild = () => {
     console.info(`${chalk.cyan(`vituum v${version}`)} ${chalk.green('cleanup after build...')}`)
 
-    const files = FastGlob.sync(['./playground/views/**/*.html']).map(entry => resolve(process.cwd(), entry))
+    const files = FastGlob.sync([`${viewsDir}/**/*.html`]).map(entry => resolve(process.cwd(), entry))
 
     files.forEach(file => {
         if (file.includes('.vituum')) {
