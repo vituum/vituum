@@ -45,6 +45,8 @@ It's a mix of words **Vite** _(French word for "quick")_ and **Tuum** _(Estonion
 
 ## 📦 Modular structure
 
+Predefined structure for your project files. But you can still change the structure to your own liking via config.
+
 * **src**
   * **assets** - your static files as `.png`, `.svg`
   * **data** - your `.json` data used in templates
