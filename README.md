@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://vituum.dev/" target="_blank" rel="noopener noreferrer">
-    <img width="180" src="https://core.newlogic.cz/logo.png" alt="Logo">
+    <img width="180" src="https://avatars.githubusercontent.com/u/109584961" alt="Logo">
   </a>
 </p>
 <p align="center">
