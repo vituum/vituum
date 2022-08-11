@@ -35,7 +35,6 @@ export default defineConfig({
         }
     },
     emails: {
-        copyDir: '',
         send: {
             template: 'public/example.html',
             from: 'lubomir.blazek@newlogic.cz',
