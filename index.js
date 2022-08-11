@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import { resolve, join } from 'path'
 import os from 'os'
+import fs from 'fs'
 import FastGlob from 'fast-glob'
 import lodash from 'lodash'
 import chalk from 'chalk'
@@ -9,8 +10,6 @@ import postcssImport from 'postcss-import'
 import postcssNesting from 'postcss-nesting'
 import postcssCustomMedia from 'postcss-custom-media'
 import postcssCustomSelectors from 'postcss-custom-selectors'
-import fs from 'fs'
-import run from 'vite-plugin-run'
 import vitePluginJuice from './plugins/juice.js'
 import vitePluginPosthtml from './plugins/posthtml.js'
 import vitePluginImports from './plugins/imports.js'
@@ -36,13 +35,12 @@ const config = {
     plugins: [],
     build: {
         log: false,
-        headless: false
+        mode: null || process.env.VITUUM_BUILD_MODE
     },
     server: {
         open: '/',
         https: false,
-        cert: 'localhost',
-        run: []
+        cert: 'localhost'
     },
     imports: {
         paths: ['./src/styles/**', './src/scripts/**'],
@@ -66,7 +64,7 @@ const config = {
         posthtml: {}
     },
     styles: {
-        tailwindcss: true,
+        tailwindcss: false,
         postcss: {
             plugins: [postcssImport, postcssNesting, postcssCustomMedia, postcssCustomSelectors, autoprefixer]
         },
@@ -135,7 +133,6 @@ function userConfig(userConfig) {
         }
     }
 
-    plugins.push(run(config.server.run))
     plugins.push(...plugins)
 
     if (config.server.https && fs.existsSync(join(os.homedir(), `.ssh/${config.server.cert}.pem`)) && fs.existsSync(join(os.homedir(), `.ssh/${config.server.cert}-key.pem`))) {
@@ -147,12 +144,15 @@ function userConfig(userConfig) {
         }
     }
 
-    if (config.build.headless) {
+    if (config.build.mode === 'headless') {
         config.input.push('!**/*.html')
     }
 
     return defineConfig(lodash.merge({
         vituum: config,
+        server: {
+            open: config.server.open
+        },
         plugins,
         resolve: {
             alias: {

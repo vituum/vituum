@@ -10,19 +10,11 @@ const config = vite.vituum
 const viewsDir = resolve(vite.root, config.middleware.viewsDir)
 
 const build = async(headless = false) => {
-    let inlineConfig = {}
-
     if (headless) {
-        inlineConfig = {
-            vituum: {
-                build: {
-                    headless: true
-                }
-            }
-        }
+        process.env.VITUUM_BUILD_MODE = 'headless'
     }
 
-    await viteBuild(inlineConfig)
+    await viteBuild()
 }
 
 const renameBeforeBuild = () => {

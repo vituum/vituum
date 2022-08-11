@@ -26,7 +26,7 @@ if (arg === 'cleanup') {
     cleanupAfterBuild()
 }
 
-if (arg === 'send-mail') {
+if (arg === 'send') {
     await sendMail()
 }
 

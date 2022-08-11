@@ -8,8 +8,7 @@ export default defineConfig({
         log: true
     },
     server: {
-        https: true,
-        run: {}
+        https: true
     },
     imports: {
         paths: ['./playground/styles/**', './playground/scripts/**'],
@@ -20,6 +19,9 @@ export default defineConfig({
     },
     middleware: {
         contentTypeJsonPaths: ['views/dialog']
+    },
+    styles: {
+        tailwindcss: true
     },
     templates: {
         latte: {

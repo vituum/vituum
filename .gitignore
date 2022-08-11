@@ -1,5 +1,6 @@
 .idea
 .DS_Store
+.env
 node_modules
 public
 package-lock.json
