@@ -25,7 +25,7 @@ async function definePackage(plugin) {
 
 await definePackage('tailwindcss')
 await definePackage('tailwindcss/nesting/index.js')
-await definePackage('vite-plugin-latte')
+await definePackage('@vituum/vite-plugin-latte')
 await definePackage('vite-plugin-twig')
 
 const config = {
@@ -109,15 +109,15 @@ function userConfig(userConfig) {
         vitePluginImports()
     ]
 
-    if (optionalPlugin['vite-plugin-latte'] && config.templates.latte) {
-        plugins.push(optionalPlugin['vite-plugin-latte'](lodash.merge({
+    if (optionalPlugin['@vituum/vite-plugin-latte'] && config.templates.latte) {
+        plugins.push(optionalPlugin['@vituum/vite-plugin-latte'](lodash.merge({
             globals: {
                 srcPath: resolve(process.cwd(), 'src')
             },
             data: './src/data/**/*.json'
         }, config.templates.latte)))
     } else {
-        console.error(chalk.red('vite-plugin-latte not installed'))
+        console.error(chalk.red('@vituum/vite-plugin-latte not installed'))
     }
 
     if (optionalPlugin['vite-plugin-twig'] && config.templates.twig) {
