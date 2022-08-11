@@ -35,6 +35,7 @@ const config = {
     plugins: [],
     build: {
         log: false,
+        manifest: true,
         mode: null || process.env.VITUUM_BUILD_MODE
     },
     server: {
@@ -166,6 +167,7 @@ function userConfig(userConfig) {
         },
         build: {
             outDir: config.output,
+            manifest: config.build.manifest,
             rollupOptions: {
                 input: FastGlob.sync(config.input).map(entry => resolve(process.cwd(), entry))
             }
