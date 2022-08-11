@@ -17,9 +17,9 @@ Fast prototyping with template engines and integrated frontend tools
 
 - ⚡ Vite integrated
 - 🚀️ Fast prototyping
+- 🛠️ Integrated tools
 - 💡 Template engines
 - 📦 Modular structure
-- 🛠️ Integrated tools
 - ✉️ Email templates
 
 Vituum is a wrapper around **Vite** which includes predefined config and set of plugins.<br>
@@ -46,13 +46,13 @@ It's a mix of words **Vite** _(French word for "quick")_ and **Tuum** _(Estonion
 ## 📦 Modular structure
 
 * **src**
-  * **assets** - place for your static files as `.png`, `.svg`
-  * **data** - place for `.json` data used in templates
-  * **emails** - place for your email templates
-  * **scripts** - place for script files as `.js`, `.ts`
-  * **styles** - place for your styles files as `.css`, `.scss`
-  * **templates** - place for your template files as `.twig`, `.latte`
-  * **views** - place for your site pages as `.html`, you can also define page as `.json` or `.twig`, `.latte` and nest
+  * **assets** - your static files as `.png`, `.svg`
+  * **data** - your `.json` data used in templates
+  * **emails** - your email templates
+  * **scripts** - your script files as `.js`, `.ts`
+  * **styles** - your styles files as `.css`, `.scss`
+  * **templates** - your template files as `.twig`, `.latte`
+  * **views** - your pages as `.html`, you can also nest and define page as `.json` or `.twig`, `.latte`
 
 ## 🪄 Instalation
 
@@ -62,7 +62,7 @@ npm i vituum --save-dev
 
 ### Config
 
-Each Vituum project needs to have config via `vite.config.js`
+Each Vituum project needs to have config via `vite.config.js`<br>
 Read the [Docs](https://vitejs.dev/config/) to learn more about configuration
 
 ```js
@@ -73,11 +73,11 @@ export default defineConfig({
 })
 ```
 
+You can also try [minimal example project here](https://github.com/vituum/example)
+
 ### Requirements
 
 - [Node.js LTS (14.x)](https://nodejs.org/en/download/)
-
-You can also try minimal [example](https://github.com/vituum/example)
 
 ## Licence
 MIT
