@@ -1,4 +1,4 @@
-import { dirname, extname, resolve } from 'path'
+import { dirname, extname, resolve, relative } from 'path'
 import fs from 'fs'
 import process from 'node:process'
 import FastGlob from 'fast-glob'
@@ -29,7 +29,7 @@ function processData(paths, data = {}) {
     FastGlob.sync(paths).forEach(entry => {
         const path = resolve(process.cwd(), entry)
 
-        context = lodash.merge(JSON.parse(fs.readFileSync(path).toString()), context)
+        context = lodash.merge(context, JSON.parse(fs.readFileSync(path).toString()))
     })
 
     return context
@@ -72,7 +72,9 @@ const renderTemplate = (filename, content, options) => {
         lodash.merge(context, JSON.parse(fs.readFileSync(filename).toString()))
 
         content = '{% include template %}'
-        filename = '/'
+        filename = options.root
+
+        context.template = relative(process.cwd(), context.template)
     } else if (fs.existsSync(filename + '.json')) {
         lodash.merge(context, JSON.parse(fs.readFileSync(filename + '.json').toString()))
     }
@@ -97,6 +99,9 @@ const plugin = (options = {}) => {
 
     return {
         name,
+        config: ({ root }) => {
+            options.root = root
+        },
         transformIndexHtml: {
             enforce: 'pre',
             async transform(content, { path, filename, server }) {
@@ -127,6 +132,8 @@ const plugin = (options = {}) => {
                             plugin: '@vituum/vite-plugin-twig'
                         }
                     })
+
+                    return '<html style="background: #222"><head></head><body></body></html>'
                 }
 
                 return render.content
