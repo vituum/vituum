@@ -61,7 +61,7 @@ const config = {
         contentTypeJsonPaths: ['views/dialog']
     },
     templates: {
-        format: 'twig',
+        format: 'posthtml',
         latte: {},
         twig: {},
         posthtml: {}

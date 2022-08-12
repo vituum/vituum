@@ -24,10 +24,12 @@ const defaultOptions = {
 function processData(paths, data = {}) {
     let context = {}
 
+    lodash.merge(context, data)
+
     FastGlob.sync(paths).forEach(entry => {
         const path = resolve(process.cwd(), entry)
 
-        context = lodash.merge(JSON.parse(fs.readFileSync(path).toString()), data)
+        context = lodash.merge(JSON.parse(fs.readFileSync(path).toString()), context)
     })
 
     return context
