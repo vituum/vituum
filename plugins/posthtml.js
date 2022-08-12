@@ -14,9 +14,7 @@ const vitePluginPosthtml = (pluginOptions = {}) => {
 
     return {
         name: '@vituum/vite-plugin-posthtml',
-        enforce: 'pre',
         transformIndexHtml: {
-            enforce: 'pre',
             transform: async(html, { filename }) => {
                 const plugins = [
                     posthtmlExpressions({ locals: pluginOptions.locals }),

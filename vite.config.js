@@ -32,6 +32,17 @@ export default defineConfig({
             },
             data: './playground/data/**/*.json',
             isStringFilter: (filename) => dirname(filename).endsWith('emails')
+        },
+        twig: {
+            globals: {
+                template: resolve(process.cwd(), 'playground/templates/twig/article.twig'),
+                srcPath: resolve(process.cwd(), 'playground'),
+                baseUrl: 'https://www.seznam.cz'
+            },
+            namespaces: {
+                templates: resolve(process.cwd(), 'playground/templates')
+            },
+            data: './playground/data/**/*.json'
         }
     },
     emails: {

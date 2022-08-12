@@ -14,6 +14,7 @@ import vitePluginJuice from './plugins/juice.js'
 import vitePluginPosthtml from './plugins/posthtml.js'
 import vitePluginImports from './plugins/imports.js'
 import vitePluginMiddleware from './plugins/middleware.js'
+import vitePluginTwig from './plugins/twig.js'
 
 const optionalPlugin = {}
 
@@ -39,7 +40,7 @@ const config = {
         mode: null || process.env.VITUUM_BUILD_MODE
     },
     server: {
-        open: '/',
+        open: false,
         https: false,
         cert: 'localhost'
     },
@@ -60,6 +61,7 @@ const config = {
         contentTypeJsonPaths: ['views/dialog']
     },
     templates: {
+        format: 'twig',
         latte: {},
         twig: {},
         posthtml: {}
@@ -114,17 +116,26 @@ function userConfig(userConfig) {
             globals: {
                 srcPath: resolve(process.cwd(), 'src')
             },
-            data: './src/data/**/*.json'
+            data: './src/data/**/*.json',
+            filetypes: {
+                html: config.templates.format === 'latte' ? /.(json|json.html|latte.json|latte.json.html|latte|latte.html)$/ : /.(latte.json|latte.json.html|latte|latte.html)$/,
+                json: /.(json.latte|json.latte.html)$/
+            }
         }, config.templates.latte)))
     } else {
         console.error(chalk.red('@vituum/vite-plugin-latte not installed'))
     }
 
-    if (optionalPlugin['vite-plugin-twig'] && config.templates.twig) {
-        plugins.push(optionalPlugin['vite-plugin-twig'](lodash.merge({}, config.templates.twig)))
-    } else {
-        console.error(chalk.red('vite-plugin-twig not installed'))
-    }
+    plugins.push(vitePluginTwig(lodash.merge({
+        globals: {
+            srcPath: resolve(process.cwd(), 'src')
+        },
+        data: './src/data/**/*.json',
+        filetypes: {
+            html: config.templates.format === 'twig' ? /.(json|json.html|twig.json|twig.json.html|twig|twig.html)$/ : /.(twig.json|twig.json.html|twig|twig.html)$/,
+            json: /.(json.twig|json.twig.html)$/
+        }
+    }, config.templates.twig)))
 
     if (config.styles.tailwindcss) {
         if (optionalPlugin.tailwindcss) {

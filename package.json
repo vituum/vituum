@@ -1,6 +1,6 @@
 {
   "name": "vituum",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "type": "module",
   "main": "index.js",
   "bin": {
@@ -40,9 +40,9 @@
   "devDependencies": {
     "eslint": "^8.21.0",
     "eslint-config-standard": "^17.0.0",
-    "vite-plugin-twig": "^2.1.1",
-    "@vituum/vite-plugin-latte": "^0.1.8",
-    "tailwindcss": "^3.1.8"
+    "@vituum/vite-plugin-latte": "^0.1.9",
+    "tailwindcss": "^3.1.8",
+    "twig": "^1.15.4"
   },
   "files": [
     "index.js",
