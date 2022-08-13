@@ -4,7 +4,6 @@ import os from 'os'
 import fs from 'fs'
 import FastGlob from 'fast-glob'
 import lodash from 'lodash'
-import chalk from 'chalk'
 import autoprefixer from 'autoprefixer'
 import postcssImport from 'postcss-import'
 import postcssNesting from 'postcss-nesting'
@@ -14,7 +13,6 @@ import vitePluginJuice from './plugins/juice.js'
 import vitePluginPosthtml from './plugins/posthtml.js'
 import vitePluginImports from './plugins/imports.js'
 import vitePluginMiddleware from './plugins/middleware.js'
-import vitePluginTwig from './plugins/twig.js'
 
 const optionalPlugin = {}
 
@@ -27,7 +25,7 @@ async function definePackage(plugin) {
 await definePackage('tailwindcss')
 await definePackage('tailwindcss/nesting/index.js')
 await definePackage('@vituum/vite-plugin-latte')
-await definePackage('vite-plugin-twig')
+await definePackage('@vituum/vite-plugin-twig')
 
 const config = {
     input: ['./src/views/**/*.html', './src/emails/*.html', './src/styles/*.css', './src/scripts/*.js'],
@@ -111,7 +109,7 @@ function userConfig(userConfig) {
         vitePluginImports()
     ]
 
-    if (optionalPlugin['@vituum/vite-plugin-latte'] && config.templates.latte) {
+    if (optionalPlugin['@vituum/vite-plugin-latte']) {
         plugins.push(optionalPlugin['@vituum/vite-plugin-latte'](lodash.merge({
             globals: {
                 srcPath: resolve(process.cwd(), 'src')
@@ -122,27 +120,23 @@ function userConfig(userConfig) {
                 json: /.(json.latte|json.latte.html)$/
             }
         }, config.templates.latte)))
-    } else {
-        console.error(chalk.red('@vituum/vite-plugin-latte not installed'))
     }
 
-    plugins.push(vitePluginTwig(lodash.merge({
-        globals: {
-            srcPath: resolve(process.cwd(), 'src')
-        },
-        data: './src/data/**/*.json',
-        filetypes: {
-            html: config.templates.format === 'twig' ? /.(json|json.html|twig.json|twig.json.html|twig|twig.html)$/ : /.(twig.json|twig.json.html|twig|twig.html)$/,
-            json: /.(json.twig|json.twig.html)$/
-        }
-    }, config.templates.twig)))
+    if (optionalPlugin['@vituum/vite-plugin-twig']) {
+        plugins.push(optionalPlugin['@vituum/vite-plugin-twig'](lodash.merge({
+            globals: {
+                srcPath: resolve(process.cwd(), 'src')
+            },
+            data: './src/data/**/*.json',
+            filetypes: {
+                html: config.templates.format === 'twig' ? /.(json|json.html|twig.json|twig.json.html|twig|twig.html)$/ : /.(twig.json|twig.json.html|twig|twig.html)$/,
+                json: /.(json.twig|json.twig.html)$/
+            }
+        }, config.templates.twig)))
+    }
 
-    if (config.styles.tailwindcss) {
-        if (optionalPlugin.tailwindcss) {
-            config.styles.postcss.plugins = [postcssImport, optionalPlugin['tailwindcss/nesting/index.js'](postcssNesting), postcssCustomMedia, postcssCustomSelectors, optionalPlugin.tailwindcss, autoprefixer]
-        } else {
-            console.error(chalk.red('tailwindcss not installed'))
-        }
+    if (optionalPlugin.tailwindcss) {
+        config.styles.postcss.plugins = [postcssImport, optionalPlugin['tailwindcss/nesting/index.js'](postcssNesting), postcssCustomMedia, postcssCustomSelectors, optionalPlugin.tailwindcss, autoprefixer]
     }
 
     plugins.push(...plugins)
