@@ -39,8 +39,8 @@ It's a mix of words **Vite** _(French word for "quick")_ and **Tuum** _(Estonion
 * **[@vituum/vite-plugin-middleware](https://github.com/vituum/vituum/blob/main/plugins/imports.js)** - use urls without `.html` extname in Vite server
 
 ## 💡 Template engines
-* **[Latte](https://latte.nette.org/)** ([vite-plugin-latte](https://github.com/lubomirblazekcz/vite-plugin-latte)) - template engine mainly used with PHP framework [Nette](https://nette.org/)
-* **[Twig](https://twig.symfony.com/)** ([vite-plugin-twig](https://github.com/fiadone/vite-plugin-twig)) - template engine mainly used with PHP framework [Symfony](https://symfony.com/)
+* **[Latte](https://latte.nette.org/)** ([vite-plugin-latte](https://github.com/vituum/vite-plugin-latte)) - template engine mainly used with PHP framework [Nette](https://nette.org/)
+* **[Twig](https://twig.symfony.com/)** ([vite-plugin-twig](https://github.com/vituum/vite-plugin-twig)) - template engine mainly used with PHP framework [Symfony](https://symfony.com/)
 * More planned - [hbs](https://handlebarsjs.com/), [njk](https://mozilla.github.io/nunjucks/), [liquid](https://liquidjs.com/), [pug](https://pugjs.org/)
 
 ## 📦 Modular structure
