@@ -6,13 +6,14 @@ import posthtml from 'posthtml'
 
 const vitePluginPosthtml = (pluginOptions = {}) => {
     pluginOptions = lodash.merge({
-        options: {},
         plugins: []
     }, pluginOptions)
 
     return {
         name: '@vituum/vite-plugin-posthtml',
+        enforce: 'pre',
         transformIndexHtml: {
+            enforce: 'pre',
             transform: async(html, { filename }) => {
                 const plugins = [
                     posthtmlExtend({ encoding: 'utf8', root: dirname(filename) }),
