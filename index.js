@@ -96,7 +96,6 @@ const config = {
             }
         },
         build: {
-            manifest: true,
             emptyOutDir: false,
             polyfillModulePreload: false
         }
@@ -184,12 +183,12 @@ function userConfig(userConfig) {
     plugins.push(...plugins)
 
     if (config.server.https && fs.existsSync(join(os.homedir(), `.ssh/${config.server.cert}.pem`)) && fs.existsSync(join(os.homedir(), `.ssh/${config.server.cert}-key.pem`))) {
-        config.vite.server = {
+        config.vite.server = Object.assign(config.vite.server, {
             https: {
                 key: fs.readFileSync(join(os.homedir(), `.ssh/${config.server.cert}-key.pem`)),
                 cert: fs.readFileSync(join(os.homedir(), `.ssh/${config.server.cert}.pem`))
             }
-        }
+        })
     }
 
     if (config.build.mode === 'headless') {
