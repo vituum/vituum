@@ -27,6 +27,7 @@ await definePackage('tailwindcss/nesting/index.js')
 await definePackage('@vituum/vite-plugin-latte')
 await definePackage('@vituum/vite-plugin-twig')
 await definePackage('@vituum/vite-plugin-liquid')
+await definePackage('@vituum/vite-plugin-nunjucks')
 
 const config = {
     input: ['./src/views/**/*.html', './src/emails/*.html', './src/styles/*.css', './src/scripts/*.js'],
@@ -64,6 +65,7 @@ const config = {
         latte: {},
         twig: {},
         liquid: {},
+        nunjucks: {},
         posthtml: {}
     },
     styles: {
@@ -148,6 +150,19 @@ function userConfig(userConfig) {
                 json: /.(json.liquid|json.liquid.html)$/
             }
         }, config.templates.liquid)))
+    }
+
+    if (optionalPlugin['@vituum/vite-plugin-nunjucks']) {
+        plugins.push(optionalPlugin['@vituum/vite-plugin-nunjucks'](lodash.merge({
+            globals: {
+                srcPath: resolve(process.cwd(), 'src')
+            },
+            data: './src/data/**/*.json',
+            filetypes: {
+                html: (config.templates.format === 'njk' || config.templates.format === 'nunjucks') ? /.(json|json.html|njk.json|njk.json.html|njk|njk.html)$/ : /.(njk.json|njk.json.html|njk|njk.html)$/,
+                json: /.(json.njk|json.njk.html)$/
+            }
+        }, config.templates.nunjucks)))
     }
 
     if (optionalPlugin.tailwindcss) {

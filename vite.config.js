@@ -18,7 +18,7 @@ export default defineConfig({
         }
     },
     templates: {
-        format: 'liquid',
+        format: 'njk',
         latte: {
             globals: {
                 template: resolve(process.cwd(), 'playground/templates/latte/Layout/Main.latte'),
@@ -55,6 +55,14 @@ export default defineConfig({
                         return str.toUpperCase()
                     }
                 }
+            },
+            data: './playground/data/**/*.json'
+        },
+        nunjucks: {
+            globals: {
+                template: 'templates/twig/article.twig',
+                srcPath: resolve(process.cwd(), 'playground'),
+                baseUrl: 'https://www.seznam.cz'
             },
             data: './playground/data/**/*.json'
         }
