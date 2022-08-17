@@ -9,7 +9,6 @@ const vitePluginMiddleware = {
         const viewsDir = resolve(viteDevServer.config.root, viteDevServer.config.vituum.middleware.viewsDir)
         const viewsUrl = relative(viteDevServer.config.root, viewsDir)
         const viewsIgnoredPaths = viteDevServer.config.vituum.middleware.viewsIgnoredPaths
-        const contentTypeJsonPaths = viteDevServer.config.vituum.middleware.contentTypeJsonPaths
 
         return () => {
             viteDevServer.middlewares.use(async(req, res, next) => {
@@ -41,15 +40,17 @@ const vitePluginMiddleware = {
 
                 const formatExists = fs.existsSync(join(viteDevServer.config.root, transformedUrl.replace('.html', '')))
 
-                if ((formatExists && format) || contentTypeJsonPaths.filter(path => transformedUrl.startsWith(`/${path}`)).length !== 0) {
+                if ((formatExists && format) || req.originalUrl.endsWith('.json')) {
                     if (formatExists === false) {
                         transformedUrl = transformedUrl + '.html'
                     }
 
-                    const output = await viteDevServer.transformIndexHtml(transformedUrl.replace('.html', ''), fs.readFileSync(join(viteDevServer.config.root, transformedUrl.replace('.html', ''))).toString())
+                    let output = await viteDevServer.transformIndexHtml(transformedUrl.replace('.html', ''), fs.readFileSync(join(viteDevServer.config.root, transformedUrl.replace('.html', ''))).toString())
 
-                    if (contentTypeJsonPaths.filter(path => transformedUrl.startsWith(`/${path}`)).length !== 0) {
+                    if (req.originalUrl.endsWith('.json')) {
                         res.setHeader('Content-Type', 'application/json')
+
+                        output = output.replace('<script type="module" src="/@vite/client"></script>', '')
                     } else {
                         res.setHeader('Content-Type', 'text/html')
                     }

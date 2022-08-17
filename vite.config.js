@@ -17,12 +17,6 @@ export default defineConfig({
             '+.js': 'playground/scripts'
         }
     },
-    middleware: {
-        contentTypeJsonPaths: ['views/dialog']
-    },
-    styles: {
-        tailwindcss: true
-    },
     templates: {
         format: 'twig',
         latte: {

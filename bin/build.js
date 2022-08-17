@@ -43,7 +43,14 @@ const renameAfterBuild = () => {
 
     files.forEach(file => {
         supportedFormats.forEach(format => {
-            if (file.includes(`.${format}.html`)) {
+            if (file.includes(`.json.${format}.html`) || file.includes(`.json.vituum.${format}.html`)) {
+                fs.renameSync(file, file.replace(`.${format}.html`, '').replace('.vituum', ''))
+
+                if (config.build.log) {
+                    const localPath = file.replace(process.cwd(), '')
+                    console.info(chalk.blue(`..${localPath} -> ..${localPath.replace(`.${format}.html`, '').replace('.vituum', '')}`))
+                }
+            } else if (file.includes(`.${format}.html`)) {
                 fs.renameSync(file, file.replace(`.${format}.html`, '.html').replace('.vituum', ''))
 
                 if (config.build.log) {

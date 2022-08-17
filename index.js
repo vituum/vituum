@@ -40,7 +40,8 @@ const config = {
     server: {
         open: false,
         https: false,
-        cert: 'localhost'
+        cert: 'localhost',
+        reload: null
     },
     imports: {
         paths: ['./src/styles/**', './src/scripts/**'],
@@ -55,8 +56,7 @@ const config = {
     },
     middleware: {
         viewsDir: 'views',
-        viewsIgnoredPaths: ['emails'],
-        contentTypeJsonPaths: ['views/dialog']
+        viewsIgnoredPaths: ['emails']
     },
     templates: {
         format: 'posthtml',
@@ -65,7 +65,7 @@ const config = {
         posthtml: {}
     },
     styles: {
-        tailwindcss: false,
+        tailwindcss: {},
         postcss: {
             plugins: [postcssImport, postcssNesting, postcssCustomMedia, postcssCustomSelectors, autoprefixer]
         },
@@ -136,8 +136,20 @@ function userConfig(userConfig) {
     }
 
     if (optionalPlugin.tailwindcss) {
-        config.styles.postcss.plugins = [postcssImport, optionalPlugin['tailwindcss/nesting/index.js'](postcssNesting), postcssCustomMedia, postcssCustomSelectors, optionalPlugin.tailwindcss, autoprefixer]
+        config.styles.postcss.plugins = [postcssImport, optionalPlugin['tailwindcss/nesting/index.js'](postcssNesting), postcssCustomMedia, postcssCustomSelectors, optionalPlugin.tailwindcss(config.styles.tailwindcss), autoprefixer]
     }
+
+    plugins.push({
+        name: '@vituum/vite-plugin-reload',
+        handleHotUpdate({ file, server }) {
+            if (typeof config.server.reload === 'function' && config.server.reload(file)) {
+                server.ws.send({
+                    type: 'full-reload',
+                    path: '*'
+                })
+            }
+        }
+    })
 
     plugins.push(...plugins)
 
