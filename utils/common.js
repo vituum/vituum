@@ -3,7 +3,7 @@ import fs from 'fs'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 
-const supportedFormats = ['json', 'latte', 'twig'] // TODO liquid, njk, hbs, pug
+const supportedFormats = ['json', 'latte', 'twig', 'liquid'] // TODO liquid, njk, hbs, pug
 
 const execSync = (cmd) => {
     try {

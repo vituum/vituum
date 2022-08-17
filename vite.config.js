@@ -18,7 +18,7 @@ export default defineConfig({
         }
     },
     templates: {
-        format: 'twig',
+        format: 'liquid',
         latte: {
             globals: {
                 template: resolve(process.cwd(), 'playground/templates/latte/Layout/Main.latte'),
@@ -36,6 +36,25 @@ export default defineConfig({
             },
             namespaces: {
                 templates: resolve(process.cwd(), 'playground/templates')
+            },
+            data: './playground/data/**/*.json'
+        },
+        liquid: {
+            globals: {
+                template: 'templates/twig/article.liquid',
+                srcPath: resolve(process.cwd(), 'playground'),
+                baseUrl: 'https://www.seznam.cz'
+            },
+            tags: {
+                upper: {
+                    parse: function(tagToken) {
+                        this.str = tagToken.args
+                    },
+                    render: async function(ctx) {
+                        const str = await this.liquid.evalValue(this.str, ctx)
+                        return str.toUpperCase()
+                    }
+                }
             },
             data: './playground/data/**/*.json'
         }

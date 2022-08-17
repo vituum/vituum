@@ -26,6 +26,7 @@ await definePackage('tailwindcss')
 await definePackage('tailwindcss/nesting/index.js')
 await definePackage('@vituum/vite-plugin-latte')
 await definePackage('@vituum/vite-plugin-twig')
+await definePackage('@vituum/vite-plugin-liquid')
 
 const config = {
     input: ['./src/views/**/*.html', './src/emails/*.html', './src/styles/*.css', './src/scripts/*.js'],
@@ -62,6 +63,7 @@ const config = {
         format: 'posthtml',
         latte: {},
         twig: {},
+        liquid: {},
         posthtml: {}
     },
     styles: {
@@ -133,6 +135,19 @@ function userConfig(userConfig) {
                 json: /.(json.twig|json.twig.html)$/
             }
         }, config.templates.twig)))
+    }
+
+    if (optionalPlugin['@vituum/vite-plugin-liquid']) {
+        plugins.push(optionalPlugin['@vituum/vite-plugin-liquid'](lodash.merge({
+            globals: {
+                srcPath: resolve(process.cwd(), 'src')
+            },
+            data: './src/data/**/*.json',
+            filetypes: {
+                html: config.templates.format === 'liquid' ? /.(json|json.html|liquid.json|liquid.json.html|liquid|liquid.html)$/ : /.(liquid.json|liquid.json.html|liquid|liquid.html)$/,
+                json: /.(json.liquid|json.liquid.html)$/
+            }
+        }, config.templates.liquid)))
     }
 
     if (optionalPlugin.tailwindcss) {

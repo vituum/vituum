@@ -1,5 +1,6 @@
 {
   "title": "Hi there",
+  "description": "Whats up",
   "prefetch": [
     "https://cdn.jsdelivr.net",
     "https://fonts.gstatic.com",
