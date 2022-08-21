@@ -1,0 +1,20 @@
+{
+  "name": "@vituum/posthtml",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "index.js",
+  "dependencies": {
+    "@vituum/vite-plugin-posthtml": "^0.1.0"
+  },
+  "files": [
+    "index.js"
+  ],
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vituum/vituum.git"
+  }
+}

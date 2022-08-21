@@ -1,34 +1,19 @@
 import { defineConfig } from './index.js'
 import { dirname, resolve } from 'path'
+import juice from '@vituum/juice'
+import posthtml from '@vituum/posthtml'
+import tailwind from '@vituum/tailwind'
+import twig from '@vituum/twig'
+import latte from '@vituum/latte'
+import liquid from '@vituum/liquid'
+import nunjucks from '@vituum/nunjucks'
 
 export default defineConfig({
     input: ['./playground/views/**/*.html', './playground/emails/*.html', './playground/styles/*.css', './playground/scripts/*.js'],
     root: resolve(process.cwd(), 'playground'),
-    build: {
-        log: true
-    },
-    server: {
-        https: true
-    },
-    imports: {
-        paths: ['./playground/styles/**', './playground/scripts/**'],
-        filenamePattern: {
-            '+.css': 'playground/styles',
-            '+.js': 'playground/scripts'
-        }
-    },
-    templates: {
-        format: 'twig',
-        latte: {
-            globals: {
-                template: resolve(process.cwd(), 'playground/templates/latte/Layout/Main.latte'),
-                srcPath: resolve(process.cwd(), 'playground'),
-                baseUrl: 'https://www.seznam.cz'
-            },
-            data: './playground/data/**/*.json',
-            isStringFilter: (filename) => dirname(filename).endsWith('emails')
-        },
-        twig: {
+    integrations: [
+        posthtml(), juice(), tailwind(),
+        twig({
             globals: {
                 template: resolve(process.cwd(), 'playground/templates/twig/article.twig'),
                 srcPath: resolve(process.cwd(), 'playground'),
@@ -38,8 +23,17 @@ export default defineConfig({
                 templates: resolve(process.cwd(), 'playground/templates')
             },
             data: './playground/data/**/*.json'
-        },
-        liquid: {
+        }),
+        latte({
+            globals: {
+                template: resolve(process.cwd(), 'playground/templates/latte/Layout/Main.latte'),
+                srcPath: resolve(process.cwd(), 'playground'),
+                baseUrl: 'https://www.seznam.cz'
+            },
+            data: './playground/data/**/*.json',
+            isStringFilter: (filename) => dirname(filename).endsWith('emails')
+        }),
+        liquid({
             globals: {
                 template: 'templates/twig/article.liquid',
                 srcPath: resolve(process.cwd(), 'playground'),
@@ -57,21 +51,30 @@ export default defineConfig({
                 }
             },
             data: './playground/data/**/*.json'
-        },
-        nunjucks: {
+        }),
+        nunjucks({
             globals: {
                 template: 'templates/twig/article.twig',
                 srcPath: resolve(process.cwd(), 'playground'),
                 baseUrl: 'https://www.seznam.cz'
             },
             data: './playground/data/**/*.json'
-        }
+        })
+    ],
+    build: {
+        log: true
     },
-    emails: {
-        send: {
-            template: 'public/example.html',
-            from: 'lubomir.blazek@newlogic.cz',
-            to: 'lubomir.blazek@newlogic.cz'
+    server: {
+        https: true
+    },
+    templates: {
+        format: 'twig'
+    },
+    imports: {
+        paths: ['./playground/styles/**', './playground/scripts/**'],
+        filenamePattern: {
+            '+.css': 'playground/styles',
+            '+.js': 'playground/scripts'
         }
     },
     vite: {}

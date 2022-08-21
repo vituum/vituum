@@ -1,0 +1,29 @@
+{
+  "name": "@vituum/tailwind",
+  "version": "0.1.1",
+  "type": "module",
+  "main": "index.js",
+  "dependencies": {
+    "postcss": "^8.4.16",
+    "postcss-custom-media": "^8.0.2",
+    "postcss-custom-selectors": "^6.0.3",
+    "postcss-custom-properties": "^12.1.8",
+    "postcss-import": "^14.1.0",
+    "postcss-nesting": "^10.1.10",
+    "autoprefixer": "^10.4.8",
+    "tailwindcss": "^3.1.8"
+  },
+  "files": [
+    "helpers.js",
+    "helpers.cjs",
+    "index.js"
+  ],
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vituum/vituum.git"
+  }
+}

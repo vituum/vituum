@@ -1,0 +1,24 @@
+{
+  "name": "@vituum/juice",
+  "version": "0.1.3",
+  "type": "module",
+  "main": "index.js",
+  "dependencies": {
+    "@vituum/vite-plugin-juice": "^0.1.3",
+    "dotenv": "^16.0.1",
+    "nodemailer": "^6.7.8",
+    "lodash": "^4.17.21"
+  },
+  "files": [
+    "index.js",
+    "send.js"
+  ],
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vituum/vituum.git"
+  }
+}

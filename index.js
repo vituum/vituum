@@ -9,81 +9,14 @@ import postcssImport from 'postcss-import'
 import postcssNesting from 'postcss-nesting'
 import postcssCustomMedia from 'postcss-custom-media'
 import postcssCustomSelectors from 'postcss-custom-selectors'
-import vitePluginJuice from '@vituum/vite-plugin-juice'
-import vitePluginPosthtml from '@vituum/vite-plugin-posthtml'
 import vitePluginImports from './plugins/imports.js'
 import vitePluginMiddleware from './plugins/middleware.js'
-
-const optionalPlugin = {}
-
-async function definePackage(plugin) {
-    try {
-        optionalPlugin[plugin] = (await import(plugin)).default
-    } catch {}
-}
-
-await definePackage('tailwindcss')
-await definePackage('tailwindcss/nesting/index.js')
-await definePackage('@vituum/vite-plugin-latte')
-await definePackage('@vituum/vite-plugin-twig')
-await definePackage('@vituum/vite-plugin-liquid')
-await definePackage('@vituum/vite-plugin-nunjucks')
-
-const twig = (userConfig = {}) => {
-    return {
-        plugin: (config) => optionalPlugin['@vituum/vite-plugin-twig'](lodash.merge({
-            globals: {
-                srcPath: resolve(process.cwd(), 'src')
-            },
-            data: './src/data/**/*.json',
-            filetypes: {
-                html: config.templates.format === 'twig' ? /.(json|json.html|twig.json|twig.json.html|twig|twig.html)$/ : /.(twig.json|twig.json.html|twig|twig.html)$/,
-                json: /.(json.twig|json.twig.html)$/
-            }
-        }, userConfig))
-    }
-}
-
-const tailwind = (userConfig = {}) => {
-    return {
-        config: {
-            postcss: {
-                plugins: [postcssImport, optionalPlugin['tailwindcss/nesting/index.js'](postcssNesting), postcssCustomMedia, postcssCustomSelectors, optionalPlugin.tailwindcss(userConfig), autoprefixer]
-            }
-        }
-    }
-}
-
-const posthtml = (userConfig = {}) => {
-    return {
-        plugin: () => vitePluginPosthtml(userConfig)
-    }
-}
-
-const juice = (userConfig = {}) => {
-    return {
-        plugin: () => vitePluginJuice(lodash.merge({
-            paths: ['emails'],
-            tables: true
-        }, userConfig))
-    }
-}
 
 const config = {
     input: ['./src/views/**/*.html', './src/emails/*.html', './src/styles/*.css', './src/scripts/*.js'],
     output: resolve(process.cwd(), 'public'),
     root: resolve(process.cwd(), 'src'),
-    integrations: [posthtml(), juice(), twig({
-        globals: {
-            template: resolve(process.cwd(), 'playground/templates/twig/article.twig'),
-            srcPath: resolve(process.cwd(), 'playground'),
-            baseUrl: 'https://www.seznam.cz'
-        },
-        namespaces: {
-            templates: resolve(process.cwd(), 'playground/templates')
-        },
-        data: './playground/data/**/*.json'
-    }), tailwind()],
+    integrations: [],
     plugins: [],
     build: {
         log: false,
@@ -112,24 +45,11 @@ const config = {
         viewsIgnoredPaths: ['emails']
     },
     templates: {
-        format: 'posthtml',
-        formats: ['json', 'latte', 'twig', 'liquid', 'njk'],
-        latte: {},
-        twig: {},
-        liquid: {},
-        nunjucks: {},
-        posthtml: {}
+        format: null,
+        formats: ['json', 'latte', 'twig', 'liquid', 'njk']
     },
     postcss: {
         plugins: [postcssImport, postcssNesting, postcssCustomMedia, postcssCustomSelectors, autoprefixer]
-    },
-    send: {
-        template: null,
-        from: 'example@example.com',
-        to: null,
-        host: null,
-        user: null,
-        pass: null
     },
     vite: {
         server: {
@@ -162,45 +82,6 @@ function userConfig(userConfig) {
             lodash.merge(config, integration.config)
         }
     })
-
-    if (optionalPlugin['@vituum/vite-plugin-latte']) {
-        plugins.push(optionalPlugin['@vituum/vite-plugin-latte'](lodash.merge({
-            globals: {
-                srcPath: resolve(process.cwd(), 'src')
-            },
-            data: './src/data/**/*.json',
-            filetypes: {
-                html: config.templates.format === 'latte' ? /.(json|json.html|latte.json|latte.json.html|latte|latte.html)$/ : /.(latte.json|latte.json.html|latte|latte.html)$/,
-                json: /.(json.latte|json.latte.html)$/
-            }
-        }, config.templates.latte)))
-    }
-
-    if (optionalPlugin['@vituum/vite-plugin-liquid']) {
-        plugins.push(optionalPlugin['@vituum/vite-plugin-liquid'](lodash.merge({
-            globals: {
-                srcPath: resolve(process.cwd(), 'src')
-            },
-            data: './src/data/**/*.json',
-            filetypes: {
-                html: config.templates.format === 'liquid' ? /.(json|json.html|liquid.json|liquid.json.html|liquid|liquid.html)$/ : /.(liquid.json|liquid.json.html|liquid|liquid.html)$/,
-                json: /.(json.liquid|json.liquid.html)$/
-            }
-        }, config.templates.liquid)))
-    }
-
-    if (optionalPlugin['@vituum/vite-plugin-nunjucks']) {
-        plugins.push(optionalPlugin['@vituum/vite-plugin-nunjucks'](lodash.merge({
-            globals: {
-                srcPath: resolve(process.cwd(), 'src')
-            },
-            data: './src/data/**/*.json',
-            filetypes: {
-                html: (config.templates.format === 'njk' || config.templates.format === 'nunjucks') ? /.(json|json.html|njk.json|njk.json.html|njk|njk.html)$/ : /.(njk.json|njk.json.html|njk|njk.html)$/,
-                json: /.(json.njk|json.njk.html)$/
-            }
-        }, config.templates.nunjucks)))
-    }
 
     plugins.push({
         name: '@vituum/vite-plugin-reload',
