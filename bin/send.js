@@ -9,9 +9,9 @@ const vite = (await import(resolve(process.cwd(), 'vite.config.js'))).default
 
 dotenv()
 
-const sendMail = async() => {
-    const template = vite.vituum.emails.send.template
-    const to = vite.vituum.emails.send.to
+const send = async() => {
+    const template = vite.vituum.send.template
+    const to = vite.vituum.send.to
 
     console.info(`${chalk.cyan(`vituum v${version}`)} ${chalk.green('sending test email...')}`)
 
@@ -28,11 +28,11 @@ const sendMail = async() => {
     }
 
     const transport = nodemailer.createTransport({
-        host: process.env.VITUUM_SMTP_HOST || vite.vituum.emails.send.host,
+        host: process.env.VITUUM_SMTP_HOST || vite.vituum.send.host,
         port: 465,
         auth: {
-            user: process.env.VITUUM_SMTP_USER || vite.vituum.emails.send.user,
-            pass: process.env.VITUUM_SMTP_PASS || vite.vituum.emails.send.pass
+            user: process.env.VITUUM_SMTP_USER || vite.vituum.send.user,
+            pass: process.env.VITUUM_SMTP_PASS || vite.vituum.send.pass
         }
     })
 
@@ -46,7 +46,7 @@ const sendMail = async() => {
     const html = fs.readFileSync(file).toString()
 
     await transport.sendMail({
-        from: vite.vituum.emails.send.from,
+        from: vite.vituum.send.from,
         to,
         subject: `${path.basename(process.cwd())} - ${path.basename(file)}`,
         html
@@ -59,4 +59,4 @@ const sendMail = async() => {
     })
 }
 
-export default sendMail
+export default send

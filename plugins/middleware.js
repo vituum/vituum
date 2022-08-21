@@ -1,4 +1,3 @@
-import { supportedFormats } from '../utils/common.js'
 import fs from 'fs'
 import { join, resolve, relative } from 'path'
 
@@ -9,6 +8,7 @@ const vitePluginMiddleware = {
         const viewsDir = resolve(viteDevServer.config.root, viteDevServer.config.vituum.middleware.viewsDir)
         const viewsUrl = relative(viteDevServer.config.root, viewsDir)
         const viewsIgnoredPaths = viteDevServer.config.vituum.middleware.viewsIgnoredPaths
+        const supportedFormats = viteDevServer.config.vituum.templates.formats
 
         return () => {
             viteDevServer.middlewares.use(async(req, res, next) => {

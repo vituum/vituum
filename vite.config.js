@@ -18,7 +18,7 @@ export default defineConfig({
         }
     },
     templates: {
-        format: 'njk',
+        format: 'twig',
         latte: {
             globals: {
                 template: resolve(process.cwd(), 'playground/templates/latte/Layout/Main.latte'),

@@ -1,12 +1,15 @@
 #!/usr/bin/env node
-import sendMail from './sendMail.js'
+import send from './send.js'
 import { cleanupBeforeBuild, renameBeforeBuild, renameAfterBuild, cleanupAfterBuild, build } from './build.js'
 import { execSync, vituumVersion as version } from '../utils/common.js'
 import chalk from 'chalk'
+import { resolve } from 'path'
+const vite = (await import(resolve(process.cwd(), 'vite.config.js'))).default
+const config = vite.vituum
 
 const arg = process.argv[2]
-
 const start = new Date()
+const integration = config.integrations.filter((integration) => integration.task?.name === arg)[0]
 
 if (arg === 'headless') {
     await build(true)
@@ -27,7 +30,11 @@ if (arg === 'cleanup') {
 }
 
 if (arg === 'send') {
-    await sendMail()
+    await send()
+}
+
+if (integration) {
+    integration.task.action()
 }
 
 console.info(`${chalk.cyan(`vituum v${version}`)} ${chalk.green(`finished in ${chalk.grey(new Date() - start + 'ms')}`)}`)

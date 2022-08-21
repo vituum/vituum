@@ -1,13 +1,14 @@
 import chalk from 'chalk'
 import FastGlob from 'fast-glob'
 import { resolve } from 'path'
-import { supportedFormats, vituumVersion as version } from '../utils/common.js'
+import { vituumVersion as version } from '../utils/common.js'
 import fs from 'fs'
 import { build as viteBuild } from 'vite'
 
 const vite = (await import(resolve(process.cwd(), 'vite.config.js'))).default
 const config = vite.vituum
 const viewsDir = resolve(vite.root, config.middleware.viewsDir)
+const supportedFormats = config.templates.formats
 
 const build = async(headless = false) => {
     if (headless) {

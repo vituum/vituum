@@ -9,8 +9,8 @@ import postcssImport from 'postcss-import'
 import postcssNesting from 'postcss-nesting'
 import postcssCustomMedia from 'postcss-custom-media'
 import postcssCustomSelectors from 'postcss-custom-selectors'
-import vitePluginJuice from './plugins/juice.js'
-import vitePluginPosthtml from './plugins/posthtml.js'
+import vitePluginJuice from '@vituum/vite-plugin-juice'
+import vitePluginPosthtml from '@vituum/vite-plugin-posthtml'
 import vitePluginImports from './plugins/imports.js'
 import vitePluginMiddleware from './plugins/middleware.js'
 
@@ -29,10 +29,61 @@ await definePackage('@vituum/vite-plugin-twig')
 await definePackage('@vituum/vite-plugin-liquid')
 await definePackage('@vituum/vite-plugin-nunjucks')
 
+const twig = (userConfig = {}) => {
+    return {
+        plugin: (config) => optionalPlugin['@vituum/vite-plugin-twig'](lodash.merge({
+            globals: {
+                srcPath: resolve(process.cwd(), 'src')
+            },
+            data: './src/data/**/*.json',
+            filetypes: {
+                html: config.templates.format === 'twig' ? /.(json|json.html|twig.json|twig.json.html|twig|twig.html)$/ : /.(twig.json|twig.json.html|twig|twig.html)$/,
+                json: /.(json.twig|json.twig.html)$/
+            }
+        }, userConfig))
+    }
+}
+
+const tailwind = (userConfig = {}) => {
+    return {
+        config: {
+            postcss: {
+                plugins: [postcssImport, optionalPlugin['tailwindcss/nesting/index.js'](postcssNesting), postcssCustomMedia, postcssCustomSelectors, optionalPlugin.tailwindcss(userConfig), autoprefixer]
+            }
+        }
+    }
+}
+
+const posthtml = (userConfig = {}) => {
+    return {
+        plugin: () => vitePluginPosthtml(userConfig)
+    }
+}
+
+const juice = (userConfig = {}) => {
+    return {
+        plugin: () => vitePluginJuice(lodash.merge({
+            paths: ['emails'],
+            tables: true
+        }, userConfig))
+    }
+}
+
 const config = {
     input: ['./src/views/**/*.html', './src/emails/*.html', './src/styles/*.css', './src/scripts/*.js'],
     output: resolve(process.cwd(), 'public'),
     root: resolve(process.cwd(), 'src'),
+    integrations: [posthtml(), juice(), twig({
+        globals: {
+            template: resolve(process.cwd(), 'playground/templates/twig/article.twig'),
+            srcPath: resolve(process.cwd(), 'playground'),
+            baseUrl: 'https://www.seznam.cz'
+        },
+        namespaces: {
+            templates: resolve(process.cwd(), 'playground/templates')
+        },
+        data: './playground/data/**/*.json'
+    }), tailwind()],
     plugins: [],
     build: {
         log: false,
@@ -62,31 +113,23 @@ const config = {
     },
     templates: {
         format: 'posthtml',
+        formats: ['json', 'latte', 'twig', 'liquid', 'njk'],
         latte: {},
         twig: {},
         liquid: {},
         nunjucks: {},
         posthtml: {}
     },
-    styles: {
-        tailwindcss: {},
-        postcss: {
-            plugins: [postcssImport, postcssNesting, postcssCustomMedia, postcssCustomSelectors, autoprefixer]
-        },
-        juice: {
-            paths: ['emails'],
-            options: {}
-        }
+    postcss: {
+        plugins: [postcssImport, postcssNesting, postcssCustomMedia, postcssCustomSelectors, autoprefixer]
     },
-    emails: {
-        send: {
-            template: null,
-            from: 'example@example.com',
-            to: null,
-            host: null,
-            user: null,
-            pass: null
-        }
+    send: {
+        template: null,
+        from: 'example@example.com',
+        to: null,
+        host: null,
+        user: null,
+        pass: null
     },
     vite: {
         server: {
@@ -107,10 +150,18 @@ function userConfig(userConfig) {
 
     const plugins = [
         vitePluginMiddleware,
-        vitePluginPosthtml(config.templates.posthtml),
-        vitePluginJuice(config.styles.juice),
         vitePluginImports()
     ]
+
+    config.integrations.forEach(integration => {
+        if (integration.plugin) {
+            plugins.push(integration.plugin(config))
+        }
+
+        if (integration.config) {
+            lodash.merge(config, integration.config)
+        }
+    })
 
     if (optionalPlugin['@vituum/vite-plugin-latte']) {
         plugins.push(optionalPlugin['@vituum/vite-plugin-latte'](lodash.merge({
@@ -123,19 +174,6 @@ function userConfig(userConfig) {
                 json: /.(json.latte|json.latte.html)$/
             }
         }, config.templates.latte)))
-    }
-
-    if (optionalPlugin['@vituum/vite-plugin-twig']) {
-        plugins.push(optionalPlugin['@vituum/vite-plugin-twig'](lodash.merge({
-            globals: {
-                srcPath: resolve(process.cwd(), 'src')
-            },
-            data: './src/data/**/*.json',
-            filetypes: {
-                html: config.templates.format === 'twig' ? /.(json|json.html|twig.json|twig.json.html|twig|twig.html)$/ : /.(twig.json|twig.json.html|twig|twig.html)$/,
-                json: /.(json.twig|json.twig.html)$/
-            }
-        }, config.templates.twig)))
     }
 
     if (optionalPlugin['@vituum/vite-plugin-liquid']) {
@@ -162,10 +200,6 @@ function userConfig(userConfig) {
                 json: /.(json.njk|json.njk.html)$/
             }
         }, config.templates.nunjucks)))
-    }
-
-    if (optionalPlugin.tailwindcss) {
-        config.styles.postcss.plugins = [postcssImport, optionalPlugin['tailwindcss/nesting/index.js'](postcssNesting), postcssCustomMedia, postcssCustomSelectors, optionalPlugin.tailwindcss(config.styles.tailwindcss), autoprefixer]
     }
 
     plugins.push({
@@ -209,7 +243,7 @@ function userConfig(userConfig) {
         root: config.root,
         publicDir: config.output,
         css: {
-            postcss: config.styles.postcss
+            postcss: config.postcss
         },
         build: {
             outDir: config.output,
