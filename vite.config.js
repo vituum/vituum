@@ -7,7 +7,7 @@ import twig from '@vituum/twig'
 import latte from '@vituum/latte'
 import liquid from '@vituum/liquid'
 import nunjucks from '@vituum/nunjucks'
-import core from './packages/integrations/core.js'
+import core from '@newlogic-digital/core'
 
 const integrations = [
     posthtml(), juice(), tailwind(),

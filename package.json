@@ -38,7 +38,8 @@
     "@vituum/tailwind": "^0.1.0",
     "@vituum/latte": "^0.1.0",
     "@vituum/liquid": "^0.1.0",
-    "@vituum/nunjucks": "^0.1.0"
+    "@vituum/nunjucks": "^0.1.0",
+    "@newlogic-digital/core": "^1.0.0-beta.1"
   },
   "files": [
     "index.js",
