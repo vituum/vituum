@@ -7,7 +7,6 @@ import twig from '@vituum/twig'
 import latte from '@vituum/latte'
 import liquid from '@vituum/liquid'
 import nunjucks from '@vituum/nunjucks'
-import core from '@newlogic-digital/core'
 
 const integrations = [
     posthtml(), juice(), tailwind(),
@@ -63,28 +62,7 @@ const integrations = [
 const config = defineConfig({
     input: ['./playground/views/**/*.html', './playground/emails/*.html', './playground/styles/*.css', './playground/scripts/*.js'],
     root: resolve(process.cwd(), 'playground'),
-    integrations: [core({
-        twig: {
-            globals: {
-                template: resolve(process.cwd(), 'playground/templates/twig/article.twig'),
-                srcPath: resolve(process.cwd(), 'playground'),
-                baseUrl: 'https://www.seznam.cz'
-            },
-            namespaces: {
-                templates: resolve(process.cwd(), 'playground/templates')
-            },
-            data: './playground/data/**/*.json'
-        },
-        latte: {
-            globals: {
-                template: resolve(process.cwd(), 'playground/templates/latte/Layout/Main.latte'),
-                srcPath: resolve(process.cwd(), 'playground'),
-                baseUrl: 'https://www.seznam.cz'
-            },
-            data: './playground/data/**/*.json',
-            isStringFilter: (filename) => dirname(filename).endsWith('emails')
-        }
-    })],
+    integrations,
     postcss: {
         plugins: []
     },
