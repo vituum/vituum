@@ -9,8 +9,12 @@ import autoprefixer from 'autoprefixer'
 const integration = (userConfig = {}) => {
     return {
         config: {
-            postcss: {
-                plugins: [postcssImport, tailwindcssNesting(postcssNesting), postcssCustomMedia, postcssCustomSelectors, tailwindcss(userConfig), autoprefixer]
+            vite: {
+                css: {
+                    postcss: {
+                        plugins: [postcssImport, tailwindcssNesting(postcssNesting), postcssCustomMedia, postcssCustomSelectors, tailwindcss(userConfig), autoprefixer]
+                    }
+                }
             }
         }
     }

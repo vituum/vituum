@@ -11,6 +11,7 @@ import postcssCustomMedia from 'postcss-custom-media'
 import postcssCustomSelectors from 'postcss-custom-selectors'
 import vitePluginImports from './plugins/imports.js'
 import vitePluginMiddleware from './plugins/middleware.js'
+import { merge } from './utils/common.js'
 
 const config = {
     input: ['./src/views/**/*.html', './src/emails/*.html', './src/styles/*.css', './src/scripts/*.js'],
@@ -49,13 +50,18 @@ const config = {
         formats: ['json', 'latte', 'twig', 'liquid', 'njk']
     },
     postcss: {
-        plugins: [postcssImport, postcssNesting, postcssCustomMedia, postcssCustomSelectors, autoprefixer]
+        plugins: []
     },
     vite: {
         server: {
             host: true,
             fsServe: {
                 strict: false
+            }
+        },
+        css: {
+            postcss: {
+                plugins: [postcssImport, postcssNesting, postcssCustomMedia, postcssCustomSelectors, autoprefixer]
             }
         },
         build: {
@@ -65,23 +71,31 @@ const config = {
     }
 }
 
+function loadIntegrations(integrations, plugins) {
+    integrations.forEach(integration => {
+        if (integration.plugin) {
+            plugins.push(integration.plugin(config))
+        }
+
+        if (integration.config) {
+            merge(config, integration.config)
+
+            if (integration.config.integrations) {
+                loadIntegrations(integration.config.integrations, plugins)
+            }
+        }
+    })
+}
+
 function userConfig(userConfig) {
-    lodash.merge(config, userConfig)
+    merge(config, userConfig)
 
     const plugins = [
         vitePluginMiddleware,
         vitePluginImports()
     ]
 
-    config.integrations.forEach(integration => {
-        if (integration.plugin) {
-            plugins.push(integration.plugin(config))
-        }
-
-        if (integration.config) {
-            lodash.merge(config, integration.config)
-        }
-    })
+    loadIntegrations(config.integrations, plugins)
 
     plugins.push({
         name: '@vituum/vite-plugin-reload',
@@ -95,7 +109,13 @@ function userConfig(userConfig) {
         }
     })
 
-    plugins.push(...plugins)
+    plugins.push(...config.plugins)
+
+    const postcss = !userConfig.vite?.css?.postcss ? lodash.mergeWith(config.vite.css.postcss, config.postcss, (objValue, srcValue) => {
+        if (lodash.isArray(objValue)) {
+            return objValue.concat(srcValue)
+        }
+    }) : userConfig.vite.css.postcss
 
     if (config.server.https && fs.existsSync(join(os.homedir(), `.ssh/${config.server.cert}.pem`)) && fs.existsSync(join(os.homedir(), `.ssh/${config.server.cert}-key.pem`))) {
         config.vite.server = Object.assign(config.vite.server, {
@@ -110,7 +130,7 @@ function userConfig(userConfig) {
         config.input.push('!**/*.html')
     }
 
-    return defineConfig(lodash.merge({
+    return defineConfig(merge({
         vituum: config,
         server: {
             open: config.server.open
@@ -124,7 +144,7 @@ function userConfig(userConfig) {
         root: config.root,
         publicDir: config.output,
         css: {
-            postcss: config.postcss
+            postcss
         },
         build: {
             outDir: config.output,

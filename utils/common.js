@@ -1,5 +1,6 @@
 import childProcess from 'child_process'
 import fs from 'fs'
+import lodash from 'lodash'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -13,4 +14,6 @@ const execSync = (cmd) => {
 
 const vituumVersion = JSON.parse(fs.readFileSync(resolve(dirname((fileURLToPath(import.meta.url))), '../package.json')).toString()).version
 
-export { execSync, vituumVersion }
+const merge = (object, sources) => lodash.mergeWith(object, sources, (a, b) => lodash.isArray(b) ? b : undefined)
+
+export { execSync, vituumVersion, merge }
