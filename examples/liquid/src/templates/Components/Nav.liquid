@@ -1,0 +1,6 @@
+<ul id="navigation">
+    {% assign nav = 'index,about'|split:',' %}
+    {% for item in nav %}
+        <li><a href="/{{ item }}">{{ item }}</a></li>
+    {% endfor %}
+</ul>

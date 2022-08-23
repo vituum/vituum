@@ -1,0 +1,13 @@
+@import "https://cdn.jsdelivr.net/npm/simpledotcss@2.1.0/simple.min.css";
+
+body {
+  padding: 1.5rem;
+}
+
+ul {
+  text-transform: capitalize;
+}
+
+:root {
+  --accent: #0e83cd;
+}
