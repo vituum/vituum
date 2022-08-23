@@ -1,0 +1,14 @@
+{
+  "name": "@example/vanilla",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vituum build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vituum": "^0.0.22"
+  }
+}

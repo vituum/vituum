@@ -1,0 +1,25 @@
+@import "https://cdn.jsdelivr.net/npm/simpledotcss@2.1.0/simple.min.css";
+@import "Components/+.less";
+
+@accent: #038aff;
+
+:root {
+  --accent: @accent;
+
+  user-select: none;
+}
+
+html, body {
+  min-height: 100vh;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & > div {
+    font-size: 2.5rem;
+    color: @accent;
+  }
+}
