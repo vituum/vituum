@@ -1,0 +1,16 @@
+{
+  "name": "@example/tailwindcss",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vituum build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vituum": "^0.0.21",
+    "sass": "^1.54.5",
+    "bulma": "^0.9.4"
+  }
+}

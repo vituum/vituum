@@ -1,0 +1,16 @@
+{
+  "name": "@example/openprops",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vituum build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "postcss-jit-props": "^1.0.7",
+    "open-props": "^1.4.14",
+    "vituum": "^0.0.21"
+  }
+}

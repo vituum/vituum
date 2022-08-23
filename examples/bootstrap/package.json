@@ -1,0 +1,19 @@
+{
+  "name": "@example/boostrap",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vituum build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.6"
+  },
+  "devDependencies": {
+    "vituum": "^0.0.21",
+    "sass": "^1.54.5",
+    "bootstrap": "^5.2.0"
+  }
+}

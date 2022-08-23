@@ -1,0 +1,62 @@
+/* Welcome 🎉 */
+/* Use Open-Props from NPM or CDN */
+/* @import 'open-props/style'; */
+/* @import 'https://unpkg.com/open-props'; */
+/* not needed here because JIT Props adds what you use! */
+
+/*
+ open-props normalize isn't required, but makes for a nice base.
+ add this to see default styles for <details> and other HTM5 elements
+ Bonus: normalize includes light and dark vars for adaptive theming */
+@import 'open-props/normalize';
+/* @import 'https://unpkg.com/open-props/normalize.min.css'; */
+@import 'open-props/buttons';
+
+html {
+  /* try on some alt gradients why dont ya! */
+  background-image: var(--gradient-18);
+}
+
+/*
+ As you use props, the PostCSS plugin
+ "jit-props" will add them to the stylesheet.
+ see postcss.config.js for more
+*/
+
+a {
+  /* try on some other link colors: violet, indigo, lime, orange, etc */
+  color: var(--pink-0);
+  text-shadow: 0 1px 0 var(--gray-8);
+}
+
+a:visited {
+  color: var(--violet-0);
+}
+
+summary::marker {
+  color: var(--pink-5);
+}
+
+body {
+  display: grid;
+  place-content: center;
+  padding: var(--size-5);
+}
+
+main {
+  display: grid;
+  gap: var(--size-5);
+  justify-items: start;
+}
+
+ul {
+  padding-inline: var(--size-4);
+}
+
+h2 {
+  display: grid;
+  animation: var(--animation-scale-down) reverse,
+  var(--animation-fade-out) reverse;
+  animation-timing-function: var(--ease-squish-5);
+  animation-duration: 1s;
+}

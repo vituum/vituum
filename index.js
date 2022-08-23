@@ -14,7 +14,7 @@ import vitePluginMiddleware from './plugins/middleware.js'
 import { merge } from './utils/common.js'
 
 const config = {
-    input: ['./src/views/**/*.html', './src/emails/*.html', './src/styles/*.css', './src/scripts/*.js'],
+    input: ['./src/views/**/*.html', './src/emails/*.html', './src/styles/*.{css,pcss,scss,sass,less,styl,stylus}', './src/scripts/*.{js,ts,mjs}'],
     output: resolve(process.cwd(), 'public'),
     root: resolve(process.cwd(), 'src'),
     integrations: [],
@@ -111,7 +111,7 @@ function userConfig(userConfig) {
 
     plugins.push(...config.plugins)
 
-    const postcss = !userConfig.vite?.css?.postcss ? lodash.mergeWith(config.vite.css.postcss, config.postcss, (objValue, srcValue) => {
+    const postcss = !userConfig?.vite?.css?.postcss ? lodash.mergeWith(config.vite.css.postcss, config.postcss, (objValue, srcValue) => {
         if (lodash.isArray(objValue)) {
             return objValue.concat(srcValue)
         }

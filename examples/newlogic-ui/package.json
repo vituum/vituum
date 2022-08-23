@@ -1,0 +1,16 @@
+{
+  "name": "@example/newlogic-ui",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vituum build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@newlogic-digital/ui": "^3.1.0",
+    "@vituum/tailwind": "^0.1.2",
+    "vituum": "^0.0.21"
+  }
+}
