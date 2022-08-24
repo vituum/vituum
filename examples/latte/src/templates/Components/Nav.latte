@@ -1,5 +1,5 @@
 <ul id="navigation">
-        {foreach [index, about] as $item}
-                <li><a href="/{$item}">{$item}</a></li>
-        {/foreach}
+    <li n:foreach="['index', 'about', 'hello'] as $item">
+        <a href="/{$item}">{$item}</a>
+    </li>
 </ul>

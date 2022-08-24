@@ -1,0 +1,25 @@
+:root {
+  --blue: #038aff
+}
+
+body {
+  & > table {
+    font-family: -apple-system, blinkmacsystemfont, "Segoe UI", helvetica, roboto, arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 18px;
+  }
+
+  & td {
+    color: var(--blue);
+    padding: 16px;
+
+    @media all and (max-width: 600px) {
+      color: red !important;
+    }
+  }
+
+  & a {
+    &, & span {
+      color: var(--blue)
+    }
+  }
+}
