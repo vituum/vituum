@@ -13,7 +13,13 @@ import HelloWorld from './components/HelloWorld.vue'
             <img src="/src/assets/vue.svg" class="logo vue" alt="Vue logo" />
         </a>
     </div>
-    <HelloWorld msg="Vite + Vue" />
+    <RouterView v-slot="{ Component }">
+        <component :is="Component" />
+    </RouterView>
+    <div style="display: flex;gap: 1rem; justify-content: center">
+        <RouterLink to="/">Go to Home</RouterLink>
+        <RouterLink to="/about">Go to About</RouterLink>
+    </div>
 </template>
 
 <style scoped>
