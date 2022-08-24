@@ -47,7 +47,7 @@ const config = {
     },
     templates: {
         format: null,
-        formats: ['json', 'latte', 'twig', 'liquid', 'njk']
+        formats: ['json', 'latte', 'twig', 'liquid', 'njk', 'hbs']
     },
     postcss: {
         plugins: []

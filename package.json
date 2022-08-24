@@ -1,6 +1,6 @@
 {
   "name": "vituum",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "type": "module",
   "main": "index.js",
   "bin": {
@@ -38,7 +38,8 @@
     "@vituum/tailwind": "^0.1.0",
     "@vituum/latte": "^0.1.0",
     "@vituum/liquid": "^0.1.0",
-    "@vituum/nunjucks": "^0.1.0"
+    "@vituum/nunjucks": "^0.1.0",
+    "@vituum/handlebars": "^0.1.0"
   },
   "files": [
     "index.js",

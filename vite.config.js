@@ -7,6 +7,7 @@ import twig from '@vituum/twig'
 import latte from '@vituum/latte'
 import liquid from '@vituum/liquid'
 import nunjucks from '@vituum/nunjucks'
+import handlebars from '@vituum/handlebars'
 
 const integrations = [
     posthtml(), juice(), tailwind(),
@@ -56,6 +57,13 @@ const integrations = [
             baseUrl: 'https://www.seznam.cz'
         },
         data: './playground/data/**/*.json'
+    }),
+    handlebars({
+        globals: {
+            template: 'templates/hbs/article.hbs',
+            srcPath: resolve(process.cwd(), 'playground')
+        },
+        data: './playground/data/**/*.json'
     })
 ]
 
@@ -73,7 +81,7 @@ const config = defineConfig({
         https: true
     },
     templates: {
-        format: 'twig'
+        format: 'hbs'
     },
     imports: {
         paths: ['./playground/styles/**', './playground/scripts/**'],
