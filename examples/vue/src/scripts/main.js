@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import App from '../templates/App.vue'
-import HelloWorld from '../templates/components/HelloWorld.vue'
+import HelloWorld from '../templates/Components/HelloWorld.vue'
 
 // 2. Define some routes
 // Each route should map to a component.
