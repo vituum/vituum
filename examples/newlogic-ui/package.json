@@ -11,6 +11,6 @@
   "devDependencies": {
     "@newlogic-digital/ui": "^3.1.0",
     "@vituum/tailwind": "^0.1.2",
-    "vituum": "^0.0.21"
+    "vituum": "^0.0.23"
   }
 }

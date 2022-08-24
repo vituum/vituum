@@ -10,6 +10,6 @@
   },
   "devDependencies": {
     "@vituum/tailwind": "^0.1.2",
-    "vituum": "^0.0.21"
+    "vituum": "^0.0.23"
   }
 }

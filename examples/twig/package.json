@@ -10,6 +10,6 @@
   },
   "devDependencies": {
     "@vituum/twig": "^0.1.0",
-    "vituum": "^0.0.22"
+    "vituum": "^0.0.23"
   }
 }

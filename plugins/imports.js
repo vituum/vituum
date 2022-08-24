@@ -4,7 +4,7 @@ import fs from 'fs'
 
 const imports = (options = {}, config) => {
     const filenamePattern = options.filenamePattern
-    const ignoredPaths = Object.keys(filenamePattern).map(filename => `!**/${filename}`)
+    const ignoredPaths = Object.keys(filenamePattern).map(filepath => `!**/${filenamePattern[filepath]}`)
     const getPaths = FastGlob.sync(options.paths, { onlyFiles: false, ignore: ignoredPaths }).map(entry => resolve(process.cwd(), entry))
     const paths = getPaths.filter(path => relative(config.root, dirname(path)).includes('/'))
     const dirPaths = {}
@@ -18,8 +18,10 @@ const imports = (options = {}, config) => {
     })
 
     Object.keys(dirPaths).forEach(dir => {
-        Object.keys(filenamePattern).forEach(filename => {
-            if (dirPaths[dir].filter(path => path.includes(filenamePattern[filename])).length > 0) {
+        Object.keys(filenamePattern).forEach(filepath => {
+            const filename = filenamePattern[filepath]
+
+            if (dirPaths[dir].filter(path => path.includes(filepath)).length > 0) {
                 let imports = ''
                 const savePath = `${dir}/${filename}`
 

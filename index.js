@@ -37,8 +37,8 @@ const config = {
             scripts: /.(js|mjs|ts)$/
         },
         filenamePattern: {
-            '+.css': 'src/styles',
-            '+.js': 'src/scripts'
+            'src/styles': '+.css',
+            'src/scripts': '+.js'
         }
     },
     middleware: {

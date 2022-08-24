@@ -78,8 +78,8 @@ const config = defineConfig({
     imports: {
         paths: ['./playground/styles/**', './playground/scripts/**'],
         filenamePattern: {
-            '+.css': 'playground/styles',
-            '+.js': 'playground/scripts'
+            'playground/styles': '+.css',
+            'playground/scripts': '+.js'
         }
     }
 })

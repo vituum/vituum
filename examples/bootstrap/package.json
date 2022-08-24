@@ -12,7 +12,7 @@
     "@popperjs/core": "^2.11.6"
   },
   "devDependencies": {
-    "vituum": "^0.0.21",
+    "vituum": "^0.0.23",
     "sass": "^1.54.5",
     "bootstrap": "^5.2.0"
   }
