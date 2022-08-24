@@ -8,7 +8,9 @@ import latte from '@vituum/latte'
 import liquid from '@vituum/liquid'
 import nunjucks from '@vituum/nunjucks'
 import handlebars from '@vituum/handlebars'
+import pug from '@vituum/pug'
 
+// this is a playground config for testing
 const integrations = [
     posthtml(), juice(), tailwind(),
     twig({
@@ -64,6 +66,24 @@ const integrations = [
             srcPath: resolve(process.cwd(), 'playground')
         },
         data: './playground/data/**/*.json'
+    }),
+    pug({
+        globals: {
+            template: resolve(process.cwd(), 'playground/templates/pug/article.pug'),
+            srcPath: resolve(process.cwd(), 'playground')
+        },
+        filters: {
+            'my-own-filter': function(text, options) {
+                if (options.addStart) {
+                    text = 'Start\n' + text
+                }
+                if (options.addEnd) {
+                    text = text + '\nEnd'
+                }
+                return text
+            }
+        },
+        data: './playground/data/**/*.json'
     })
 ]
 
@@ -81,7 +101,7 @@ const config = defineConfig({
         https: true
     },
     templates: {
-        format: 'hbs'
+        format: 'pug'
     },
     imports: {
         paths: ['./playground/styles/**', './playground/scripts/**'],
