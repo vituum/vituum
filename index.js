@@ -156,4 +156,4 @@ function userConfig(userConfig) {
     }, config.vite))
 }
 
-export { userConfig as defineConfig, config }
+export { userConfig as defineConfig }

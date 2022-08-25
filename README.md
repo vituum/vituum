@@ -29,7 +29,7 @@ It's a mix of words **Vite** _(French word for "quick")_ and **Tuum** _(Estonion
 
 Learn more about **Vituum** on [Features](https://vituum.dev/guide/features.html) page.
 
-## 🪄 Installation
+## 🪄 Get started
 
 ```sh
 mkdir my-project && cd my-project
@@ -53,7 +53,7 @@ You can try Vituum online on [Stackblitz](https://vituum.devlogic.cz/guide/#tryi
 
 ## 📌 Future plans
 - refactoring and rewrite to **TypeScript**
-- test written via **Vitest**
+- tests written via **Vitest**
 
 ### Requirements
 
