@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 import FastGlob from 'fast-glob'
 import { resolve } from 'path'
-import { vituumVersion as version } from '../utils/common.js'
+import { version } from '../utils/common.js'
 import fs from 'fs'
 import { build as viteBuild, resolveConfig } from 'vite'
 

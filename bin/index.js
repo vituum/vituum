@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { cleanupBeforeBuild, renameBeforeBuild, renameAfterBuild, cleanupAfterBuild, build } from './build.js'
-import { execSync, vituumVersion as version } from '../utils/common.js'
+import { execSync, version } from '../utils/common.js'
 import chalk from 'chalk'
 import { resolveConfig } from 'vite'
 

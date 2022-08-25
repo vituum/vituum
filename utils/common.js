@@ -12,8 +12,8 @@ const execSync = (cmd) => {
     }
 }
 
-const vituumVersion = JSON.parse(fs.readFileSync(resolve(dirname((fileURLToPath(import.meta.url))), '../package.json')).toString()).version
+const { version } = JSON.parse(fs.readFileSync(resolve(dirname((fileURLToPath(import.meta.url))), '../package.json')).toString())
 
 const merge = (object, sources) => lodash.mergeWith(object, sources, (a, b) => lodash.isArray(b) ? b : undefined)
 
-export { execSync, vituumVersion, merge }
+export { execSync, version, merge }

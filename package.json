@@ -7,12 +7,6 @@
     "vituum": "bin/index.js"
   },
   "scripts": {
-    "dev": "vite dev",
-    "build": "node bin build",
-    "headless": "node bin headless",
-    "cleanup": "node bin cleanup",
-    "send": "node bin send",
-    "preview": "vite preview",
     "eslint": "eslint '**/*.js' --fix"
   },
   "dependencies": {
@@ -32,10 +26,10 @@
   "devDependencies": {
     "eslint": "^8.22.0",
     "eslint-config-standard": "^17.0.0",
-    "@vituum/juice": "^0.1.2",
+    "@vituum/juice": "^0.1.3",
     "@vituum/posthtml": "^0.1.0",
     "@vituum/twig": "^0.1.0",
-    "@vituum/tailwind": "^0.1.0",
+    "@vituum/tailwind": "^0.1.2",
     "@vituum/latte": "^0.1.0",
     "@vituum/liquid": "^0.1.0",
     "@vituum/nunjucks": "^0.1.0",
@@ -48,6 +42,10 @@
     "plugins",
     "utils"
   ],
+  "exports": {
+    "./utils/*": "./utils/*",
+    "./package.json": "./package.json"
+  },
   "engines": {
     "node": ">=16.0.0",
     "npm": ">=8.0.0"

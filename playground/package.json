@@ -1,0 +1,14 @@
+{
+  "name": "@vituum/playground",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "node ../bin build",
+    "headless": "node ../bin headless",
+    "cleanup": "node ../bin cleanup",
+    "send": "node ../bin send",
+    "preview": "vite preview"
+  }
+}
