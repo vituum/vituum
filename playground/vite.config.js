@@ -30,7 +30,7 @@ const integrations = [
     }),
     liquid({
         globals: {
-            template: 'templates/twig/article.liquid'
+            template: resolve(process.cwd(), 'src/templates/twig/article.liquid')
         },
         tags: {
             upper: {
@@ -81,7 +81,7 @@ const config = defineConfig({
         https: true
     },
     templates: {
-        format: 'pug'
+        format: 'liquid'
     }
 })
 

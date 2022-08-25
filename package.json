@@ -28,13 +28,13 @@
     "eslint-config-standard": "^17.0.0",
     "@vituum/juice": "^0.1.3",
     "@vituum/posthtml": "^0.1.0",
-    "@vituum/twig": "^0.1.0",
+    "@vituum/twig": "^0.1.1",
     "@vituum/tailwind": "^0.1.2",
-    "@vituum/latte": "^0.1.0",
-    "@vituum/liquid": "^0.1.0",
-    "@vituum/nunjucks": "^0.1.0",
-    "@vituum/handlebars": "^0.1.0",
-    "@vituum/pug": "^0.1.1"
+    "@vituum/latte": "^0.1.1",
+    "@vituum/liquid": "^0.1.1",
+    "@vituum/nunjucks": "^0.1.1",
+    "@vituum/handlebars": "^0.1.1",
+    "@vituum/pug": "^0.1.2"
   },
   "files": [
     "index.js",

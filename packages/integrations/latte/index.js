@@ -5,10 +5,7 @@ import { resolve } from 'path'
 const integration = (userConfig = {}) => {
     return {
         plugin: (config) => latte(lodash.merge({
-            globals: {
-                srcPath: resolve(process.cwd(), 'src')
-            },
-            data: './src/data/**/*.json',
+            data: resolve(config.root, 'data/**/*.json'),
             filetypes: {
                 html: config.templates.format === 'latte' ? /.(json|json.html|latte.json|latte.json.html|latte|latte.html)$/ : /.(latte.json|latte.json.html|latte|latte.html)$/,
                 json: /.(json.latte|json.latte.html)$/
