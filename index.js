@@ -11,6 +11,7 @@ import postcssCustomMedia from 'postcss-custom-media'
 import postcssCustomSelectors from 'postcss-custom-selectors'
 import vitePluginImports from './plugins/imports.js'
 import vitePluginMiddleware from './plugins/middleware.js'
+import vitePluginReload from './plugins/reload.js'
 import { merge } from './utils/common.js'
 
 const config = {
@@ -90,24 +91,21 @@ function loadIntegrations(integrations, plugins) {
 function userConfig(userConfig) {
     merge(config, userConfig)
 
-    const plugins = [
-        vitePluginMiddleware,
-        vitePluginImports()
-    ]
+    const plugins = []
+
+    if (config.server.reload) {
+        plugins.push(vitePluginReload)
+    }
+
+    if (config.middleware) {
+        plugins.push(vitePluginMiddleware)
+    }
+
+    if (config.imports) {
+        plugins.push(vitePluginImports())
+    }
 
     loadIntegrations(config.integrations, plugins)
-
-    plugins.push({
-        name: '@vituum/vite-plugin-reload',
-        handleHotUpdate({ file, server }) {
-            if (typeof config.server.reload === 'function' && config.server.reload(file)) {
-                server.ws.send({
-                    type: 'full-reload',
-                    path: '*'
-                })
-            }
-        }
-    })
 
     plugins.push(...config.plugins)
 
