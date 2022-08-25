@@ -2,8 +2,9 @@
 import { cleanupBeforeBuild, renameBeforeBuild, renameAfterBuild, cleanupAfterBuild, build } from './build.js'
 import { execSync, vituumVersion as version } from '../utils/common.js'
 import chalk from 'chalk'
-import { resolve } from 'path'
-const vite = (await import(resolve(process.cwd(), 'vite.config.js'))).default
+import { resolveConfig } from 'vite'
+
+const vite = await resolveConfig({}, 'build')
 const config = vite.vituum
 
 const arg = process.argv[2]
