@@ -1,6 +1,6 @@
 {
   "name": "vituum",
-  "version": "0.0.26",
+  "version": "0.0.27",
   "type": "module",
   "main": "index.js",
   "bin": {
@@ -43,6 +43,7 @@
     "utils"
   ],
   "exports": {
+    ".": "./index.js",
     "./utils/*": "./utils/*",
     "./package.json": "./package.json"
   },
