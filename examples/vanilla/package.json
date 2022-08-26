@@ -8,6 +8,9 @@
     "build": "vituum build",
     "preview": "vite preview"
   },
+  "dependencies": {
+    "canvas-confetti": "^1.5.1"
+  },
   "devDependencies": {
     "vituum": "^0.0.23"
   }
