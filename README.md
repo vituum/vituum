@@ -10,7 +10,7 @@
 
 # ⚡⚙️ Vituum
 
-> Still in early development. Current logo is a placeholder.
+> Still in early development.
 
 Fast prototyping with template engines and integrated frontend tools
 
@@ -22,7 +22,7 @@ Fast prototyping with template engines and integrated frontend tools
 - ✉️ Email templates
 
 Vituum is a small wrapper around **Vite** which includes predefined config and set of plugins.<br>
-It's a mix of words **Vite** _(French word for "quick")_ and **Tuum** _(Estonion word for "core")_.<br>
+It's a mix of words **Vite** _(French word for "quick")_ and **Tuum** _(Estonian word for "core")_.<br>
 
 * Primary focus is on backend integration, but can be used for anything.
 * Modified build command `vituum build` is used, which supports building of template engine files with extname such as `.twig` or `.pug`
