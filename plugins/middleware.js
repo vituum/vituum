@@ -45,7 +45,7 @@ const vitePluginMiddleware = {
                         transformedUrl = transformedUrl + '.html'
                     }
 
-                    let output = await viteDevServer.transformIndexHtml(transformedUrl.replace('.html', ''), fs.readFileSync(join(viteDevServer.config.root, transformedUrl.replace('.html', ''))).toString())
+                    let output = await viteDevServer.transformIndexHtml(transformedUrl.replace('.html', '?raw'), fs.readFileSync(join(viteDevServer.config.root, transformedUrl.replace('.html', ''))).toString())
 
                     if (req.originalUrl.endsWith('.json')) {
                         res.setHeader('Content-Type', 'application/json')
