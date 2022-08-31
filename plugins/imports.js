@@ -4,7 +4,7 @@ import fs from 'fs'
 
 const imports = (options = {}, config) => {
     const filenamePattern = options.filenamePattern
-    const ignoredPaths = Object.keys(filenamePattern).map(filepath => `!**/${filenamePattern[filepath]}`)
+    const ignoredPaths = Object.keys(filenamePattern).map(filename => `!**/${filename}`)
     const getPaths = FastGlob.sync(options.paths, { onlyFiles: false, ignore: ignoredPaths }).map(entry => resolve(process.cwd(), entry))
     const paths = getPaths.filter(path => relative(config.root, dirname(path)).includes('/'))
     const dirPaths = {}
@@ -18,16 +18,26 @@ const imports = (options = {}, config) => {
     })
 
     Object.keys(dirPaths).forEach(dir => {
-        Object.keys(filenamePattern).forEach(filepath => {
-            const filename = filenamePattern[filepath]
+        Object.keys(filenamePattern).forEach(filename => {
+            const pattern = dirPaths[dir].filter(path => {
+                if (Array.isArray(filenamePattern[filename])) {
+                    return filenamePattern[filename].some(string => path.includes(string))
+                } else {
+                    return path.includes(filenamePattern[filename])
+                }
+            })
 
-            if (dirPaths[dir].filter(path => path.includes(filepath)).length > 0) {
+            if (filename && pattern.length > 0) {
                 let imports = ''
                 const savePath = `${dir}/${filename}`
 
                 if (options.extnamePattern.styles.test(filename)) {
                     dirPaths[dir].forEach(path => {
                         const relativePath = relative(dirname(path), path)
+
+                        if (!options.extnamePattern.styles.test(path)) {
+                            return
+                        }
 
                         if (fs.statSync(path).isFile()) {
                             imports = imports + `@import "${relativePath}";\r\n`
@@ -40,6 +50,10 @@ const imports = (options = {}, config) => {
                 if (options.extnamePattern.scripts.test(filename)) {
                     dirPaths[dir].forEach(path => {
                         const relativePath = relative(dirname(path), path)
+
+                        if (!options.extnamePattern.scripts.test(path)) {
+                            return
+                        }
 
                         if (fs.statSync(path).isFile()) {
                             if (fs.readFileSync(path).toString().includes('export default')) {

@@ -3,7 +3,8 @@ import { defineConfig } from 'vituum'
 export default defineConfig({
     imports: {
         filenamePattern: {
-            'src/styles': '+.less'
+            '+.css': false,
+            '+.less': 'src/styles'
         }
     }
 })
