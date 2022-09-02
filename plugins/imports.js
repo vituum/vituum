@@ -35,7 +35,7 @@ const imports = (options = {}, config) => {
                     dirPaths[dir].forEach(path => {
                         const relativePath = relative(dirname(path), path)
 
-                        if (!options.extnamePattern.styles.test(path)) {
+                        if ((!options.extnamePattern.styles.test(path) && !fs.statSync(path).isDirectory()) || (fs.statSync(path).isDirectory() && !fs.existsSync(resolve(path, filename)))) {
                             return
                         }
 
@@ -51,7 +51,7 @@ const imports = (options = {}, config) => {
                     dirPaths[dir].forEach(path => {
                         const relativePath = relative(dirname(path), path)
 
-                        if (!options.extnamePattern.scripts.test(path)) {
+                        if ((!options.extnamePattern.scripts.test(path) && !fs.statSync(path).isDirectory()) || (fs.statSync(path).isDirectory() && !fs.existsSync(resolve(path, filename)))) {
                             return
                         }
 
