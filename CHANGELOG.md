@@ -1,3 +1,7 @@
+## 0.0.32 (2022-09-07)
+* fix: relative paths for root and output options were not supported
+* fix: moving files from views dir in build was hardcoded, now respects output dir and views dir option
+
 ## 0.0.31 (2022-09-02)
 * fix: not working subdirs in imports
 
