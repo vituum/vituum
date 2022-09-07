@@ -19,7 +19,7 @@ if (arg === 'build') {
     cleanupBeforeBuild()
     renameBeforeBuild()
     await build()
-    execSync('mv public/views/* public && rm -rf public/views') // TODO
+    execSync(`mv ${config.output}/${config.middleware.viewsDir}/* ${config.output} && rm -rf ${config.output}/${config.middleware.viewsDir}`) // TODO
     renameAfterBuild()
     cleanupAfterBuild()
 }
