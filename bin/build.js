@@ -1,8 +1,9 @@
 import chalk from 'chalk'
 import FastGlob from 'fast-glob'
-import { resolve } from 'path'
+import { resolve, relative, join } from 'path'
 import { version } from '../utils/common.js'
 import fs from 'fs'
+import fse from 'fs-extra'
 import { build as viteBuild, resolveConfig } from 'vite'
 
 const vite = await resolveConfig({}, 'build')
@@ -85,4 +86,18 @@ const cleanupBeforeBuild = () => {
     fs.rmSync(`${config.output}/assets`, { recursive: true, force: true })
 }
 
-export { renameBeforeBuild, renameAfterBuild, cleanupAfterBuild, cleanupBeforeBuild, build }
+const moveFiles = async() => {
+    const viewsDir = relative(config.root, config.middleware.viewsDir)
+    const outputViews = FastGlob.sync(resolve(process.cwd(), `${join(config.output, viewsDir)}/**`)).map(entry => resolve(process.cwd(), entry))
+    const movedViews = outputViews.map(path => {
+        return path.replace(resolve(process.cwd(), join(config.output, viewsDir)), resolve(process.cwd(), config.output))
+    })
+
+    await Promise.all(outputViews.map((file, i) =>
+        fse.move(file, movedViews[i])
+    ))
+
+    await fse.remove(join(config.output, viewsDir))
+}
+
+export { renameBeforeBuild, renameAfterBuild, cleanupAfterBuild, cleanupBeforeBuild, moveFiles, build }

@@ -91,6 +91,10 @@ function loadIntegrations(integrations, plugins) {
 function userConfig(userConfig) {
     merge(config, userConfig)
 
+    config.output = resolve(process.cwd(), config.output)
+    config.root = resolve(process.cwd(), config.root)
+    config.middleware.viewsDir = resolve(config.root, config.middleware.viewsDir)
+
     const plugins = []
 
     if (config.server.reload) {

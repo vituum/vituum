@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import { cleanupBeforeBuild, renameBeforeBuild, renameAfterBuild, cleanupAfterBuild, build } from './build.js'
-import { execSync, version } from '../utils/common.js'
+import { cleanupBeforeBuild, renameBeforeBuild, renameAfterBuild, cleanupAfterBuild, moveFiles, build } from './build.js'
+import { version } from '../utils/common.js'
 import chalk from 'chalk'
 import { resolveConfig } from 'vite'
 
@@ -19,7 +19,7 @@ if (arg === 'build') {
     cleanupBeforeBuild()
     renameBeforeBuild()
     await build()
-    execSync(`mv ${config.output}/${config.middleware.viewsDir}/* ${config.output} && rm -rf ${config.output}/${config.middleware.viewsDir}`) // TODO
+    await moveFiles()
     renameAfterBuild()
     cleanupAfterBuild()
 }
