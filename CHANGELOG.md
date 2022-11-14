@@ -1,3 +1,6 @@
+## 0.0.33 (2022-11-14)
+* fix: import file paths files didn't update upon change, HMR changed to chokidar watcher
+
 ## 0.0.32 (2022-09-07)
 * fix: relative paths for root and output options were not supported
 * fix: moving files from views dir in build was hardcoded, now respects output dir and views dir option

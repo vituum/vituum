@@ -1,6 +1,7 @@
 import FastGlob from 'fast-glob'
 import { dirname, normalize, relative, resolve, extname } from 'path'
 import fs from 'fs'
+import chokidar from 'chokidar'
 
 const imports = (options = {}, config) => {
     const filenamePattern = options.filenamePattern
@@ -75,26 +76,36 @@ const imports = (options = {}, config) => {
     })
 }
 
+const fileChanged = (file, config) => {
+    const filenamePattern = config.vituum.imports.filenamePattern
+
+    config.vituum.imports.paths.forEach(path => {
+        const importsPath = relative(config.root, dirname(normalize(path)))
+        const filePath = relative(config.root, dirname(file))
+
+        if (filePath.startsWith(importsPath) && Object.keys(filenamePattern).filter(filename => file.endsWith(filename)).length === 0) {
+            imports(Object.assign(config.vituum.imports, {
+                paths: [`${dirname(file)}/**`]
+            }), config)
+        }
+    })
+}
+
 const vitePluginImports = () => {
     return {
         name: '@vituum/vite-plugin-imports',
         apply: 'serve',
         configResolved(config) {
-            imports(config.vituum.imports, config)
-        },
-        handleHotUpdate({ file, server }) {
-            const filenamePattern = server.config.vituum.imports.filenamePattern
+            if (config.vituum.imports) {
+                imports(config.vituum.imports, config)
 
-            server.config.vituum.imports.paths.forEach(path => {
-                const importsPath = relative(server.config.root, dirname(normalize(path)))
-                const filePath = relative(server.config.root, dirname(file))
+                const watcher = chokidar.watch(config.vituum.imports.paths, {
+                    ignored: /(^|[/\\])\../,
+                    persistent: true
+                })
 
-                if (filePath.startsWith(importsPath) && Object.keys(filenamePattern).filter(filename => file.endsWith(filename)).length === 0) {
-                    imports(Object.assign(server.config.vituum.imports, {
-                        paths: [`${dirname(file)}/**`]
-                    }), server.config)
-                }
-            })
+                watcher.on('add', file => fileChanged(file, config)).on('unlink', file => fileChanged(file, config))
+            }
         }
     }
 }
