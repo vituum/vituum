@@ -24,6 +24,19 @@ const tailwindColorsAccent = (colors = []) => {
     return result
 }
 
+const tailwindRadius = (colors = []) => {
+    const result = {}
+
+    colors.forEach(name => {
+        result[`.rounded-${name}`] = {
+            '--rounded': `var(--rounded-${name})`,
+            'border-radius': 'var(--rounded)'
+        }
+    })
+
+    return result
+}
+
 const tailwindColorsCurrent = (colors = []) => {
     const result = {}
 
@@ -56,4 +69,4 @@ const tailwindAnimations = (values) => {
     return result
 }
 
-export { tailwindColors, tailwindVariables, tailwindColorsAccent, tailwindColorsCurrent, tailwindAnimations }
+export { tailwindColors, tailwindVariables, tailwindColorsAccent, tailwindColorsCurrent, tailwindAnimations, tailwindRadius }
