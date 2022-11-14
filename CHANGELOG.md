@@ -1,3 +1,6 @@
+## 0.0.34 (2022-11-14)
+* feat: deps update, vite ^3.2.3
+
 ## 0.0.33 (2022-11-14)
 * fix: import file paths files didn't update upon change, HMR changed to chokidar watcher
 
