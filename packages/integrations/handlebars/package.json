@@ -4,7 +4,7 @@
   "type": "module",
   "main": "index.js",
   "dependencies": {
-    "@vituum/vite-plugin-handlebars": "^0.1.0",
+    "@vituum/vite-plugin-handlebars": "^0.1.7",
     "lodash": "^4.17.21"
   },
   "files": [

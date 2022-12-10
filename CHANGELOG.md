@@ -1,4 +1,8 @@
-## 0.0.34 (2022-11-14)
+## 0.0.36 (2022-12-10)
+* feat: deps update, vite ^4.0.0
+* fix: depricated polyfillModulePreload replaced with modulePreload
+
+## 0.0.34 / 0.0.35 (2022-11-14)
 * feat: deps update, vite ^3.2.3
 
 ## 0.0.33 (2022-11-14)

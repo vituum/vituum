@@ -9,7 +9,8 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@vituum/handlebars": "^0.1.0",
-    "vituum": "^0.0.24"
+    "vite": "^4.0.0",
+    "@vituum/handlebars": "^0.1.1",
+    "vituum": "^0.0.35"
   }
 }

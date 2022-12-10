@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@vituum/liquid": "^0.1.0",
-    "vituum": "^0.0.23"
+    "@vituum/liquid": "^0.1.1",
+    "vituum": "^0.0.35"
   }
 }

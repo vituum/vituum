@@ -67,7 +67,7 @@ const config = {
         },
         build: {
             emptyOutDir: false,
-            polyfillModulePreload: false
+            modulePreload: false
         }
     }
 }

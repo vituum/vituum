@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "postcss-jit-props": "^1.0.7",
-    "open-props": "^1.4.14",
-    "vituum": "^0.0.23"
+    "postcss-jit-props": "^1.0.8",
+    "open-props": "^1.5.1",
+    "vituum": "^0.0.35"
   }
 }
