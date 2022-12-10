@@ -84,9 +84,9 @@ const fileChanged = (file, config) => {
         const filePath = relative(config.root, dirname(file))
 
         if (filePath.startsWith(importsPath) && Object.keys(filenamePattern).filter(filename => file.endsWith(filename)).length === 0) {
-            imports(Object.assign(config.vituum.imports, {
+            imports(Object.assign({
                 paths: [`${dirname(file)}/**`]
-            }), config)
+            }, config.vituum.imports), config)
         }
     })
 }

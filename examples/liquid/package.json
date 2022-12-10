@@ -10,6 +10,6 @@
   },
   "devDependencies": {
     "@vituum/liquid": "^0.1.1",
-    "vituum": "^0.0.35"
+    "vituum": "^0.0.37"
   }
 }

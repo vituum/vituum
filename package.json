@@ -1,6 +1,6 @@
 {
   "name": "vituum",
-  "version": "0.0.36",
+  "version": "0.0.37",
   "type": "module",
   "main": "index.js",
   "bin": {
@@ -13,6 +13,7 @@
     "vite": "^4.0.0",
     "fast-glob": "^3.2.12",
     "lodash": "^4.17.21",
+    "chokidar": "^3.5.3",
     "chalk": "^5.2.0",
     "fs-extra": "^11.1.0",
     "autoprefixer": "^10.4.13",

@@ -1,3 +1,6 @@
+## 0.0.37 (2022-12-10)
+* fix: imports chokidar not working
+
 ## 0.0.36 (2022-12-10)
 * feat: deps update, vite ^4.0.0
 * fix: depricated polyfillModulePreload replaced with modulePreload
