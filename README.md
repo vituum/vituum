@@ -49,7 +49,7 @@ export default defineConfig({
 })
 ```
 
-You can try Vituum online on [Stackblitz](https://vituum.devlogic.cz/guide/#trying-vituum-online) or view all examples on [GitHub](https://github.com/vituum/vituum/tree/main/examples)
+You can try Vituum online on [Stackblitz](https://vituum.dev/guide/#trying-vituum-online) or view all examples on [GitHub](https://github.com/vituum/vituum/tree/main/examples)
 
 ## 📌 Future plans
 - refactoring and rewrite to **TypeScript**
