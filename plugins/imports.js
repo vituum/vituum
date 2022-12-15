@@ -7,7 +7,7 @@ const imports = (options = {}, config) => {
     const filenamePattern = options.filenamePattern
     const ignoredPaths = Object.keys(filenamePattern).map(filename => `!**/${filename}`)
     const getPaths = FastGlob.sync(options.paths.map(path => path.replace(/\\/g, '/')), { onlyFiles: false, ignore: ignoredPaths }).map(entry => resolve(process.cwd(), entry))
-    const paths = getPaths.filter(path => relative(config.root, dirname(path)).includes('/'))
+    const paths = getPaths.filter(path => relative(config.root, dirname(path)).replace(/\\/g, '/').includes('/'))
     const dirPaths = {}
 
     paths.forEach((path) => {
