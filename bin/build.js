@@ -22,7 +22,7 @@ const build = async(headless = false) => {
 const renameBeforeBuild = () => {
     console.info(`${chalk.cyan(`vituum v${version}`)} ${chalk.green('preparing for build...')}`)
 
-    const files = FastGlob.sync([`${viewsDir}/**/*.{${supportedFormats.join(',')}}`, `!**/*.{${supportedFormats.join(',')}}.json`]).map(entry => resolve(process.cwd(), entry))
+    const files = FastGlob.sync([`${viewsDir}/**/*.{${supportedFormats.join(',')}}`.replace(/\\/g, '/'), `!**/*.{${supportedFormats.join(',')}}.json`]).map(entry => resolve(process.cwd(), entry))
 
     files.forEach(file => {
         supportedFormats.forEach(format => {
@@ -41,7 +41,7 @@ const renameBeforeBuild = () => {
 const renameAfterBuild = () => {
     console.info(`${chalk.cyan(`vituum v${version}`)} ${chalk.green('renaming templates after build...')}`)
 
-    const files = FastGlob.sync([`${config.output}/**/*.html`]).map(entry => resolve(process.cwd(), entry))
+    const files = FastGlob.sync([`${config.output}/**/*.html`.replace(/\\/g, '/')]).map(entry => resolve(process.cwd(), entry))
 
     files.forEach(file => {
         supportedFormats.forEach(format => {
@@ -67,7 +67,7 @@ const renameAfterBuild = () => {
 const cleanupAfterBuild = () => {
     console.info(`${chalk.cyan(`vituum v${version}`)} ${chalk.green('cleanup after build...')}`)
 
-    const files = FastGlob.sync([`${viewsDir}/**/*.html`]).map(entry => resolve(process.cwd(), entry))
+    const files = FastGlob.sync([`${viewsDir}/**/*.html`.replace(/\\/g, '/')]).map(entry => resolve(process.cwd(), entry))
 
     files.forEach(file => {
         if (file.includes('.vituum')) {
@@ -79,7 +79,7 @@ const cleanupAfterBuild = () => {
 const cleanupBeforeBuild = () => {
     console.info(`${chalk.cyan(`vituum v${version}`)} ${chalk.green('cleanup before build...')}`)
 
-    const files = FastGlob.sync([`${config.output}/**/*.html`]).map(entry => resolve(process.cwd(), entry))
+    const files = FastGlob.sync([`${config.output}/**/*.html`.replace(/\\/g, '/')]).map(entry => resolve(process.cwd(), entry))
 
     files.forEach(file => fs.unlinkSync(file))
 
@@ -88,7 +88,7 @@ const cleanupBeforeBuild = () => {
 
 const moveFiles = async() => {
     const viewsDir = relative(config.root, config.middleware.viewsDir)
-    const outputViews = FastGlob.sync(resolve(process.cwd(), `${join(config.output, viewsDir)}/**`)).map(entry => resolve(process.cwd(), entry))
+    const outputViews = FastGlob.sync(resolve(process.cwd(), `${join(config.output, viewsDir)}/**`).replace(/\\/g, '/')).map(entry => resolve(process.cwd(), entry))
     const movedViews = outputViews.map(path => {
         return path.replace(resolve(process.cwd(), join(config.output, viewsDir)), resolve(process.cwd(), config.output))
     })

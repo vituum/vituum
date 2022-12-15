@@ -152,7 +152,7 @@ function userConfig(userConfig) {
             outDir: config.output,
             manifest: config.build.manifest,
             rollupOptions: {
-                input: FastGlob.sync(config.input).map(entry => resolve(process.cwd(), entry))
+                input: FastGlob.sync(config.input.map(path => path.replace(/\\/g, '/'))).map(entry => resolve(process.cwd(), entry))
             }
         }
     }, config.vite))
