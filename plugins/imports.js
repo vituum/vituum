@@ -22,9 +22,9 @@ const imports = (options = {}, config) => {
         Object.keys(filenamePattern).forEach(filename => {
             const pattern = dirPaths[dir].filter(path => {
                 if (Array.isArray(filenamePattern[filename])) {
-                    return filenamePattern[filename].some(string => path.includes(string.replace(/\//g, '\\')))
+                    return filenamePattern[filename].some(string => path.replace(/\\/g, '/').includes(string.replace(/\\/g, '/')))
                 } else {
-                    return path.includes(filenamePattern[filename].replace(/\//g, '\\'))
+                    return path.replace(/\\/g, '/').includes(filenamePattern[filename].replace(/\\/g, '/'))
                 }
             })
 
