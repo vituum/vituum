@@ -1,3 +1,6 @@
+## 0.0.39 (2022-01-31)
+* fix: regression from 0.0.38 with paths on Linux/Mac
+
 ## 0.0.38 (2022-12-15)
 * fix: file paths problems on Windows (FastGlob related)
 
