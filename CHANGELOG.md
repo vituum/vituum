@@ -1,3 +1,9 @@
+## 0.0.41 (2023-02-28)
+* feat: deps update, vite ^4.1.4
+ 
+## 0.0.40 (2023-02-28)
+* feat: update emails paths, emails should be now in src/views and paths should be configured via @vituum/juice
+
 ## 0.0.39 (2023-01-31)
 * fix: regression from 0.0.38 with paths on Linux/Mac
 
