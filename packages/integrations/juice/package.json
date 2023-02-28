@@ -1,12 +1,12 @@
 {
   "name": "@vituum/juice",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "type": "module",
   "main": "index.js",
   "dependencies": {
-    "@vituum/vite-plugin-juice": "^0.1.5",
+    "@vituum/vite-plugin-juice": "^0.1.6",
     "dotenv": "^16.0.3",
-    "nodemailer": "^6.8.0",
+    "nodemailer": "^6.9.1",
     "lodash": "^4.17.21"
   },
   "files": [

@@ -15,7 +15,7 @@ import vitePluginReload from './plugins/reload.js'
 import { merge } from './utils/common.js'
 
 const config = {
-    input: ['./src/views/**/*.html', './src/emails/*.html', './src/styles/*.{css,pcss,scss,sass,less,styl,stylus}', './src/scripts/*.{js,ts,mjs}'],
+    input: ['./src/views/**/*.html', './src/styles/*.{css,pcss,scss,sass,less,styl,stylus}', './src/scripts/*.{js,ts,mjs}'],
     output: resolve(process.cwd(), 'public'),
     root: resolve(process.cwd(), 'src'),
     integrations: [],
@@ -44,7 +44,7 @@ const config = {
     },
     middleware: {
         viewsDir: 'views',
-        viewsIgnoredPaths: ['emails']
+        viewsIgnoredPaths: []
     },
     templates: {
         format: null,

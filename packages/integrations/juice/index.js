@@ -3,7 +3,7 @@ import lodash from 'lodash'
 import send from './send.js'
 
 const defaultConfig = {
-    paths: ['emails'],
+    paths: ['views/email'],
     tables: true,
     send: {
         template: null,
