@@ -1,17 +1,17 @@
 {
   "name": "@vituum/tailwind",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "type": "module",
   "main": "index.js",
   "dependencies": {
-    "postcss": "^8.4.19",
-    "postcss-custom-media": "^9.0.1",
-    "postcss-custom-selectors": "^7.0.0",
-    "postcss-custom-properties": "^12.1.11",
+    "postcss": "^8.4.21",
+    "postcss-custom-media": "^9.1.3",
+    "postcss-custom-selectors": "^7.1.3",
+    "postcss-custom-properties": "^13.1.5",
     "postcss-import": "^15.1.0",
-    "postcss-nesting": "^10.2.0",
-    "autoprefixer": "^10.4.13",
-    "tailwindcss": "^3.2.4"
+    "postcss-nesting": "^11.2.2",
+    "autoprefixer": "^10.4.14",
+    "tailwindcss": "^3.3.1"
   },
   "files": [
     "helpers.js",

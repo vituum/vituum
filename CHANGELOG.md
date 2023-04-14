@@ -1,3 +1,6 @@
+## 0.0.42 (2023-04-14)
+* feat: deps update, vite ^4.2.1
+
 ## 0.0.41 (2023-02-28)
 * feat: deps update, vite ^4.1.4
  
