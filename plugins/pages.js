@@ -1,17 +1,17 @@
-import fs from 'fs'
-import { join, resolve, relative } from 'path'
+import fs from 'node:fs'
+import { join, resolve, relative } from 'node:path'
 
-const vitePluginMiddleware = {
-    name: '@vituum/vite-plugin-middleware',
+const plugin = (pluginUserConfig) => ({
+    name: '@vituum/vite-plugin-pages',
     apply: 'serve',
-    configureServer(viteDevServer) {
-        const viewsDir = resolve(viteDevServer.config.root, viteDevServer.config.vituum.middleware.viewsDir)
+    configureServer (viteDevServer) {
+        const viewsDir = resolve(viteDevServer.config.root, pluginUserConfig.pagesDir)
         const viewsUrl = relative(viteDevServer.config.root, viewsDir)
-        const viewsIgnoredPaths = viteDevServer.config.vituum.middleware.viewsIgnoredPaths
-        const supportedFormats = viteDevServer.config.vituum.templates.formats
+        const viewsIgnoredPaths = pluginUserConfig.ignoredPaths
+        const supportedFormats = pluginUserConfig.formats
 
         return () => {
-            viteDevServer.middlewares.use(async(req, res, next) => {
+            viteDevServer.middlewares.use(async (req, res, next) => {
                 let format = null
                 let transformedUrl = req.originalUrl.replace('.html', '')
 
@@ -65,6 +65,6 @@ const vitePluginMiddleware = {
             })
         }
     }
-}
+})
 
-export default vitePluginMiddleware
+export default plugin
