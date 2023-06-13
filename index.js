@@ -5,7 +5,7 @@ import lodash from 'lodash'
 
 const defaultConfig = {
     pages: {
-        root: null,
+        root: './src',
         dir: './src/pages',
         formats: ['json', 'latte', 'twig', 'liquid', 'njk', 'hbs', 'pug'],
         ignoredPaths: []
@@ -35,11 +35,11 @@ const pluginCore = (pluginUserConfig) => ({
             bundle,
             file => {
                 const pagesDir = relative(resolvedConfig.root, pluginUserConfig.pages.dir)
-                const pagesRoot = relative(resolvedConfig.root, pluginUserConfig.pages.root)
+                const pagesRoot = pluginUserConfig.pages.root ? relative(resolvedConfig.root, pluginUserConfig.pages.root) : null
 
                 if (file.includes(pagesDir)) {
                     return relative(pagesDir, file)
-                } else if (file.includes(pagesRoot)) {
+                } else if (pagesRoot && file.includes(pagesRoot)) {
                     return relative(pagesRoot, file)
                 } else {
                     return file
