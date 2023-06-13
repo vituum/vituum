@@ -38,7 +38,9 @@ export const renameGenerateBundle = async (files, formats, bundle, relativePath)
             const path = relative(process.cwd(), file)
             const replaceExt = path.endsWith(`.json.${format}.html`) ? `.${format}.html` : `.${format}`
 
-            bundle[path].fileName = relative(relativePath, path).replace(replaceExt, '')
+            if (bundle[path] && formats.find(format => bundle[path].fileName.endsWith(format.replace(format, `${format}.html`)))) {
+                bundle[path].fileName = relative(relativePath, path).replace(replaceExt, '')
+            }
         }
     }
 }
