@@ -1,5 +1,16 @@
 import pluginPages from './plugins/pages.js'
 import { resolveInputPaths, renameGenerateBundle } from './utils/build.js'
+import { relative } from 'path'
+import lodash from 'lodash'
+
+const defaultConfig = {
+    pages: {
+        root: null,
+        dir: './src/pages',
+        formats: ['json', 'latte', 'twig', 'liquid', 'njk', 'hbs', 'pug'],
+        ignoredPaths: []
+    }
+}
 
 let userConfig
 let resolvedConfig
@@ -22,13 +33,26 @@ const pluginCore = (pluginUserConfig) => ({
             resolvedConfig.build.rollupOptions.input,
             pluginUserConfig.pages.formats,
             bundle,
-            pluginUserConfig.pages.dir[0]
+            file => {
+                const pagesDir = relative(resolvedConfig.root, pluginUserConfig.pages.dir)
+                const pagesRoot = relative(resolvedConfig.root, pluginUserConfig.pages.root)
+
+                if (file.includes(pagesDir)) {
+                    return relative(pagesDir, file)
+                } else if (file.includes(pagesRoot)) {
+                    return relative(pagesRoot, file)
+                } else {
+                    return file
+                }
+            }
         )
     }
 })
 
 const plugin = (pluginUserConfig) => {
-    return [pluginCore(pluginUserConfig), pluginPages(pluginUserConfig)]
+    pluginUserConfig = lodash.merge(defaultConfig, pluginUserConfig)
+
+    return [pluginCore(pluginUserConfig), pluginPages(pluginUserConfig.pages)]
 }
 
 export default plugin

@@ -1,7 +1,10 @@
 import fs from 'fs'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
+import lodash from 'lodash'
+import FastGlob from 'fast-glob'
 import process from 'node:process'
+import { renameGenerateBundle } from './build.js'
 
 export const getPackageInfo = (path) => JSON.parse(fs.readFileSync(resolve(dirname((fileURLToPath(path))), 'package.json')).toString())
 
@@ -30,7 +33,7 @@ export const pluginError = (error, server) => {
 export const pluginReload = ({ file, server }, { reload, formats }) => {
     if (
         (typeof reload === 'function' && reload(file)) ||
-        (typeof reload === 'boolean' && reload && formats.find(format => file.endsWith(`${format}.html`)))
+        (typeof reload === 'boolean' && reload && formats.find(format => file.endsWith(`${format}`)))
     ) {
         server.ws.send({ type: 'full-reload' })
     }

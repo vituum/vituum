@@ -30,7 +30,7 @@ export const renameBuildEnd = async (files, formats) => {
     }
 }
 
-export const renameGenerateBundle = async (files, formats, bundle, relativePath) => {
+export const renameGenerateBundle = async (files, formats, bundle, transformPath) => {
     for (const file of files) {
         const format = formats.find(format => file.endsWith(format.replace(format, `${format}.html`)))
 
@@ -39,7 +39,11 @@ export const renameGenerateBundle = async (files, formats, bundle, relativePath)
             const replaceExt = path.endsWith(`.json.${format}.html`) ? `.${format}.html` : `.${format}`
 
             if (bundle[path] && formats.find(format => bundle[path].fileName.endsWith(format.replace(format, `${format}.html`)))) {
-                bundle[path].fileName = relative(relativePath, path).replace(replaceExt, '')
+                if (transformPath) {
+                    bundle[path].fileName = transformPath(bundle[path].fileName).replace(replaceExt, '')
+                } else {
+                    bundle[path].fileName = bundle[path].fileName.replace(replaceExt, '')
+                }
             }
         }
     }

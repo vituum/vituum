@@ -5,30 +5,27 @@ const plugin = (pluginUserConfig) => ({
     name: '@vituum/vite-plugin-pages',
     apply: 'serve',
     configureServer (viteDevServer) {
-        const viewsDir = resolve(viteDevServer.config.root, pluginUserConfig.pagesDir)
-        const viewsUrl = relative(viteDevServer.config.root, viewsDir)
+        const viewsPath = relative(viteDevServer.config.root, resolve(viteDevServer.config.root, pluginUserConfig.dir))
         const viewsIgnoredPaths = pluginUserConfig.ignoredPaths
-        const supportedFormats = pluginUserConfig.formats
+        const formats = pluginUserConfig.formats
 
         return () => {
             viteDevServer.middlewares.use(async (req, res, next) => {
-                let format = null
                 let transformedUrl = req.originalUrl.replace('.html', '')
 
                 if (req.originalUrl === '/' || req.originalUrl.endsWith('/')) {
                     transformedUrl = transformedUrl + 'index'
                 }
 
-                if (!req.originalUrl.startsWith('/' + viewsUrl) && viewsIgnoredPaths.filter(path => req.originalUrl.startsWith(`/${path}`)).length === 0) {
-                    transformedUrl = '/' + viewsUrl + transformedUrl
+                if (!req.originalUrl.startsWith('/' + viewsPath) && viewsIgnoredPaths.filter(path => req.originalUrl.startsWith(`/${path}`)).length === 0) {
+                    transformedUrl = '/' + viewsPath + transformedUrl
                 }
 
-                supportedFormats.every(supportedFormat => {
-                    if (fs.existsSync(join(viteDevServer.config.root, `${transformedUrl}.${supportedFormat}`)) || fs.existsSync(join(viteDevServer.config.root, `${transformedUrl}.${supportedFormat}.html`))) {
-                        format = supportedFormat
-                        return false
+                const format = formats.find(format => {
+                    if (fs.existsSync(join(viteDevServer.config.root, `${transformedUrl}.${format}`))) {
+                        return format
                     } else {
-                        return true
+                        return null
                     }
                 })
 
@@ -38,14 +35,11 @@ const plugin = (pluginUserConfig) => ({
                     transformedUrl = transformedUrl + '.html'
                 }
 
-                const formatExists = fs.existsSync(join(viteDevServer.config.root, transformedUrl.replace('.html', '')))
-
-                if ((formatExists && format) || req.originalUrl.endsWith('.json')) {
-                    if (formatExists === false) {
-                        transformedUrl = transformedUrl + '.html'
-                    }
-
-                    let output = await viteDevServer.transformIndexHtml(transformedUrl.replace('.html', format === 'json' ? '?raw' : ''), fs.readFileSync(join(viteDevServer.config.root, transformedUrl.replace('.html', ''))).toString())
+                if (format || req.originalUrl.endsWith('.json')) {
+                    let output = await viteDevServer.transformIndexHtml(
+                        transformedUrl,
+                        fs.readFileSync(join(viteDevServer.config.root, transformedUrl.replace('.html', ''))).toString()
+                    )
 
                     if (req.originalUrl.endsWith('.json')) {
                         res.setHeader('Content-Type', 'application/json')
