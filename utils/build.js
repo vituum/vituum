@@ -3,17 +3,21 @@ import { relative, resolve } from 'path'
 import FastGlob from 'fast-glob'
 
 /**
- * @param {string[]} paths
+ * @param {import('rollup').InputOption} paths
  * @param {string[]} formats
  * @returns {string[]}
  */
-export const resolveInputPaths = (paths, formats) => FastGlob.sync([...paths]).map(entry => {
-    if (formats.find(format => entry.endsWith(format.toString()))) {
-        entry = `${entry}.html`
-    }
+export const resolveInputPaths = (paths, formats) => {
+    return FastGlob.sync(
+        Array.isArray(paths) ? [...paths] : (typeof paths === 'string' ? paths : null)
+    ).map(entry => {
+        if (formats.find(format => entry.endsWith(format.toString()))) {
+            entry = `${entry}.html`
+        }
 
-    return resolve(process.cwd(), entry)
-})
+        return resolve(process.cwd(), entry)
+    })
+}
 
 /**
  * @param {string[]} files
@@ -48,8 +52,8 @@ export const renameBuildEnd = async (files, formats) => {
 /**
  * @param {string[]} files
  * @param {string[]} formats
- * @param {import('rollup').FunctionPluginHooks.generateBundle} bundle
- * @param {import('./build.d.ts').transformPath} [transformPath]
+ * @param {import('rollup').OutputBundle} bundle
+ * @param {import('@/types/utils/build.d.ts').transformPath} [transformPath]
  * @returns {Promise<void>}
  */
 export const renameGenerateBundle = async (files, formats, bundle, transformPath) => {

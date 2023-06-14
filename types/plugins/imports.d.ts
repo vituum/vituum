@@ -3,11 +3,11 @@ interface ExtnamePattern {
 }
 
 interface FilenamePattern {
-    [key: string]: string | String[];
+    [key: string]: string | string[];
 }
 
 export interface UserConfig {
     filenamePattern: FilenamePattern;
     extnamePattern: ExtnamePattern;
-    paths: String[]
+    paths: string[]
 }

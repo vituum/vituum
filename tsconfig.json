@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "strict": false,
+    "noEmit": true,
+    "target": "es2020",
+    "module": "es2022",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": [
+    "index.js",
+    "./types/**/*.d.ts",
+    "./utils/**/*.js",
+    "./plugins/**/*.js"
+  ],
+  "files": [
+    "index.js"
+  ]
+}

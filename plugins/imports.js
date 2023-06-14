@@ -5,7 +5,7 @@ import chokidar from 'chokidar'
 import lodash from 'lodash'
 
 /**
- * @type {import('./imports.d.ts').UserConfig}
+ * @type {import('@/types/plugins/imports.d.ts').UserConfig}
  */
 const defaultConfig = {
     filenamePattern: {
@@ -20,7 +20,7 @@ const defaultConfig = {
 }
 
 /**
- * @param {import('./imports.d.ts').UserConfig} options
+ * @param {import('@/types/plugins/imports.d.ts').UserConfig} options
  * @param {import('vite').ResolvedConfig} config
  */
 const imports = (options, config) => {
@@ -42,8 +42,10 @@ const imports = (options, config) => {
         Object.keys(filenamePattern).forEach(filename => {
             const pattern = dirPaths[dir].filter(path => {
                 if (Array.isArray(filenamePattern[filename])) {
+                    // @ts-ignore
                     return filenamePattern[filename].some(string => path.replace(/\\/g, '/').includes(string.replace(/\\/g, '/')))
                 } else {
+                    // @ts-ignore
                     return path.replace(/\\/g, '/').includes(filenamePattern[filename].replace(/\\/g, '/'))
                 }
             })
@@ -98,7 +100,7 @@ const imports = (options, config) => {
 
 /**
  * @param {string} file
- * @param {import('./imports.d.ts').UserConfig} pluginUserConfig
+ * @param {import('@/types/plugins/imports.d.ts').UserConfig} pluginUserConfig
  * @param {import('vite').ResolvedConfig} config
  */
 const fileChanged = (file, pluginUserConfig, config) => {
@@ -117,7 +119,7 @@ const fileChanged = (file, pluginUserConfig, config) => {
 }
 
 /**
- * @param {import('./imports.d.ts').UserConfig} pluginUserConfig
+ * @param {import('@/types/plugins/imports.d.ts').UserConfig} pluginUserConfig
  * @returns {import('vite').Plugin}
  */
 const plugin = (pluginUserConfig) => {

@@ -1,6 +1,6 @@
 export interface UserConfig {
     root: string;
     dir: string;
-    formats: String[];
-    ignoredPaths: String[];
+    formats: string[];
+    ignoredPaths: string[];
 }

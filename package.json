@@ -4,17 +4,20 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "tsc": "tsc",
     "eslint": "eslint '**/*.js' --fix"
   },
   "dependencies": {
-    "vite": "^4.3",
+    "chokidar": "^3.5",
     "fast-glob": "^3.2",
     "lodash": "^4.17",
-    "chokidar": "^3.5"
+    "vite": "^4.3"
   },
   "devDependencies": {
+    "@types/node": "^20.3.1",
     "eslint": "^8.42",
-    "eslint-config-standard": "^17.1"
+    "eslint-config-standard": "^17.1",
+    "typescript": "^5.1"
   },
   "files": [
     "index.js",

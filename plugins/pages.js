@@ -3,7 +3,7 @@ import { join, resolve, relative } from 'node:path'
 import lodash from 'lodash'
 
 /**
- * @type {import('./pages.d.ts').UserConfig}
+ * @type {import('@/types/plugins/pages.d.ts').UserConfig}
  */
 const defaultConfig = {
     root: './src',
@@ -13,7 +13,7 @@ const defaultConfig = {
 }
 
 /**
- * @param {import('./pages.d.ts').UserConfig} pluginUserConfig
+ * @param {import('@/types/plugins/pages.d.ts').UserConfig} pluginUserConfig
  * @returns {import('vite').Plugin}
  */
 const plugin = (pluginUserConfig) => {

@@ -34,10 +34,10 @@ const integrations = [
         },
         tags: {
             upper: {
-                parse: function(tagToken) {
+                parse: function (tagToken) {
                     this.str = tagToken.args
                 },
-                render: async function(ctx) {
+                render: async function (ctx) {
                     const str = await this.liquid.evalValue(this.str, ctx)
                     return str.toUpperCase()
                 }
@@ -59,7 +59,7 @@ const integrations = [
             template: resolve(process.cwd(), 'src/templates/pug/article.pug')
         },
         filters: {
-            'my-own-filter': function(text, options) {
+            'my-own-filter': function (text, options) {
                 if (options.addStart) {
                     text = 'Start\n' + text
                 }

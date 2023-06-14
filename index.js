@@ -12,7 +12,7 @@ const defaultInput = [
 ]
 
 /**
- * @param {import('./index.d.ts').UserConfig} pluginUserConfig
+ * @param {import('@/types/index.d.ts').UserConfig} pluginUserConfig
  * @returns {import('vite').Plugin}
  */
 const pluginCore = (pluginUserConfig) => {
@@ -59,7 +59,7 @@ const pluginCore = (pluginUserConfig) => {
 }
 
 /**
- * @param {import('./index.d.ts').UserConfig} pluginUserConfig
+ * @param {import('@/types/index.d.ts').UserConfig} pluginUserConfig
  * @returns [import('vite').Plugin]
  */
 const plugin = (pluginUserConfig) => {
