@@ -12,6 +12,13 @@ const defaultConfig = {
     }
 }
 
+const defaultInput = [
+    './src/emails/**/*.{json,latte,twig,liquid,njk,hbs,pug,html}',
+    './src/pages/**/*.{json,latte,twig,liquid,njk,hbs,pug,html}',
+    '!./src/pages/**/*.{latte,twig,liquid,njk,hbs,pug,html}.json',
+    './src/*.{css,pcss,scss,sass,less,styl,stylus,js,ts,mjs}'
+]
+
 let userConfig
 let resolvedConfig
 
@@ -23,6 +30,10 @@ const pluginCore = (pluginUserConfig) => ({
 
         if (userConfig?.build?.rollupOptions?.input) {
             userConfig.build.rollupOptions.input = resolveInputPaths(userConfig.build.rollupOptions.input, pluginUserConfig.pages.formats)
+        } else {
+            userConfig.build = userConfig.build || {}
+            userConfig.build.rollupOptions = userConfig.build.rollupOptions || {}
+            userConfig.build.rollupOptions.input = resolveInputPaths(defaultInput, pluginUserConfig.pages.formats)
         }
     },
     configResolved (config) {

@@ -1,19 +1,19 @@
 {
   "name": "vituum",
-  "version": "1.0.0-alpha.5",
+  "version": "1.0.0-alpha.6",
   "type": "module",
   "main": "index.js",
   "scripts": {
     "eslint": "eslint '**/*.js' --fix"
   },
   "dependencies": {
-    "vite": "^4.0",
-    "fast-glob": "^3.0",
-    "lodash": "^4.0"
+    "vite": "^4.3",
+    "fast-glob": "^3.2",
+    "lodash": "^4.17"
   },
   "devDependencies": {
-    "eslint": "^8.42.0",
-    "eslint-config-standard": "^17.1.0"
+    "eslint": "^8.42",
+    "eslint-config-standard": "^17.1"
   },
   "files": [
     "index.js",
@@ -22,6 +22,7 @@
   ],
   "exports": {
     ".": "./index.js",
+    "./plugins/*": "./plugins/*",
     "./utils/*": "./utils/*",
     "./package.json": "./package.json"
   },
