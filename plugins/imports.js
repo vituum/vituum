@@ -5,9 +5,9 @@ import chokidar from 'chokidar'
 import lodash from 'lodash'
 
 /**
- * @type {import('@/types/plugins/imports.d.ts').UserConfig}
+ * @type {import('vituum/types/plugins/imports.d.ts').UserConfig}
  */
-const defaultConfig = {
+export const defaultConfig = {
     filenamePattern: {
         '+.css': 'src/styles',
         '+.js': 'src/scripts'
@@ -20,7 +20,7 @@ const defaultConfig = {
 }
 
 /**
- * @param {import('@/types/plugins/imports.d.ts').UserConfig} options
+ * @param {import('vituum/types/plugins/imports.d.ts').UserConfig} options
  * @param {import('vite').ResolvedConfig} config
  */
 const imports = (options, config) => {
@@ -100,7 +100,7 @@ const imports = (options, config) => {
 
 /**
  * @param {string} file
- * @param {import('@/types/plugins/imports.d.ts').UserConfig} pluginUserConfig
+ * @param {import('vituum/types/plugins/imports.d.ts').UserConfig} pluginUserConfig
  * @param {import('vite').ResolvedConfig} config
  */
 const fileChanged = (file, pluginUserConfig, config) => {
@@ -119,7 +119,7 @@ const fileChanged = (file, pluginUserConfig, config) => {
 }
 
 /**
- * @param {import('@/types/plugins/imports.d.ts').UserConfig} pluginUserConfig
+ * @param {import('vituum/types/plugins/imports.d.ts').UserConfig} pluginUserConfig
  * @returns {import('vite').Plugin}
  */
 const plugin = (pluginUserConfig) => {

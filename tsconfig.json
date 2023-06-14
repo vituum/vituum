@@ -10,7 +10,7 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "vituum/*": ["./*"]
     }
   },
   "include": [

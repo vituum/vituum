@@ -53,7 +53,7 @@ export const renameBuildEnd = async (files, formats) => {
  * @param {string[]} files
  * @param {string[]} formats
  * @param {import('rollup').OutputBundle} bundle
- * @param {import('@/types/utils/build.d.ts').transformPath} [transformPath]
+ * @param {import('vituum/types/utils/build.d.ts').transformPath} [transformPath]
  * @returns {Promise<void>}
  */
 export const renameGenerateBundle = async (files, formats, bundle, transformPath) => {

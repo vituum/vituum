@@ -1,6 +1,6 @@
 {
   "name": "vituum",
-  "version": "1.0.0-alpha.6",
+  "version": "1.0.0-alpha.13",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
   },
   "files": [
     "index.js",
+    "types",
     "plugins",
     "utils"
   ],

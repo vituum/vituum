@@ -7,7 +7,7 @@ interface FilenamePattern {
 }
 
 export interface UserConfig {
-    filenamePattern: FilenamePattern;
-    extnamePattern: ExtnamePattern;
-    paths: string[]
+    filenamePattern?: FilenamePattern;
+    extnamePattern?: ExtnamePattern;
+    paths?: string[]
 }

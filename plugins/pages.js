@@ -3,9 +3,9 @@ import { join, resolve, relative } from 'node:path'
 import lodash from 'lodash'
 
 /**
- * @type {import('@/types/plugins/pages.d.ts').UserConfig}
+ * @type {import('vituum/types/plugins/pages.d.ts').UserConfig}
  */
-const defaultConfig = {
+export const defaultConfig = {
     root: './src',
     dir: './src/pages',
     formats: ['json', 'latte', 'twig', 'liquid', 'njk', 'hbs', 'pug'],
@@ -13,7 +13,7 @@ const defaultConfig = {
 }
 
 /**
- * @param {import('@/types/plugins/pages.d.ts').UserConfig} pluginUserConfig
+ * @param {import('vituum/types/plugins/pages.d.ts').UserConfig} pluginUserConfig
  * @returns {import('vite').Plugin}
  */
 const plugin = (pluginUserConfig) => {

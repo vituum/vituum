@@ -1,7 +1,13 @@
-import pluginPages from './plugins/pages.js'
-import pluginImports from './plugins/imports.js'
+import pluginPages, { defaultConfig as defaultConfigPages } from './plugins/pages.js'
+import pluginImports, { defaultConfig as defaultConfigImports } from './plugins/imports.js'
 import { resolveInputPaths, renameGenerateBundle } from './utils/build.js'
 import { relative } from 'path'
+import lodash from 'lodash'
+
+const defaultConfig = {
+    pages: defaultConfigPages,
+    imports: defaultConfigImports
+}
 
 const defaultInput = [
     './src/emails/**/*.{json,latte,twig,liquid,njk,hbs,pug,html}',
@@ -12,7 +18,7 @@ const defaultInput = [
 ]
 
 /**
- * @param {import('@/types/index.d.ts').UserConfig} pluginUserConfig
+ * @param {import('vituum/types/index.d.ts').UserConfig} pluginUserConfig
  * @returns {import('vite').Plugin}
  */
 const pluginCore = (pluginUserConfig) => {
@@ -59,10 +65,12 @@ const pluginCore = (pluginUserConfig) => {
 }
 
 /**
- * @param {import('@/types/index.d.ts').UserConfig} pluginUserConfig
+ * @param {import('vituum/types/index.d.ts').UserConfig} pluginUserConfig
  * @returns [import('vite').Plugin]
  */
 const plugin = (pluginUserConfig) => {
+    pluginUserConfig = lodash.merge(defaultConfig, pluginUserConfig)
+
     return [pluginCore(pluginUserConfig), pluginPages(pluginUserConfig.pages), pluginImports(pluginUserConfig.imports)]
 }
 
