@@ -26,6 +26,7 @@
   ],
   "exports": {
     ".": "./index.js",
+    "./types": "./types/*",
     "./plugins/*": "./plugins/*",
     "./utils/*": "./utils/*",
     "./package.json": "./package.json"
