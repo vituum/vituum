@@ -9,7 +9,8 @@
   "dependencies": {
     "vite": "^4.3",
     "fast-glob": "^3.2",
-    "lodash": "^4.17"
+    "lodash": "^4.17",
+    "chokidar": "^3.5"
   },
   "devDependencies": {
     "eslint": "^8.42",

@@ -1,9 +1,29 @@
 import FastGlob from 'fast-glob'
-import { dirname, normalize, relative, resolve, extname } from 'path'
-import fs from 'fs'
+import { dirname, normalize, relative, resolve, extname } from 'node:path'
+import fs from 'node:fs'
 import chokidar from 'chokidar'
+import lodash from 'lodash'
 
-const imports = (options = {}, config) => {
+/**
+ * @type {import('./imports.d.ts').UserConfig}
+ */
+const defaultConfig = {
+    filenamePattern: {
+        '+.css': 'src/styles',
+        '+.js': 'src/scripts'
+    },
+    extnamePattern: {
+        styles: /.(css|less|scss|pcss)$/,
+        scripts: /.(js|mjs|ts)$/
+    },
+    paths: ['./src/styles/**', './src/scripts/**']
+}
+
+/**
+ * @param {import('./imports.d.ts').UserConfig} options
+ * @param {import('vite').ResolvedConfig} config
+ */
+const imports = (options, config) => {
     const filenamePattern = options.filenamePattern
     const ignoredPaths = Object.keys(filenamePattern).map(filename => `!**/${filename}`)
     const getPaths = FastGlob.sync(options.paths.map(path => path.replace(/\\/g, '/')), { onlyFiles: false, ignore: ignoredPaths }).map(entry => resolve(process.cwd(), entry))
@@ -76,38 +96,47 @@ const imports = (options = {}, config) => {
     })
 }
 
-const fileChanged = (file, config) => {
-    const filenamePattern = config.vituum.imports.filenamePattern
+/**
+ * @param {string} file
+ * @param {import('./imports.d.ts').UserConfig} pluginUserConfig
+ * @param {import('vite').ResolvedConfig} config
+ */
+const fileChanged = (file, pluginUserConfig, config) => {
+    const filenamePattern = pluginUserConfig.filenamePattern
 
-    config.vituum.imports.paths.forEach(path => {
+    pluginUserConfig.paths.forEach(path => {
         const importsPath = relative(config.root, dirname(normalize(path)))
         const filePath = relative(config.root, dirname(file))
 
         if (filePath.startsWith(importsPath) && Object.keys(filenamePattern).filter(filename => file.endsWith(filename)).length === 0) {
             imports(Object.assign({
                 paths: [`${dirname(file)}/**`]
-            }, config.vituum.imports), config)
+            }, pluginUserConfig), config)
         }
     })
 }
 
-const vitePluginImports = () => {
+/**
+ * @param {import('./imports.d.ts').UserConfig} pluginUserConfig
+ * @returns {import('vite').Plugin}
+ */
+const plugin = (pluginUserConfig) => {
+    pluginUserConfig = lodash.merge(defaultConfig, pluginUserConfig)
+
     return {
         name: '@vituum/vite-plugin-imports',
         apply: 'serve',
-        configResolved(config) {
-            if (config.vituum.imports) {
-                imports(config.vituum.imports, config)
+        configResolved (config) {
+            imports(pluginUserConfig, config)
 
-                const watcher = chokidar.watch(config.vituum.imports.paths, {
-                    ignored: /(^|[/\\])\../,
-                    persistent: true
-                })
+            const watcher = chokidar.watch(pluginUserConfig.paths, {
+                ignored: /(^|[/\\])\../,
+                persistent: true
+            })
 
-                watcher.on('add', file => fileChanged(file, config)).on('unlink', file => fileChanged(file, config))
-            }
+            watcher.on('add', file => fileChanged(file, pluginUserConfig, config)).on('unlink', file => fileChanged(file, pluginUserConfig, config))
         }
     }
 }
 
-export default vitePluginImports
+export default plugin

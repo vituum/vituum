@@ -6,9 +6,15 @@ import FastGlob from 'fast-glob'
 import process from 'node:process'
 import { renameGenerateBundle } from './build.js'
 
+/**
+ * @type {typeof import("./common").getPackageInfo}
+ */
 export const getPackageInfo = (path) => JSON.parse(fs.readFileSync(resolve(dirname((fileURLToPath(path))), 'package.json')).toString())
 
-export const pluginError = (error, server) => {
+/**
+ * @type {typeof import("./common").pluginError}
+ */
+export const pluginError = (error, server, name) => {
     if (error) {
         if (!server) {
             return new Promise((resolve, reject) => {
@@ -20,7 +26,8 @@ export const pluginError = (error, server) => {
             type: 'error',
             err: {
                 message: error.message ?? error,
-                plugin: name
+                plugin: name,
+                stack: null
             }
         }), 50)
 
@@ -30,6 +37,9 @@ export const pluginError = (error, server) => {
     }
 }
 
+/**
+ * @type {typeof import("./common").pluginReload}
+ */
 export const pluginReload = ({ file, server }, { reload, formats }) => {
     if (
         (typeof reload === 'function' && reload(file)) ||
@@ -39,10 +49,15 @@ export const pluginReload = ({ file, server }, { reload, formats }) => {
     }
 }
 
+/**
+ * @param {string[]} formats
+ * @returns {import('vite').Plugin}
+ */
 export const pluginBundle = (formats) => {
     let resolvedConfig
 
     return {
+        name: '@vituum/vite-plugin-core:bundle',
         enforce: 'post',
         configResolved (config) {
             resolvedConfig = config
@@ -57,6 +72,9 @@ export const pluginBundle = (formats) => {
     }
 }
 
+/**
+ * @type {typeof import("./common").processData}
+ */
 export const processData = (paths, data = {}) => {
     let context = {}
 

@@ -2,6 +2,11 @@ import { rename } from 'node:fs/promises'
 import { relative, resolve } from 'path'
 import FastGlob from 'fast-glob'
 
+/**
+ * @param {string[]} paths
+ * @param {string[]} formats
+ * @returns {string[]}
+ */
 export const resolveInputPaths = (paths, formats) => FastGlob.sync([...paths]).map(entry => {
     if (formats.find(format => entry.endsWith(format.toString()))) {
         entry = `${entry}.html`
@@ -10,6 +15,11 @@ export const resolveInputPaths = (paths, formats) => FastGlob.sync([...paths]).m
     return resolve(process.cwd(), entry)
 })
 
+/**
+ * @param {string[]} files
+ * @param {string[]} formats
+ * @returns void
+ */
 export const renameBuildStart = async (files, formats) => {
     for (const file of files) {
         const format = formats.find(format => file.endsWith(format.replace(format, `${format}.html`)))
@@ -20,6 +30,11 @@ export const renameBuildStart = async (files, formats) => {
     }
 }
 
+/**
+ * @param {string[]} files
+ * @param {string[]} formats
+ * @returns void
+ */
 export const renameBuildEnd = async (files, formats) => {
     for (const file of files) {
         const format = formats.find(format => file.endsWith(format.replace(format, `${format}.html`)))
@@ -30,6 +45,13 @@ export const renameBuildEnd = async (files, formats) => {
     }
 }
 
+/**
+ * @param {string[]} files
+ * @param {string[]} formats
+ * @param {import('rollup').FunctionPluginHooks.generateBundle} bundle
+ * @param {import('./build.d.ts').transformPath} [transformPath]
+ * @returns {Promise<void>}
+ */
 export const renameGenerateBundle = async (files, formats, bundle, transformPath) => {
     for (const file of files) {
         const format = formats.find(format => file.endsWith(format.replace(format, `${format}.html`)))
