@@ -16,7 +16,7 @@ export const defaultConfig = {
  * @param {import('vituum/types/plugins/pages.d.ts').UserConfig} pluginUserConfig
  * @returns {import('vite').Plugin}
  */
-const plugin = (pluginUserConfig) => {
+const plugin = (pluginUserConfig = {}) => {
     pluginUserConfig = lodash.merge(defaultConfig, pluginUserConfig)
 
     return {

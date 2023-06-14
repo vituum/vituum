@@ -122,7 +122,7 @@ const fileChanged = (file, pluginUserConfig, config) => {
  * @param {import('vituum/types/plugins/imports.d.ts').UserConfig} pluginUserConfig
  * @returns {import('vite').Plugin}
  */
-const plugin = (pluginUserConfig) => {
+const plugin = (pluginUserConfig = {}) => {
     pluginUserConfig = lodash.merge(defaultConfig, pluginUserConfig)
 
     return {
