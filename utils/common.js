@@ -7,12 +7,12 @@ import process from 'node:process'
 import { renameGenerateBundle } from './build.js'
 
 /**
- * @type {typeof import("./common").getPackageInfo}
+ * @type {typeof import("./common.d.ts").getPackageInfo}
  */
 export const getPackageInfo = (path) => JSON.parse(fs.readFileSync(resolve(dirname((fileURLToPath(path))), 'package.json')).toString())
 
 /**
- * @type {typeof import("./common").pluginError}
+ * @type {typeof import("./common.d.ts").pluginError}
  */
 export const pluginError = (error, server, name) => {
     if (error) {
@@ -38,7 +38,7 @@ export const pluginError = (error, server, name) => {
 }
 
 /**
- * @type {typeof import("./common").pluginReload}
+ * @type {typeof import("./common.d.ts").pluginReload}
  */
 export const pluginReload = ({ file, server }, { reload, formats }) => {
     if (
@@ -73,7 +73,7 @@ export const pluginBundle = (formats) => {
 }
 
 /**
- * @type {typeof import("./common").processData}
+ * @type {typeof import("./common.d.ts").processData}
  */
 export const processData = (paths, data = {}) => {
     let context = {}
