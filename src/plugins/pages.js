@@ -37,6 +37,8 @@ const plugin = (pluginUserConfig = {}) => {
 
                     if (!req.originalUrl.startsWith('/' + viewsPath) && viewsIgnoredPaths.filter(path => req.originalUrl.startsWith(`/${path}`)).length === 0) {
                         transformedUrl = '/' + viewsPath + transformedUrl
+                    } else {
+                        transformedUrl = '/' + join(relative(viteDevServer.config.root, pluginUserConfig.root), transformedUrl)
                     }
 
                     const format = formats.find(format => {
