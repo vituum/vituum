@@ -14,12 +14,10 @@
     }
   },
   "include": [
-    "index.js",
-    "./types/**/*.d.ts",
-    "./utils/**/*.js",
-    "./plugins/**/*.js"
+    "./src/**/*.js",
+    "./types/**/*.d.ts"
   ],
   "files": [
-    "index.js"
+    "src/index.js"
   ]
 }

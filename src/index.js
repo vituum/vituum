@@ -1,10 +1,14 @@
 import pluginPages, { defaultConfig as defaultConfigPages } from './plugins/pages.js'
 import pluginImports, { defaultConfig as defaultConfigImports } from './plugins/imports.js'
 import { resolveInputPaths, renameGenerateBundle } from './utils/build.js'
+import { merge } from './utils/common.js'
 import { relative } from 'path'
-import lodash from 'lodash'
 
 const defaultConfig = {
+    input: [
+        './src/styles/*.{css,pcss,scss,sass,less,styl,stylus}',
+        './src/scripts/*.{js,ts,mjs}'
+    ],
     pages: defaultConfigPages,
     imports: defaultConfigImports
 }
@@ -12,9 +16,7 @@ const defaultConfig = {
 const defaultInput = [
     './src/emails/**/*.{json,latte,twig,liquid,njk,hbs,pug,html}',
     './src/pages/**/*.{json,latte,twig,liquid,njk,hbs,pug,html}',
-    '!./src/pages/**/*.{latte,twig,liquid,njk,hbs,pug,html}.json',
-    './src/styles/*.{css,pcss,scss,sass,less,styl,stylus}',
-    './src/scripts/*.{js,ts,mjs}'
+    '!./src/pages/**/*.{latte,twig,liquid,njk,hbs,pug,html}.json'
 ]
 
 /**
@@ -34,6 +36,7 @@ const pluginCore = (pluginUserConfig) => {
             if (userConfig?.build?.rollupOptions?.input) {
                 userConfig.build.rollupOptions.input = resolveInputPaths(userConfig.build.rollupOptions.input, pluginUserConfig.pages.formats)
             } else {
+                defaultInput.push(...pluginUserConfig.input)
                 userConfig.build = userConfig.build || {}
                 userConfig.build.rollupOptions = userConfig.build.rollupOptions || {}
                 userConfig.build.rollupOptions.input = resolveInputPaths(defaultInput, pluginUserConfig.pages.formats)
@@ -69,7 +72,7 @@ const pluginCore = (pluginUserConfig) => {
  * @returns [import('vite').Plugin]
  */
 const plugin = (pluginUserConfig = {}) => {
-    pluginUserConfig = lodash.merge(defaultConfig, pluginUserConfig)
+    pluginUserConfig = merge(defaultConfig, pluginUserConfig)
 
     return [pluginCore(pluginUserConfig), pluginPages(pluginUserConfig.pages), pluginImports(pluginUserConfig.imports)]
 }

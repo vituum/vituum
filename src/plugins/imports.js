@@ -1,8 +1,8 @@
 import FastGlob from 'fast-glob'
 import { dirname, normalize, relative, resolve, extname } from 'node:path'
+import { merge } from '../utils/common.js'
 import fs from 'node:fs'
 import chokidar from 'chokidar'
-import lodash from 'lodash'
 
 /**
  * @type {import('vituum/types/plugins/imports.d.ts').UserConfig}
@@ -123,7 +123,7 @@ const fileChanged = (file, pluginUserConfig, config) => {
  * @returns {import('vite').Plugin}
  */
 const plugin = (pluginUserConfig = {}) => {
-    pluginUserConfig = lodash.merge(defaultConfig, pluginUserConfig)
+    pluginUserConfig = merge(defaultConfig, pluginUserConfig)
 
     return {
         name: '@vituum/vite-plugin-imports',

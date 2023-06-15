@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import { join, resolve, relative } from 'node:path'
-import lodash from 'lodash'
+import { merge } from '../utils/common.js'
 
 /**
  * @type {import('vituum/types/plugins/pages.d.ts').UserConfig}
@@ -17,7 +17,7 @@ export const defaultConfig = {
  * @returns {import('vite').Plugin}
  */
 const plugin = (pluginUserConfig = {}) => {
-    pluginUserConfig = lodash.merge(defaultConfig, pluginUserConfig)
+    pluginUserConfig = merge(defaultConfig, pluginUserConfig)
 
     return {
         name: '@vituum/vite-plugin-pages',

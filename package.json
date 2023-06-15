@@ -1,8 +1,8 @@
 {
   "name": "vituum",
-  "version": "1.0.0-alpha.13",
+  "version": "1.0.0-alpha.16",
   "type": "module",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "tsc": "tsc",
     "eslint": "eslint '**/*.js' --fix"
@@ -20,16 +20,14 @@
     "typescript": "^5.1"
   },
   "files": [
-    "index.js",
-    "types",
-    "plugins",
-    "utils"
+    "src",
+    "types"
   ],
   "exports": {
-    ".": "./index.js",
+    ".": "./src/index.js",
+    "./plugins/*": "./src/plugins/*",
+    "./utils/*": "./src/utils/*",
     "./types": "./types/*",
-    "./plugins/*": "./plugins/*",
-    "./utils/*": "./utils/*",
     "./package.json": "./package.json"
   },
   "engines": {

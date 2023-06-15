@@ -6,6 +6,8 @@ import FastGlob from 'fast-glob'
 import process from 'node:process'
 import { renameGenerateBundle } from './build.js'
 
+export const merge = (object, sources) => lodash.mergeWith(object, sources, (a, b) => lodash.isArray(b) ? b : undefined)
+
 /**
  * @type {typeof import("vituum/types/utils/common.d.ts").getPackageInfo}
  */
