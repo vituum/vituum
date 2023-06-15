@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs'
 import { rename } from 'node:fs/promises'
 import { relative, resolve } from 'path'
 import FastGlob from 'fast-glob'
@@ -27,9 +28,10 @@ export const resolveInputPaths = (paths, formats) => {
 export const renameBuildStart = async (files, formats) => {
     for (const file of files) {
         const format = formats.find(format => file.endsWith(format.replace(format, `${format}.html`)))
+        const initialFile = file.replace('.html', '')
 
         if (format) {
-            await rename(file.replace('.html', ''), file)
+            await rename(initialFile, file).catch(() => {})
         }
     }
 }
@@ -42,9 +44,10 @@ export const renameBuildStart = async (files, formats) => {
 export const renameBuildEnd = async (files, formats) => {
     for (const file of files) {
         const format = formats.find(format => file.endsWith(format.replace(format, `${format}.html`)))
+        const initialFile = file.replace('.html', '')
 
         if (format) {
-            await rename(file, file.replace('.html', ''))
+            await rename(file, initialFile).catch(() => {})
         }
     }
 }
