@@ -9,7 +9,10 @@ import FastGlob from 'fast-glob'
  */
 export const resolveInputPaths = ({ paths, root = process.cwd() }, formats) => {
     return FastGlob.sync(
-        Array.isArray(paths) ? [...paths] : (typeof paths === 'string' ? paths : null)
+        Array.isArray(paths) ? [...paths] : (typeof paths === 'string' ? paths : null),
+        {
+            cwd: root
+        }
     ).map(entry => {
         if (formats.find(format => entry.endsWith(format.toString()))) {
             entry = `${entry}.html`

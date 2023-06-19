@@ -1,5 +1,5 @@
 export interface UserConfig {
     input?: string[];
-    pages?: import('./plugins/pages.d.ts').UserConfig;
-    imports?: import('./plugins/imports.d.ts').UserConfig;
+    pages?: import('./plugins/pages').UserConfig;
+    imports?: import('./plugins/imports').UserConfig;
 }
