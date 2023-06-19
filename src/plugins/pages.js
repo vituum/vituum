@@ -3,7 +3,7 @@ import { join, resolve, relative } from 'node:path'
 import { merge } from '../utils/common.js'
 
 /**
- * @type {import('vituum/types/plugins/pages.d.ts').UserConfig}
+ * @type {import('vituum/types/plugins/pages').UserConfig}
  */
 export const defaultConfig = {
     root: './src',
@@ -13,7 +13,7 @@ export const defaultConfig = {
 }
 
 /**
- * @param {import('vituum/types/plugins/pages.d.ts').UserConfig} pluginUserConfig
+ * @param {import('vituum/types/plugins/pages').UserConfig} pluginUserConfig
  * @returns {import('vite').Plugin}
  */
 const plugin = (pluginUserConfig = {}) => {
@@ -23,22 +23,22 @@ const plugin = (pluginUserConfig = {}) => {
         name: '@vituum/vite-plugin-pages',
         apply: 'serve',
         configureServer (viteDevServer) {
-            const viewsPath = relative(viteDevServer.config.root, resolve(viteDevServer.config.root, pluginUserConfig.dir))
-            const viewsIgnoredPaths = pluginUserConfig.ignoredPaths
+            const pagesPath = relative(viteDevServer.config.root, resolve(viteDevServer.config.root, pluginUserConfig.dir))
+            const pagesIgnoredPath = pluginUserConfig.ignoredPaths
             const formats = pluginUserConfig.formats
 
             return () => {
                 viteDevServer.middlewares.use(async (req, res, next) => {
-                    let transformedUrl = req.originalUrl.replace('.html', '')
+                    const url = new URL(req.originalUrl, 'http://localhost')
+                    const originalUrl = url.pathname
+                    let transformedUrl = originalUrl.replace('.html', '')
 
-                    if (req.originalUrl === '/' || req.originalUrl.endsWith('/')) {
+                    if (originalUrl === '/' || originalUrl.endsWith('/')) {
                         transformedUrl = transformedUrl + 'index'
                     }
 
-                    if (!req.originalUrl.startsWith('/' + viewsPath) && viewsIgnoredPaths.filter(path => req.originalUrl.startsWith(`/${path}`)).length === 0) {
-                        transformedUrl = '/' + viewsPath + transformedUrl
-                    } else {
-                        transformedUrl = '/' + join(relative(viteDevServer.config.root, pluginUserConfig.root), transformedUrl)
+                    if (!originalUrl.startsWith('/' + pagesPath) && pagesIgnoredPath.filter(path => originalUrl.startsWith(`/${path}`)).length === 0) {
+                        transformedUrl = '/' + pagesPath + transformedUrl
                     }
 
                     const format = formats.find(format => {
@@ -55,13 +55,13 @@ const plugin = (pluginUserConfig = {}) => {
                         transformedUrl = transformedUrl + '.html'
                     }
 
-                    if (format || req.originalUrl.endsWith('.json')) {
+                    if (format || originalUrl.endsWith('.json')) {
                         let output = await viteDevServer.transformIndexHtml(
                             transformedUrl,
                             fs.readFileSync(join(viteDevServer.config.root, transformedUrl.replace('.html', ''))).toString()
                         )
 
-                        if (req.originalUrl.endsWith('.json')) {
+                        if (originalUrl.endsWith('.json')) {
                             res.setHeader('Content-Type', 'application/json')
 
                             // noinspection HtmlUnknownTarget

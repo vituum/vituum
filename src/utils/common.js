@@ -9,12 +9,12 @@ import { renameGenerateBundle } from './build.js'
 export const merge = (object, sources) => lodash.mergeWith(object, sources, (a, b) => lodash.isArray(b) ? b : undefined)
 
 /**
- * @type {typeof import("vituum/types/utils/common.d.ts").getPackageInfo}
+ * @type {typeof import("vituum/types/utils/common").getPackageInfo}
  */
 export const getPackageInfo = (path) => JSON.parse(fs.readFileSync(resolve(dirname((fileURLToPath(path))), 'package.json')).toString())
 
 /**
- * @type {typeof import("vituum/types/utils/common.d.ts").pluginError}
+ * @type {typeof import("vituum/types/utils/common").pluginError}
  */
 export const pluginError = (error, server, name) => {
     if (error) {
@@ -40,7 +40,7 @@ export const pluginError = (error, server, name) => {
 }
 
 /**
- * @type {typeof import("vituum/types/utils/common.d.ts").pluginReload}
+ * @type {typeof import("vituum/types/utils/common").pluginReload}
  */
 export const pluginReload = ({ file, server }, { reload, formats }) => {
     if (
@@ -66,8 +66,11 @@ export const pluginBundle = (formats) => {
         },
         generateBundle: async (_, bundle) => {
             await renameGenerateBundle(
-                resolvedConfig.build.rollupOptions.input,
-                formats,
+                {
+                    files: resolvedConfig.build.rollupOptions.input,
+                    formats,
+                    root: resolvedConfig.root
+                },
                 bundle
             )
         }
@@ -75,9 +78,9 @@ export const pluginBundle = (formats) => {
 }
 
 /**
- * @type {typeof import("vituum/types/utils/common.d.ts").processData}
+ * @type {typeof import("vituum/types/utils/common").processData}
  */
-export const processData = (paths, data = {}) => {
+export const processData = ({ paths, root = process.cwd() }, data = {}) => {
     let context = {}
 
     lodash.merge(context, data)
@@ -85,7 +88,7 @@ export const processData = (paths, data = {}) => {
     const normalizePaths = Array.isArray(paths) ? paths.map(path => path.replace(/\\/g, '/')) : paths.replace(/\\/g, '/')
 
     FastGlob.sync(normalizePaths).forEach(entry => {
-        const path = resolve(process.cwd(), entry)
+        const path = resolve(root, entry)
 
         context = lodash.merge(context, JSON.parse(fs.readFileSync(path).toString()))
     })

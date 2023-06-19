@@ -1,14 +1,13 @@
-import { existsSync } from 'node:fs'
 import { rename } from 'node:fs/promises'
 import { relative, resolve } from 'path'
 import FastGlob from 'fast-glob'
 
 /**
- * @param {import('rollup').InputOption} paths
+ * @param {import('vituum/types/utils/build').resolveInputPathsOptions} options
  * @param {string[]} formats
  * @returns {string[]}
  */
-export const resolveInputPaths = (paths, formats) => {
+export const resolveInputPaths = ({ paths, root = process.cwd() }, formats) => {
     return FastGlob.sync(
         Array.isArray(paths) ? [...paths] : (typeof paths === 'string' ? paths : null)
     ).map(entry => {
@@ -16,7 +15,7 @@ export const resolveInputPaths = (paths, formats) => {
             entry = `${entry}.html`
         }
 
-        return resolve(process.cwd(), entry)
+        return resolve(root, entry)
     })
 }
 
@@ -53,18 +52,17 @@ export const renameBuildEnd = async (files, formats) => {
 }
 
 /**
- * @param {string[]} files
- * @param {string[]} formats
+ * @param {import('vituum/types/utils/build').renameGenerateBundleOptions} options
  * @param {import('rollup').OutputBundle} bundle
- * @param {import('vituum/types/utils/build.d.ts').transformPath} [transformPath]
+ * @param {import('vituum/types/utils/build').transformPath} [transformPath]
  * @returns {Promise<void>}
  */
-export const renameGenerateBundle = async (files, formats, bundle, transformPath) => {
+export const renameGenerateBundle = async ({ files, formats, root }, bundle, transformPath) => {
     for (const file of files) {
         const format = formats.find(format => file.endsWith(format.replace(format, `${format}.html`)))
 
         if (format) {
-            const path = relative(process.cwd(), file)
+            const path = relative(root, file)
             const replaceExt = path.endsWith(`.json.${format}.html`) ? `.${format}.html` : `.${format}`
 
             if (bundle[path] && formats.find(format => bundle[path].fileName.endsWith(format.replace(format, `${format}.html`)))) {

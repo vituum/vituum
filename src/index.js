@@ -20,7 +20,7 @@ const defaultInput = [
 ]
 
 /**
- * @param {import('vituum/types/index.d.ts').UserConfig} pluginUserConfig
+ * @param {import('vituum/types').UserConfig} pluginUserConfig
  * @returns {import('vite').Plugin}
  */
 const pluginCore = (pluginUserConfig) => {
@@ -34,12 +34,12 @@ const pluginCore = (pluginUserConfig) => {
             userConfig = config
 
             if (userConfig?.build?.rollupOptions?.input) {
-                userConfig.build.rollupOptions.input = resolveInputPaths(userConfig.build.rollupOptions.input, pluginUserConfig.pages.formats)
+                userConfig.build.rollupOptions.input = resolveInputPaths({ paths: userConfig.build.rollupOptions.input, root: userConfig.root }, pluginUserConfig.pages.formats)
             } else {
                 defaultInput.push(...pluginUserConfig.input)
                 userConfig.build = userConfig.build || {}
                 userConfig.build.rollupOptions = userConfig.build.rollupOptions || {}
-                userConfig.build.rollupOptions.input = resolveInputPaths(defaultInput, pluginUserConfig.pages.formats)
+                userConfig.build.rollupOptions.input = resolveInputPaths({ paths: defaultInput, root: userConfig.root }, pluginUserConfig.pages.formats)
             }
         },
         configResolved (config) {
@@ -47,8 +47,11 @@ const pluginCore = (pluginUserConfig) => {
         },
         generateBundle: async (_, bundle) => {
             await renameGenerateBundle(
-                resolvedConfig.build.rollupOptions.input,
-                pluginUserConfig.pages.formats,
+                {
+                    files: resolvedConfig.build.rollupOptions.input,
+                    formats: pluginUserConfig.pages.formats,
+                    root: resolvedConfig.root
+                },
                 bundle,
                 file => {
                     const pagesDir = relative(resolvedConfig.root, pluginUserConfig.pages.dir)
@@ -68,7 +71,7 @@ const pluginCore = (pluginUserConfig) => {
 }
 
 /**
- * @param {import('vituum/types/index.d.ts').UserConfig} pluginUserConfig
+ * @param {import('vituum/types').UserConfig} pluginUserConfig
  * @returns [import('vite').Plugin]
  */
 const plugin = (pluginUserConfig = {}) => {

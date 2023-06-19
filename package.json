@@ -1,8 +1,9 @@
 {
   "name": "vituum",
-  "version": "1.0.0-alpha.16",
+  "version": "1.0.0-alpha.17",
   "type": "module",
   "main": "src/index.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "tsc": "tsc",
     "eslint": "eslint '**/*.js' --fix"
@@ -14,8 +15,8 @@
     "vite": "^4.3"
   },
   "devDependencies": {
-    "@types/node": "^20.3.1",
-    "eslint": "^8.42",
+    "@types/node": "^20.3",
+    "eslint": "^8.43",
     "eslint-config-standard": "^17.1",
     "typescript": "^5.1"
   },

@@ -5,7 +5,7 @@ import fs from 'node:fs'
 import chokidar from 'chokidar'
 
 /**
- * @type {import('vituum/types/plugins/imports.d.ts').UserConfig}
+ * @type {import('vituum/types/plugins/imports').UserConfig}
  */
 export const defaultConfig = {
     filenamePattern: {
@@ -20,13 +20,13 @@ export const defaultConfig = {
 }
 
 /**
- * @param {import('vituum/types/plugins/imports.d.ts').UserConfig} options
+ * @param {import('vituum/types/plugins/imports').UserConfig} options
  * @param {import('vite').ResolvedConfig} config
  */
 const imports = (options, config) => {
     const filenamePattern = options.filenamePattern
     const ignoredPaths = Object.keys(filenamePattern).map(filename => `!**/${filename}`)
-    const getPaths = FastGlob.sync(options.paths.map(path => path.replace(/\\/g, '/')), { onlyFiles: false, ignore: ignoredPaths }).map(entry => resolve(process.cwd(), entry))
+    const getPaths = FastGlob.sync(options.paths.map(path => path.replace(/\\/g, '/')), { onlyFiles: false, ignore: ignoredPaths }).map(entry => resolve(config.root, entry))
     const paths = getPaths.filter(path => relative(config.root, dirname(path)).replace(/\\/g, '/').includes('/'))
     const dirPaths = {}
 
@@ -100,7 +100,7 @@ const imports = (options, config) => {
 
 /**
  * @param {string} file
- * @param {import('vituum/types/plugins/imports.d.ts').UserConfig} pluginUserConfig
+ * @param {import('vituum/types/plugins/imports').UserConfig} pluginUserConfig
  * @param {import('vite').ResolvedConfig} config
  */
 const fileChanged = (file, pluginUserConfig, config) => {
@@ -119,7 +119,7 @@ const fileChanged = (file, pluginUserConfig, config) => {
 }
 
 /**
- * @param {import('vituum/types/plugins/imports.d.ts').UserConfig} pluginUserConfig
+ * @param {import('vituum/types/plugins/imports').UserConfig} pluginUserConfig
  * @returns {import('vite').Plugin}
  */
 const plugin = (pluginUserConfig = {}) => {
