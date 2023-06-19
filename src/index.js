@@ -14,7 +14,7 @@ const defaultConfig = {
 }
 
 const defaultInput = [
-    './src/emails/*.{json,latte,twig,liquid,njk,hbs,pug,html}',
+    'index.html',
     './src/pages/**/*.{json,latte,twig,liquid,njk,hbs,pug,html}',
     '!./src/pages/**/*.{latte,twig,liquid,njk,hbs,pug,html}.json'
 ]

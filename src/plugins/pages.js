@@ -23,6 +23,7 @@ const plugin = (pluginUserConfig = {}) => {
         name: '@vituum/vite-plugin-pages',
         apply: 'serve',
         configureServer (viteDevServer) {
+            const pagesRoot = relative(viteDevServer.config.root, pluginUserConfig.root)
             const pagesPath = relative(viteDevServer.config.root, resolve(viteDevServer.config.root, pluginUserConfig.dir))
             const pagesIgnoredPath = pluginUserConfig.ignoredPaths
             const formats = pluginUserConfig.formats
@@ -37,8 +38,10 @@ const plugin = (pluginUserConfig = {}) => {
                         transformedUrl = transformedUrl + 'index'
                     }
 
-                    if (!originalUrl.startsWith('/' + pagesPath) && pagesIgnoredPath.filter(path => originalUrl.startsWith(`/${path}`)).length === 0) {
+                    if (!originalUrl.startsWith('/' + pagesPath) && !pagesIgnoredPath.find(path => originalUrl.startsWith(`/${path}`))) {
                         transformedUrl = '/' + pagesPath + transformedUrl
+                    } else if (!originalUrl.startsWith('/' + pagesRoot)) {
+                        transformedUrl = '/' + pagesRoot + transformedUrl
                     }
 
                     const format = formats.find(format => {
@@ -72,9 +75,11 @@ const plugin = (pluginUserConfig = {}) => {
 
                         res.statusCode = 200
                         res.end(output)
-                    } else {
+                    } else if (fs.existsSync(join(viteDevServer.config.root, transformedUrl))) {
                         req.url = transformedUrl
 
+                        next()
+                    } else {
                         next()
                     }
                 })
