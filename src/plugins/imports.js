@@ -26,15 +26,28 @@ export const defaultConfig = {
 const imports = (options, config) => {
     const filenamePattern = options.filenamePattern
     const ignoredPaths = Object.keys(filenamePattern).map(filename => `!**/${filename}`)
-    const getPaths = FastGlob.sync(options.paths.map(path => path.replace(/\\/g, '/')), { onlyFiles: false, ignore: ignoredPaths }).map(entry => resolve(config.root, entry))
-    const paths = getPaths.filter(path => relative(config.root, dirname(path)).replace(/\\/g, '/').includes('/'))
+    const paths = FastGlob.sync(options.paths.map(path => path.replace(/\\/g, '/')), { onlyFiles: false, ignore: ignoredPaths }).map(entry => resolve(config.root, entry))
     const dirPaths = {}
 
+    function isRoot(path) {
+        return Object.keys(filenamePattern).find(filename => {
+            if (
+                // @ts-ignore
+                Array.isArray(filenamePattern[filename]) && filenamePattern[filename].find(filename => path.endsWith(filename)) ||
+                path.endsWith(filenamePattern[filename])
+            ) {
+                return filename
+            }
+        })
+    }
+
     paths.forEach((path) => {
-        if (!dirPaths[dirname(path)]) {
-            dirPaths[dirname(path)] = [path]
-        } else {
-            dirPaths[dirname(path)].push(path)
+        if (!isRoot(dirname(path))) {
+            if (!dirPaths[dirname(path)]) {
+                dirPaths[dirname(path)] = [path]
+            } else {
+                dirPaths[dirname(path)].push(path)
+            }
         }
     })
 
