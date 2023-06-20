@@ -59,6 +59,11 @@ const plugin = (pluginUserConfig = {}) => {
                     }
 
                     if (format || originalUrl.endsWith('.json')) {
+                        if (!fs.existsSync(join(viteDevServer.config.root, transformedUrl.replace('.html', '')))) {
+                            next()
+                            return
+                        }
+
                         let output = await viteDevServer.transformIndexHtml(
                             transformedUrl,
                             fs.readFileSync(join(viteDevServer.config.root, transformedUrl.replace('.html', ''))).toString()

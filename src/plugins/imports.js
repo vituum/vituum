@@ -16,7 +16,7 @@ export const defaultConfig = {
         styles: /.(css|less|scss|pcss)$/,
         scripts: /.(js|mjs|ts)$/
     },
-    paths: ['./src/styles/**', './src/scripts/**']
+    paths: ['./src/styles/*/**', './src/scripts/*/**']
 }
 
 /**
