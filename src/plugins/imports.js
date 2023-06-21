@@ -126,7 +126,7 @@ const fileChanged = (file, pluginUserConfig, config) => {
     const filenamePattern = pluginUserConfig.filenamePattern
 
     pluginUserConfig.paths.forEach(path => {
-        const importsPath = relative(config.root, dirname(normalize(path)))
+        const importsPath = relative(config.root, dirname(normalize(path.replace('/*', ''))))
         const filePath = relative(config.root, dirname(file))
 
         if (filePath.startsWith(importsPath) && Object.keys(filenamePattern).filter(filename => file.endsWith(filename)).length === 0) {
