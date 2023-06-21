@@ -31,10 +31,16 @@ const imports = (options, config) => {
 
     function isRoot(path) {
         return Object.keys(filenamePattern).find(filename => {
+            function checkPattern (patternPath) {
+                return patternPath.split("/")
+                    .map((part, index) => index === 0 ? part : patternPath.split("/").slice(0, index + 1).join('/'))
+                    .find(filenamePatternPath => path.endsWith(filenamePatternPath))
+            }
+
             if (
                 // @ts-ignore
-                Array.isArray(filenamePattern[filename]) && filenamePattern[filename].find(filename => path.endsWith(filename)) ||
-                path.endsWith(filenamePattern[filename])
+                Array.isArray(filenamePattern[filename]) && filenamePattern[filename].find(filename => path.endsWith(checkPattern(filename))) ||
+                path.endsWith(checkPattern(filenamePattern[filename]))
             ) {
                 return filename
             }
