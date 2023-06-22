@@ -1,9 +1,9 @@
-module.exports = {
+export default {
     content: [
         './playground/**/*.{js,latte}'
     ],
     theme: {
-        extend: {},
+        extend: {}
     },
-    plugins: [],
+    plugins: []
 }
