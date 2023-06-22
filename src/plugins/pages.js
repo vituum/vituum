@@ -8,7 +8,6 @@ import { merge } from '../utils/common.js'
 export const defaultConfig = {
     root: './src',
     dir: './src/pages',
-    formats: ['json', 'latte', 'twig', 'liquid', 'njk', 'hbs', 'pug'],
     ignoredPaths: []
 }
 
@@ -26,67 +25,24 @@ const plugin = (pluginUserConfig = {}) => {
             const pagesRoot = relative(viteDevServer.config.root, pluginUserConfig.root)
             const pagesPath = relative(viteDevServer.config.root, resolve(viteDevServer.config.root, pluginUserConfig.dir))
             const pagesIgnoredPath = pluginUserConfig.ignoredPaths
-            const formats = pluginUserConfig.formats
 
             return () => {
                 viteDevServer.middlewares.use(async (req, res, next) => {
                     const url = new URL(req.originalUrl, 'http://localhost')
-                    const originalUrl = url.pathname
-                    let transformedUrl = originalUrl.replace('.html', '')
 
-                    if (originalUrl === '/' || originalUrl.endsWith('/')) {
-                        transformedUrl = transformedUrl + 'index'
+                    if (url.pathname.endsWith('/')) {
+                        url.pathname = url.pathname + 'index.html' + url.search
                     }
 
-                    if (!originalUrl.startsWith('/' + pagesPath) && !pagesIgnoredPath.find(path => originalUrl.startsWith(`/${path}`))) {
-                        transformedUrl = '/' + pagesPath + transformedUrl
-                    } else if (!originalUrl.startsWith('/' + pagesRoot)) {
-                        transformedUrl = '/' + pagesRoot + transformedUrl
+                    if (!url.pathname.startsWith('/' + pagesPath) && !pagesIgnoredPath.find(path => url.pathname.startsWith(`/${path}`))) {
+                        req.url = '/' + pagesPath + url.pathname + url.search
+                    } else if (!url.pathname.startsWith('/' + pagesRoot)) {
+                        req.url = '/' + pagesRoot + url.pathname + url.search
                     }
 
-                    const format = formats.find(format => {
-                        if (fs.existsSync(join(viteDevServer.config.root, `${transformedUrl}.${format}`))) {
-                            return format
-                        } else {
-                            return null
-                        }
-                    })
+                    req.originalUrl = req.url
 
-                    if (format) {
-                        transformedUrl = transformedUrl + `.${format}.html`
-                    } else {
-                        transformedUrl = transformedUrl + '.html'
-                    }
-
-                    if (format || originalUrl.endsWith('.json')) {
-                        if (!fs.existsSync(join(viteDevServer.config.root, transformedUrl.replace('.html', '')))) {
-                            next()
-                            return
-                        }
-
-                        let output = await viteDevServer.transformIndexHtml(
-                            transformedUrl,
-                            fs.readFileSync(join(viteDevServer.config.root, transformedUrl.replace('.html', ''))).toString()
-                        )
-
-                        if (originalUrl.endsWith('.json')) {
-                            res.setHeader('Content-Type', 'application/json')
-
-                            // noinspection HtmlUnknownTarget
-                            output = output.replace('<script type="module" src="/@vite/client"></script>', '')
-                        } else {
-                            res.setHeader('Content-Type', 'text/html')
-                        }
-
-                        res.statusCode = 200
-                        res.end(output)
-                    } else if (fs.existsSync(join(viteDevServer.config.root, transformedUrl))) {
-                        req.url = transformedUrl
-
-                        next()
-                    } else {
-                        next()
-                    }
+                    next()
                 })
             }
         }

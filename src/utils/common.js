@@ -5,6 +5,7 @@ import lodash from 'lodash'
 import FastGlob from 'fast-glob'
 import process from 'node:process'
 import { renameGenerateBundle } from './build.js'
+import {join} from "node:path";
 
 export const merge = (object, sources) => lodash.mergeWith(object, sources, (a, b) => lodash.isArray(b) ? b : undefined)
 
@@ -73,6 +74,56 @@ export const pluginBundle = (formats) => {
                 },
                 bundle
             )
+        }
+    }
+}
+
+/**
+ * @param {string} name
+ * @param {string[]} formats
+ * @returns {import('vite').Plugin}
+ */
+export const pluginMiddleware = (name = '@vituum/vite-plugin-twig:middleware', formats = []) => {
+    return {
+        name,
+        apply: 'serve',
+        configureServer (viteDevServer) {
+            return () => {
+                viteDevServer.middlewares.use(async (req, res, next) => {
+                    const url = new URL(req.originalUrl, 'http://localhost')
+                    const originalUrl = url.pathname.endsWith('/') ? url.pathname + 'index.html' : url.pathname
+                    const originalFilename = originalUrl.replace('.html', '')
+
+                    const format = formats.find(format => {
+                        if (fs.existsSync(join(viteDevServer.config.root, `${originalFilename}.${format}`))) {
+                            return format
+                        } else {
+                            return null
+                        }
+                    })
+
+                    if (format) {
+                        let output = await viteDevServer.transformIndexHtml(
+                            originalFilename + `.${format}.html`,
+                            fs.readFileSync(join(viteDevServer.config.root, originalFilename + `.${format}`)).toString()
+                        )
+
+                        if (originalUrl.endsWith('.json')) {
+                            res.setHeader('Content-Type', 'application/json')
+
+                            // noinspection HtmlUnknownTarget
+                            output = output.replace('<script type="module" src="/@vite/client"></script>', '')
+                        } else {
+                            res.setHeader('Content-Type', 'text/html')
+                        }
+
+                        res.statusCode = 200
+                        res.end(output)
+                    } else {
+                        next()
+                    }
+                })
+            }
         }
     }
 }
