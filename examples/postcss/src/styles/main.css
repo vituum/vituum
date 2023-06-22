@@ -1,10 +1,7 @@
 @import "https://cdn.jsdelivr.net/npm/simpledotcss@2.2.0/simple.min.css";
-@import "Components/+.scss";
-
-$accent: #bf4080;
 
 :root {
-  --accent: $accent;
+  --accent: #DD3A0A;
 
   user-select: none;
 }
@@ -20,6 +17,6 @@ body {
 
   & > div {
     font-size: 2.5rem;
-    color: $accent;
+    color: var(--accent);
   }
 }
