@@ -1,6 +1,8 @@
-import { defineConfig } from 'vituum'
-import posthtml from '@vituum/posthtml'
+import vituum from 'vituum'
+import posthtml from '@vituum/vite-plugin-posthtml'
 
-export default defineConfig({
-    integrations: [posthtml()]
-})
+export default {
+    plugins: [vituum(), posthtml({
+        root: './src'
+    })]
+}

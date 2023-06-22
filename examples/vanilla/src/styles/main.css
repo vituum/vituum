@@ -14,8 +14,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
 
-  & > div {
-    font-size: 2.5rem;
-  }
+body > div {
+  font-size: 2.5rem;
 }

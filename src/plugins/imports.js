@@ -40,7 +40,7 @@ const imports = (options, config) => {
             if (
                 // @ts-ignore
                 Array.isArray(filenamePattern[filename]) && filenamePattern[filename].find(filename => path.endsWith(checkPattern(filename))) ||
-                path.endsWith(checkPattern(filenamePattern[filename]))
+                !Array.isArray(filenamePattern[filename]) && path.endsWith(checkPattern(filenamePattern[filename]))
             ) {
                 return filename
             }

@@ -1,9 +1,11 @@
-import { defineConfig } from 'vituum'
-import liquid from '@vituum/liquid'
+import vituum from 'vituum'
+import liquid from '@vituum/vite-plugin-liquid'
 
-export default defineConfig({
-    integrations: [liquid()],
-    templates: {
-        format: 'liquid'
-    }
-})
+export default {
+    plugins: [
+        vituum(),
+        liquid({
+            root: './src'
+        })
+    ]
+}

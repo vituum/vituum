@@ -1,9 +1,6 @@
-import { defineConfig } from 'vituum'
-import latte from '@vituum/latte'
+import vituum from 'vituum'
+import latte from '@vituum/vite-plugin-latte'
 
-export default defineConfig({
-    integrations: [latte()],
-    templates: {
-        format: 'latte'
-    }
-})
+export default {
+    plugins: [vituum(), latte()]
+}

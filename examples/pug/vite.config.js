@@ -1,9 +1,8 @@
-import { defineConfig } from 'vituum'
-import pug from '@vituum/pug'
+import vituum from 'vituum'
+import pug from '@vituum/vite-plugin-pug'
 
-export default defineConfig({
-    integrations: [pug()],
-    templates: {
-        format: 'pug'
-    }
-})
+export default {
+    plugins: [vituum(), pug({
+        root: './src'
+    })]
+}

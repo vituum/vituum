@@ -1,5 +1,5 @@
 {
-  "name": "@example/boostrap",
+  "name": "@example/winduum",
   "version": "0.0.1",
   "type": "module",
   "private": true,
@@ -8,12 +8,9 @@
     "build": "vite build",
     "preview": "vite preview"
   },
-  "dependencies": {
-    "@popperjs/core": "^2.11.8"
-  },
   "devDependencies": {
+    "@vituum/vite-plugin-tailwindcss": "^1.0.0-alpha.2",
     "vituum": "^1.0.0-alpha.23",
-    "sass": "^1.63.6",
-    "bootstrap": "^5.3.0"
+    "winduum": "^0.1.18"
   }
 }

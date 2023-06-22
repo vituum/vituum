@@ -1,9 +1,8 @@
-import { defineConfig } from 'vituum'
-import twig from '@vituum/twig'
+import vituum from 'vituum'
+import twig from '@vituum/vite-plugin-twig'
 
-export default defineConfig({
-    integrations: [twig()],
-    templates: {
-        format: 'twig'
-    }
-})
+export default {
+    plugins: [vituum(), twig({
+        root: './src'
+    })]
+}

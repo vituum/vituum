@@ -62,18 +62,22 @@ export const renameBuildEnd = async (files, formats) => {
  */
 export const renameGenerateBundle = async ({ files, formats, root }, bundle, transformPath) => {
     for (const file of files) {
-        const format = formats.find(format => file.endsWith(format.replace(format, `${format}.html`)))
-
-        if (format) {
+        if (file.endsWith('html')) {
+            const format = formats.find(format => file.endsWith(format.replace(format, `${format}.html`)))
             const path = relative(root, file)
-            const replaceExt = path.endsWith(`.json.${format}.html`) ? `.${format}.html` : `.${format}`
 
-            if (bundle[path] && formats.find(format => bundle[path].fileName.endsWith(format.replace(format, `${format}.html`)))) {
-                if (transformPath) {
-                    bundle[path].fileName = transformPath(bundle[path].fileName).replace(replaceExt, '')
-                } else {
-                    bundle[path].fileName = bundle[path].fileName.replace(replaceExt, '')
+            if (format) {
+                const replaceExt = path.endsWith(`.json.${format}.html`) ? `.${format}.html` : `.${format}`
+
+                if (bundle[path] && formats.find(format => bundle[path].fileName.endsWith(format.replace(format, `${format}.html`)))) {
+                    if (transformPath) {
+                        bundle[path].fileName = transformPath(bundle[path].fileName).replace(replaceExt, '')
+                    } else {
+                        bundle[path].fileName = bundle[path].fileName.replace(replaceExt, '')
+                    }
                 }
+            } else if (transformPath) {
+                bundle[path].fileName = transformPath(bundle[path].fileName)
             }
         }
     }

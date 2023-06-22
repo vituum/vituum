@@ -5,11 +5,11 @@
   "private": true,
   "scripts": {
     "dev": "vite dev",
-    "build": "vituum build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@vituum/tailwind": "^0.1.3",
-    "vituum": "^0.0.37"
+    "@vituum/vite-plugin-tailwindcss": "^1.0.0-alpha.2",
+    "vituum": "^1.0.0-alpha.23"
   }
 }
