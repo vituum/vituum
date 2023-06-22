@@ -29,21 +29,23 @@ const imports = (options, config) => {
     const paths = FastGlob.sync(options.paths.map(path => path.replace(/\\/g, '/')), { onlyFiles: false, ignore: ignoredPaths }).map(entry => resolve(config.root, entry))
     const dirPaths = {}
 
-    function isRoot(path) {
+    function isRoot (path) {
         return Object.keys(filenamePattern).find(filename => {
             function checkPattern (patternPath) {
-                return patternPath.split("/")
-                    .map((part, index) => index === 0 ? part : patternPath.split("/").slice(0, index + 1).join('/'))
+                return patternPath.split('/')
+                    .map((part, index) => index === 0 ? part : patternPath.split('/').slice(0, index + 1).join('/'))
                     .find(filenamePatternPath => path.endsWith(filenamePatternPath))
             }
 
             if (
                 // @ts-ignore
-                Array.isArray(filenamePattern[filename]) && filenamePattern[filename].find(filename => path.endsWith(checkPattern(filename))) ||
-                !Array.isArray(filenamePattern[filename]) && path.endsWith(checkPattern(filenamePattern[filename]))
+                (Array.isArray(filenamePattern[filename]) && filenamePattern[filename].find(filename => path.endsWith(checkPattern(filename)))) ||
+                (!Array.isArray(filenamePattern[filename]) && path.endsWith(checkPattern(filenamePattern[filename])))
             ) {
                 return filename
             }
+
+            return null
         })
     }
 

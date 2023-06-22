@@ -5,7 +5,7 @@ import lodash from 'lodash'
 import FastGlob from 'fast-glob'
 import process from 'node:process'
 import { renameGenerateBundle } from './build.js'
-import {join} from "node:path";
+import { join } from 'node:path'
 
 export const merge = (object, sources) => lodash.mergeWith(object, sources, (a, b) => lodash.isArray(b) ? b : undefined)
 

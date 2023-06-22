@@ -8,5 +8,5 @@
   "env": {
     "browser": true
   },
-  "ignorePatterns": ["src", "public", "**/*.d.ts"]
+  "ignorePatterns": ["playground", "dist", "examples/**/src", "**/*.d.ts"]
 }

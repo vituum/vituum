@@ -1,5 +1,4 @@
-import fs from 'node:fs'
-import { join, resolve, relative } from 'node:path'
+import { resolve, relative } from 'node:path'
 import { merge } from '../utils/common.js'
 
 /**
