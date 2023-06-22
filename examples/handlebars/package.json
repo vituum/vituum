@@ -10,6 +10,6 @@
   },
   "devDependencies": {
     "@vituum/vite-plugin-handlebars": "^1.0.0-alpha.3",
-    "vituum": "^1.0.0-alpha.23"
+    "vituum": "^1.0.0-alpha.24"
   }
 }

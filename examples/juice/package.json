@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vituum": "^1.0.0-alpha.23",
+    "vituum": "^1.0.0-alpha.24",
     "@vituum/vite-plugin-juice": "^1.0.0-alpha.2",
     "@vituum/vite-plugin-postcss": "^1.0.0-alpha.2",
     "@vituum/vite-plugin-posthtml": "^1.0.0-alpha.4"

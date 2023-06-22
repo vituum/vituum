@@ -2,12 +2,12 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>{{ title }}</title>
+    <title>{{title}}</title>
     <link rel="stylesheet" href="/src/styles/main.css">
 </head>
     <body>
-        <h1>{{ title }}</h1>
-        {% include '../Components/Nav.njk' %}
-        <img src="/src/assets/logo.png" width="400" style="margin-top: 1.5rem">
+        <h1>{{title}}</h1>
+        {{> "components/nav.hbs"}}
+        <img src="/src/assets/logo.png" style="margin-top: 1.5rem">
     </body>
 </html>

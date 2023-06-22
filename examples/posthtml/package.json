@@ -10,6 +10,6 @@
   },
   "devDependencies": {
     "@vituum/vite-plugin-posthtml": "^1.0.0-alpha.4",
-    "vituum": "^1.0.0-alpha.23"
+    "vituum": "^1.0.0-alpha.24"
   }
 }

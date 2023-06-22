@@ -1,4 +1,4 @@
 {
-  "template": "templates/Layout/Main.hbs",
+  "template": "layouts/main.hbs",
   "navigation": ["index", "about", "hello"]
 }
