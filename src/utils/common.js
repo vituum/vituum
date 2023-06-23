@@ -6,6 +6,7 @@ import FastGlob from 'fast-glob'
 import process from 'node:process'
 import { renameGenerateBundle } from './build.js'
 import { join } from 'node:path'
+import { minimatch } from 'minimatch'
 
 export const merge = (object, sources) => lodash.mergeWith(object, sources, (a, b) => lodash.isArray(b) ? b : undefined)
 
@@ -54,25 +55,26 @@ export const pluginReload = ({ file, server }, { reload, formats }) => {
 
 /**
  * @param {string[]} formats
+ * @param {string} name
  * @returns {import('vite').Plugin}
  */
-export const pluginBundle = (formats) => {
+export const pluginBundle = (formats, name = '@vituum/vite-plugin-core') => {
     let resolvedConfig
 
     return {
-        name: '@vituum/vite-plugin-core:bundle',
+        name: name + ':bundle',
         enforce: 'post',
         configResolved (config) {
             resolvedConfig = config
         },
         generateBundle: async (_, bundle) => {
             await renameGenerateBundle(
+                bundle,
                 {
-                    files: resolvedConfig.build.rollupOptions.input,
-                    formats,
-                    root: resolvedConfig.root
-                },
-                bundle
+                    files: [...resolvedConfig.build.rollupOptions.input],
+                    root: resolvedConfig.root,
+                    formats
+                }
             )
         }
     }
@@ -145,4 +147,38 @@ export const processData = ({ paths, root = process.cwd() }, data = {}) => {
     })
 
     return context
+}
+
+/**
+ * @type {typeof import("vituum/types/utils/common").pluginTransform}
+ */
+export const pluginTransform = async (content, { path, filename, server }, { name, options, resolvedConfig, renderTemplate }) => {
+    if (
+        !options.formats.find(format => filename.replace('.html', '').endsWith(format)) ||
+        (filename.replace('.html', '').endsWith('.json') && !content.startsWith('{'))
+    ) {
+        return content
+    }
+
+    if (
+        (filename.replace('.html', '').endsWith('.json') && content.startsWith('{')) &&
+        (JSON.parse(content)?.format && !options.formats.includes(JSON.parse(content)?.format))
+    ) {
+        return content
+    }
+
+    if (options.ignoredPaths.find(ignoredPath => minimatch(path.replace('.html', ''), ignoredPath) === true)) {
+        return content
+    }
+
+    const render = await renderTemplate({ filename, server, root: resolvedConfig.root }, content, options)
+    const renderError = pluginError(render.error, server, name)
+
+    if (renderError && server) {
+        return
+    } else if (renderError) {
+        return renderError
+    }
+
+    return render.content
 }

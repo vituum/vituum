@@ -9,6 +9,7 @@ const defaultConfig = {
         './src/styles/*.{css,pcss,scss,sass,less,styl,stylus}',
         './src/scripts/*.{js,ts,mjs}'
     ],
+    formats: ['json', 'latte', 'twig', 'liquid', 'njk', 'hbs', 'pug'],
     pages: defaultConfigPages,
     imports: defaultConfigImports
 }
@@ -34,12 +35,12 @@ const pluginCore = (pluginUserConfig) => {
             userConfig = config
 
             if (userConfig?.build?.rollupOptions?.input) {
-                userConfig.build.rollupOptions.input = resolveInputPaths({ paths: userConfig.build.rollupOptions.input, root: userConfig.root }, pluginUserConfig.pages.formats)
+                userConfig.build.rollupOptions.input = resolveInputPaths({ paths: userConfig.build.rollupOptions.input, root: userConfig.root }, pluginUserConfig.formats)
             } else {
                 defaultInput.push(...pluginUserConfig.input)
                 userConfig.build = userConfig.build || {}
                 userConfig.build.rollupOptions = userConfig.build.rollupOptions || {}
-                userConfig.build.rollupOptions.input = resolveInputPaths({ paths: defaultInput, root: userConfig.root }, pluginUserConfig.pages.formats)
+                userConfig.build.rollupOptions.input = resolveInputPaths({ paths: defaultInput, root: userConfig.root }, pluginUserConfig.formats)
             }
         },
         configResolved (config) {
@@ -47,12 +48,11 @@ const pluginCore = (pluginUserConfig) => {
         },
         generateBundle: async (_, bundle) => {
             await renameGenerateBundle(
+                bundle,
                 {
-                    files: resolvedConfig.build.rollupOptions.input,
-                    formats: pluginUserConfig.pages.formats,
+                    files: [...resolvedConfig.build.rollupOptions.input],
                     root: resolvedConfig.root
                 },
-                bundle,
                 file => {
                     const pagesDir = relative(resolvedConfig.root, pluginUserConfig.pages.dir)
                     const pagesRoot = pluginUserConfig.pages.root ? relative(resolvedConfig.root, pluginUserConfig.pages.root) : null

@@ -55,25 +55,28 @@ export const renameBuildEnd = async (files, formats) => {
 }
 
 /**
- * @param {import('vituum/types/utils/build').renameGenerateBundleOptions} options
  * @param {import('rollup').OutputBundle} bundle
+ * @param {import('vituum/types/utils/build').renameGenerateBundleOptions} options
  * @param {import('vituum/types/utils/build').transformPath} [transformPath]
  * @returns {Promise<void>}
  */
-export const renameGenerateBundle = async ({ files, formats, root }, bundle, transformPath) => {
+export const renameGenerateBundle = async (bundle, { files = [], root = process.cwd(), formats }, transformPath) => {
     for (const file of files) {
         if (file.endsWith('html')) {
-            const format = formats.find(format => file.endsWith(format.replace(format, `${format}.html`)))
             const path = relative(root, file)
 
-            if (format) {
-                const replaceExt = path.endsWith(`.json.${format}.html`) ? `.${format}.html` : `.${format}`
+            if (formats) {
+                const format = formats.find(format => file.endsWith(format.replace(format, `${format}.html`)))
 
-                if (bundle[path] && formats.find(format => bundle[path].fileName.endsWith(format.replace(format, `${format}.html`)))) {
-                    if (transformPath) {
-                        bundle[path].fileName = transformPath(bundle[path].fileName).replace(replaceExt, '')
-                    } else {
-                        bundle[path].fileName = bundle[path].fileName.replace(replaceExt, '')
+                if (format) {
+                    const replaceExt = path.endsWith(`.json.${format}.html`) ? `.${format}.html` : `.${format}`
+
+                    if (bundle[path] && formats.find(format => bundle[path].fileName.endsWith(format.replace(format, `${format}.html`)))) {
+                        if (transformPath) {
+                            bundle[path].fileName = transformPath(bundle[path].fileName).replace(replaceExt, '')
+                        } else {
+                            bundle[path].fileName = bundle[path].fileName.replace(replaceExt, '')
+                        }
                     }
                 }
             } else if (transformPath) {

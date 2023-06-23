@@ -1,6 +1,6 @@
 {
   "name": "vituum",
-  "version": "1.0.0-alpha.24",
+  "version": "1.0.0-alpha.25",
   "type": "module",
   "main": "src/index.js",
   "scripts": {
@@ -11,7 +11,8 @@
     "chokidar": "^3.5",
     "fast-glob": "^3.2",
     "lodash": "^4.17",
-    "vite": "^4.3"
+    "vite": "^4.3",
+    "minimatch": "^9.0"
   },
   "devDependencies": {
     "@types/node": "^20.3",
