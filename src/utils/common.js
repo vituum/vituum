@@ -172,7 +172,7 @@ export const pluginTransform = async (content, { path, filename, server }, { nam
         return content
     }
 
-    const render = await renderTemplate({ filename, server, root: resolvedConfig.root }, content, options)
+    const render = await renderTemplate({ filename, server, resolvedConfig }, content, options)
     const renderError = pluginError(render.error, server, name)
 
     if (renderError && server) {
@@ -183,3 +183,5 @@ export const pluginTransform = async (content, { path, filename, server }, { nam
 
     return render.content
 }
+
+export { normalizePath }

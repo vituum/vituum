@@ -10,14 +10,14 @@
   },
   "devDependencies": {
     "vite": "^4.3.9",
-    "@vituum/vite-plugin-handlebars": "^1.0.0-alpha.3",
-    "@vituum/vite-plugin-juice": "^1.0.0-alpha.2",
-    "@vituum/vite-plugin-latte": "^1.0.0-alpha.10",
-    "@vituum/vite-plugin-liquid": "^1.0.0-alpha.12",
-    "@vituum/vite-plugin-nunjucks": "^1.0.0-alpha.1",
-    "@vituum/vite-plugin-posthtml": "^1.0.0-alpha.4",
-    "@vituum/vite-plugin-pug": "^1.0.0-alpha.1",
-    "@vituum/vite-plugin-tailwindcss": "^1.0.0-alpha.2",
-    "@vituum/vite-plugin-twig": "^1.0.0-alpha.7"
+    "@vituum/vite-plugin-handlebars": "^1.0.0-beta.1",
+    "@vituum/vite-plugin-juice": "^1.0.0-beta.1",
+    "@vituum/vite-plugin-latte": "^1.0.0-beta.1",
+    "@vituum/vite-plugin-liquid": "^1.0.0-beta.2",
+    "@vituum/vite-plugin-nunjucks": "^1.0.0-beta.1",
+    "@vituum/vite-plugin-posthtml": "^1.0.0-beta.2",
+    "@vituum/vite-plugin-pug": "^1.0.0-beta.1",
+    "@vituum/vite-plugin-tailwindcss": "^1.0.0-beta.1",
+    "@vituum/vite-plugin-twig": "^1.0.0-beta.2"
   }
 }

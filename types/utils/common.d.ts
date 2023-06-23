@@ -33,7 +33,7 @@ declare interface PluginOptions {
 declare interface PluginTransformCtx {
     filename?: string
     server?: import('vite').ViteDevServer
-    root?: string
+    resolvedConfig?: import('vite').ResolvedConfig
 }
 
 declare interface PluginTransformOptions {
