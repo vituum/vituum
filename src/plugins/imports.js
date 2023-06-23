@@ -3,6 +3,7 @@ import { dirname, normalize, relative, resolve, extname } from 'node:path'
 import { merge } from '../utils/common.js'
 import fs from 'node:fs'
 import chokidar from 'chokidar'
+import { normalizePath } from 'vite'
 
 /**
  * @type {import('vituum/types/plugins/imports').UserConfig}
@@ -26,7 +27,7 @@ export const defaultConfig = {
 const imports = (options, config) => {
     const filenamePattern = options.filenamePattern
     const ignoredPaths = Object.keys(filenamePattern).map(filename => `!**/${filename}`)
-    const paths = FastGlob.sync(options.paths.map(path => path.replace(/\\/g, '/')), { onlyFiles: false, ignore: ignoredPaths }).map(entry => resolve(config.root, entry))
+    const paths = FastGlob.sync(options.paths.map(path => normalizePath(path)), { onlyFiles: false, ignore: ignoredPaths }).map(entry => normalizePath(resolve(config.root, entry)))
     const dirPaths = {}
 
     function isRoot (path) {
@@ -64,10 +65,10 @@ const imports = (options, config) => {
             const pattern = dirPaths[dir].filter(path => {
                 if (Array.isArray(filenamePattern[filename])) {
                     // @ts-ignore
-                    return filenamePattern[filename].some(string => path.replace(/\\/g, '/').includes(string.replace(/\\/g, '/')))
+                    return filenamePattern[filename].some(string => path.includes(string))
                 } else {
                     // @ts-ignore
-                    return path.replace(/\\/g, '/').includes(filenamePattern[filename].replace(/\\/g, '/'))
+                    return path.includes(filenamePattern[filename])
                 }
             })
 

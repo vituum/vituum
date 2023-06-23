@@ -7,6 +7,7 @@ import process from 'node:process'
 import { renameGenerateBundle } from './build.js'
 import { join } from 'node:path'
 import { minimatch } from 'minimatch'
+import { normalizePath } from 'vite'
 
 export const merge = (object, sources) => lodash.mergeWith(object, sources, (a, b) => lodash.isArray(b) ? b : undefined)
 
@@ -85,9 +86,9 @@ export const pluginBundle = (formats, name = '@vituum/vite-plugin-core') => {
  * @param {string[]} formats
  * @returns {import('vite').Plugin}
  */
-export const pluginMiddleware = (name = '@vituum/vite-plugin-twig:middleware', formats = []) => {
+export const pluginMiddleware = (name = '@vituum/vite-plugin-core', formats = []) => {
     return {
-        name,
+        name: name + ':middleware',
         apply: 'serve',
         configureServer (viteDevServer) {
             return () => {
@@ -138,7 +139,7 @@ export const processData = ({ paths, root = process.cwd() }, data = {}) => {
 
     lodash.merge(context, data)
 
-    const normalizePaths = Array.isArray(paths) ? paths.map(path => path.replace(/\\/g, '/')) : paths.replace(/\\/g, '/')
+    const normalizePaths = Array.isArray(paths) ? paths.map(path => normalizePath(path)) : normalizePath(paths)
 
     FastGlob.sync(normalizePaths).forEach(entry => {
         const path = resolve(root, entry)

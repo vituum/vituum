@@ -1,5 +1,6 @@
 import { rename } from 'node:fs/promises'
 import { relative, resolve } from 'path'
+import { normalizePath } from 'vite'
 import FastGlob from 'fast-glob'
 
 /**
@@ -18,7 +19,7 @@ export const resolveInputPaths = ({ paths, root = process.cwd() }, formats) => {
             entry = `${entry}.html`
         }
 
-        return resolve(root, entry)
+        return normalizePath(resolve(root, entry))
     })
 }
 
@@ -63,7 +64,7 @@ export const renameBuildEnd = async (files, formats) => {
 export const renameGenerateBundle = async (bundle, { files = [], root = process.cwd(), formats }, transformPath) => {
     for (const file of files) {
         if (file.endsWith('html')) {
-            const path = relative(root, file)
+            const path = normalizePath(relative(root, file))
 
             if (formats) {
                 const format = formats.find(format => file.endsWith(format.replace(format, `${format}.html`)))
@@ -71,16 +72,16 @@ export const renameGenerateBundle = async (bundle, { files = [], root = process.
                 if (format) {
                     const replaceExt = path.endsWith(`.json.${format}.html`) ? `.${format}.html` : `.${format}`
 
-                    if (bundle[path] && formats.find(format => bundle[path].fileName.endsWith(format.replace(format, `${format}.html`)))) {
+                    if (bundle[path] && formats.find(format => normalizePath(bundle[path].fileName).endsWith(format.replace(format, `${format}.html`)))) {
                         if (transformPath) {
-                            bundle[path].fileName = transformPath(bundle[path].fileName).replace(replaceExt, '')
+                            bundle[path].fileName = normalizePath(transformPath(bundle[path].fileName).replace(replaceExt, ''))
                         } else {
-                            bundle[path].fileName = bundle[path].fileName.replace(replaceExt, '')
+                            bundle[path].fileName = normalizePath(bundle[path].fileName.replace(replaceExt, ''))
                         }
                     }
                 }
             } else if (transformPath) {
-                bundle[path].fileName = transformPath(bundle[path].fileName)
+                bundle[path].fileName = normalizePath(transformPath(bundle[path].fileName))
             }
         }
     }

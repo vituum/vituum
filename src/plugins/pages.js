@@ -1,5 +1,6 @@
 import { resolve, relative } from 'node:path'
 import { merge } from '../utils/common.js'
+import { normalizePath } from 'vite'
 
 /**
  * @type {import('vituum/types/plugins/pages').UserConfig}
@@ -21,8 +22,8 @@ const plugin = (pluginUserConfig = {}) => {
         name: '@vituum/vite-plugin-pages',
         apply: 'serve',
         configureServer (viteDevServer) {
-            const pagesRoot = relative(viteDevServer.config.root, pluginUserConfig.root)
-            const pagesPath = relative(viteDevServer.config.root, resolve(viteDevServer.config.root, pluginUserConfig.dir))
+            const pagesRoot = relative(viteDevServer.config.root, normalizePath(pluginUserConfig.root))
+            const pagesPath = relative(viteDevServer.config.root, resolve(viteDevServer.config.root, normalizePath(pluginUserConfig.dir)))
             const pagesIgnoredPath = pluginUserConfig.ignoredPaths
 
             return () => {

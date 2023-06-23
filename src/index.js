@@ -3,6 +3,7 @@ import pluginImports, { defaultConfig as defaultConfigImports } from './plugins/
 import { resolveInputPaths, renameGenerateBundle } from './utils/build.js'
 import { merge } from './utils/common.js'
 import { relative } from 'path'
+import { normalizePath } from 'vite'
 
 const defaultConfig = {
     input: [
@@ -54,8 +55,8 @@ const pluginCore = (pluginUserConfig) => {
                     root: resolvedConfig.root
                 },
                 file => {
-                    const pagesDir = relative(resolvedConfig.root, pluginUserConfig.pages.dir)
-                    const pagesRoot = pluginUserConfig.pages.root ? relative(resolvedConfig.root, pluginUserConfig.pages.root) : null
+                    const pagesDir = normalizePath(relative(resolvedConfig.root, pluginUserConfig.pages.dir))
+                    const pagesRoot = pluginUserConfig.pages.root ? normalizePath(relative(resolvedConfig.root, pluginUserConfig.pages.root)) : null
 
                     if (file.includes(pagesDir)) {
                         return relative(pagesDir, file)
