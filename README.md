@@ -10,8 +10,6 @@
 
 # ⚡⚙️ Vituum
 
-> Still in early development.
-
 Fast Prototyping with Template Engines in Vite
 
 - ⚡ Vite Plugins
