@@ -1,6 +1,6 @@
 {
   "name": "vituum",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.5",
   "type": "module",
   "main": "src/index.js",
   "scripts": {

@@ -10,6 +10,7 @@ const defaultConfig = {
         './src/styles/*.{css,pcss,scss,sass,less,styl,stylus}',
         './src/scripts/*.{js,ts,mjs}'
     ],
+    normalizeBasePath: false,
     formats: ['json', 'latte', 'twig', 'liquid', 'njk', 'hbs', 'pug'],
     pages: defaultConfigPages,
     imports: defaultConfigImports
@@ -52,7 +53,8 @@ const pluginCore = (pluginUserConfig) => {
                 bundle,
                 {
                     files: [...resolvedConfig.build.rollupOptions.input],
-                    root: resolvedConfig.root
+                    root: resolvedConfig.root,
+                    normalizeBasePath: userConfig.normalizeBasePath
                 },
                 file => {
                     const pagesDir = normalizePath(relative(resolvedConfig.root, pluginUserConfig.pages.dir))

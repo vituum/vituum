@@ -6,6 +6,7 @@ export interface renameGenerateBundleOptions {
     files: string[]
     root: string
     formats?: string[]
+    normalizeBasePath?: boolean
 }
 
 export interface resolveInputPathsOptions {

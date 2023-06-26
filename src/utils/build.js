@@ -61,10 +61,15 @@ export const renameBuildEnd = async (files, formats) => {
  * @param {import('vituum/types/utils/build').transformPath} [transformPath]
  * @returns {Promise<void>}
  */
-export const renameGenerateBundle = async (bundle, { files = [], root = process.cwd(), formats }, transformPath) => {
+export const renameGenerateBundle = async (bundle, { files = [], root = process.cwd(), formats, normalizeBasePath = false }, transformPath) => {
     for (const file of files) {
         if (file.endsWith('html')) {
             const path = normalizePath(relative(root, file))
+
+            if (normalizeBasePath) {
+                // @ts-ignore
+                bundle[path].source = bundle[path].source.replaceAll(relative(file, root).replace('../', ''), '.')
+            }
 
             if (formats) {
                 const format = formats.find(format => file.endsWith(format.replace(format, `${format}.html`)))
