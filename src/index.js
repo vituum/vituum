@@ -54,7 +54,7 @@ const pluginCore = (pluginUserConfig) => {
                 {
                     files: [...resolvedConfig.build.rollupOptions.input],
                     root: resolvedConfig.root,
-                    normalizeBasePath: userConfig.normalizeBasePath
+                    normalizeBasePath: pluginUserConfig.normalizeBasePath
                 },
                 file => {
                     const pagesDir = normalizePath(relative(resolvedConfig.root, pluginUserConfig.pages.dir))
