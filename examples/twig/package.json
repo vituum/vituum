@@ -10,6 +10,6 @@
   },
   "devDependencies": {
     "@vituum/vite-plugin-twig": "^1.0.0-beta.2",
-    "vituum": "^1.0.0-beta.3"
+    "vituum": "^1.0.0-beta.4"
   }
 }
