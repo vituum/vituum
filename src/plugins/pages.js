@@ -31,7 +31,7 @@ const plugin = (pluginUserConfig = {}) => {
                     const url = new URL(req.originalUrl, 'http://localhost')
 
                     if (url.pathname.endsWith('/')) {
-                        url.pathname = url.pathname + 'index.html' + url.search
+                        url.pathname = url.pathname + 'index.html'
                     }
 
                     if (!url.pathname.startsWith('/' + pagesPath) && !pagesIgnoredPath.find(path => url.pathname.startsWith(`/${path}`))) {
