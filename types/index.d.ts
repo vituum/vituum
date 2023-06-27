@@ -4,3 +4,5 @@ export interface UserConfig {
     pages?: import('./plugins/pages').UserConfig
     imports?: import('./plugins/imports').UserConfig
 }
+
+export default function plugin(options?: UserConfig) : import('vite').Plugin
