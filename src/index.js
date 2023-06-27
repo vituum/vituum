@@ -1,16 +1,13 @@
 import pluginPages, { defaultConfig as defaultConfigPages } from './plugins/pages.js'
 import pluginImports, { defaultConfig as defaultConfigImports } from './plugins/imports.js'
-import { resolveInputPaths, renameGenerateBundle } from './utils/build.js'
+import { resolveInputPaths } from './utils/build.js'
 import { merge } from './utils/common.js'
-import { relative } from 'path'
-import { normalizePath } from 'vite'
 
 const defaultConfig = {
     input: [
         './src/styles/*.{css,pcss,scss,sass,less,styl,stylus}',
         './src/scripts/*.{js,ts,mjs}'
     ],
-    normalizeBasePath: false,
     formats: ['json', 'latte', 'twig', 'liquid', 'njk', 'hbs', 'pug'],
     pages: defaultConfigPages,
     imports: defaultConfigImports
@@ -28,11 +25,10 @@ const defaultInput = [
  */
 const pluginCore = (pluginUserConfig) => {
     let userConfig
-    let resolvedConfig
 
     return {
         name: '@vituum/vite-plugin-core',
-        enforce: 'post',
+        enforce: 'pre',
         config (config) {
             userConfig = config
 
@@ -44,31 +40,6 @@ const pluginCore = (pluginUserConfig) => {
                 userConfig.build.rollupOptions = userConfig.build.rollupOptions || {}
                 userConfig.build.rollupOptions.input = resolveInputPaths({ paths: defaultInput, root: userConfig.root }, pluginUserConfig.formats)
             }
-        },
-        configResolved (config) {
-            resolvedConfig = config
-        },
-        generateBundle: async (_, bundle) => {
-            await renameGenerateBundle(
-                bundle,
-                {
-                    files: [...resolvedConfig.build.rollupOptions.input],
-                    root: resolvedConfig.root,
-                    normalizeBasePath: pluginUserConfig.normalizeBasePath
-                },
-                file => {
-                    const pagesDir = normalizePath(relative(resolvedConfig.root, pluginUserConfig.pages.dir))
-                    const pagesRoot = pluginUserConfig.pages.root ? normalizePath(relative(resolvedConfig.root, pluginUserConfig.pages.root)) : null
-
-                    if (file.includes(pagesDir)) {
-                        return relative(pagesDir, file)
-                    } else if (pagesRoot && file.includes(pagesRoot)) {
-                        return relative(pagesRoot, file)
-                    } else {
-                        return file
-                    }
-                }
-            )
         }
     }
 }
