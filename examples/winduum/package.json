@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@vituum/vite-plugin-tailwindcss": "^1.0.0-beta.1",
-    "vituum": "^1.0.0-beta.3",
+    "@vituum/vite-plugin-tailwindcss": "^1.0.0",
+    "vituum": "^1.0.0",
     "winduum": "^0.1.18"
   }
 }

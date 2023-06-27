@@ -47,7 +47,7 @@ You can try Vituum online on [Stackblitz](https://vituum.dev/guide/#trying-vituu
 
 ### Requirements
 
-- [Node.js LTS (18.x)](https://nodejs.org/en/download/)
+- [Node.js LTS (16.x)](https://nodejs.org/en/download/)
 
 ## Licence
 MIT
