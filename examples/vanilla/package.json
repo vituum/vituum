@@ -5,13 +5,13 @@
   "private": true,
   "scripts": {
     "dev": "vite dev",
-    "build": "vituum build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "canvas-confetti": "^1.6.0"
   },
   "devDependencies": {
-    "vituum": "^0.0.37"
+    "vituum": "^1.0.0"
   }
 }

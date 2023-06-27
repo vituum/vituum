@@ -1,9 +1,8 @@
-import { defineConfig } from 'vituum'
-import nunjucks from '@vituum/nunjucks'
+import vituum from 'vituum'
+import nunjucks from '@vituum/vite-plugin-nunjucks'
 
-export default defineConfig({
-    integrations: [nunjucks()],
-    templates: {
-        format: 'njk'
-    }
-})
+export default {
+    plugins: [vituum(), nunjucks({
+        root: './src'
+    })]
+}

@@ -5,15 +5,15 @@
   "private": true,
   "scripts": {
     "dev": "vite dev",
-    "build": "vituum build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@popperjs/core": "^2.11.6"
+    "@popperjs/core": "^2.11.8"
   },
   "devDependencies": {
-    "vituum": "^0.0.37",
-    "sass": "^1.56.2",
-    "bootstrap": "^5.2.3"
+    "vituum": "^1.0.0",
+    "sass": "^1.63.6",
+    "bootstrap": "^5.3.0"
   }
 }

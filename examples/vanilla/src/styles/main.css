@@ -1,4 +1,4 @@
-@import "https://cdn.jsdelivr.net/npm/simpledotcss@2.1.0/simple.min.css";
+@import "https://cdn.jsdelivr.net/npm/simpledotcss@2.2.0/simple.min.css";
 
 :root {
   --accent: #038aff;
@@ -14,8 +14,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
 
-  & > div {
-    font-size: 2.5rem;
-  }
+body > div {
+  font-size: 2.5rem;
 }

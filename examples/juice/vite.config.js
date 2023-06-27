@@ -1,7 +1,15 @@
-import { defineConfig } from 'vituum'
-import posthtml from '@vituum/posthtml'
-import juice from '@vituum/juice'
+import vituum from 'vituum'
+import postcss from '@vituum/vite-plugin-postcss'
+import posthtml from '@vituum/vite-plugin-posthtml'
+import juice from '@vituum/vite-plugin-juice'
 
-export default defineConfig({
-    integrations: [posthtml(), juice()]
-})
+export default {
+    plugins: [
+        vituum(),
+        postcss(),
+        posthtml({
+            root: './src/emails'
+        }),
+        juice()
+    ]
+}

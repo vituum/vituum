@@ -1,10 +1,14 @@
-import { defineConfig } from 'vituum'
+import vituum from 'vituum'
 
-export default defineConfig({
-    imports: {
-        filenamePattern: {
-            '+.css': false,
-            '+.less': 'src/styles'
-        }
-    }
-})
+export default {
+    plugins: [
+        vituum({
+            imports: {
+                filenamePattern: {
+                    '+.css': [],
+                    '+.less': 'src/styles'
+                }
+            }
+        })
+    ]
+}

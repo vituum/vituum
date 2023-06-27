@@ -1,3 +1,5 @@
-import { defineConfig } from 'vituum'
+import vituum from 'vituum'
 
-export default defineConfig()
+export default {
+    plugins: [vituum()]
+}

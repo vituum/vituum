@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "strict": false,
+    "noEmit": true,
+    "target": "es2020",
+    "module": "es2022",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "vituum/*": ["./*"]
+    }
+  },
+  "include": [
+    "./src/**/*.js",
+    "./types/**/*.d.ts"
+  ],
+  "files": [
+    "src/index.js"
+  ]
+}

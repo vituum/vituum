@@ -3,12 +3,10 @@
   "rules": {
     "indent": ["error", 4],
     "no-new": "off",
-    "space-before-function-paren": ["error", "never"],
-    "import/extensions": ["error", "ignorePackages"],
-    "multiline-ternary": ["error", "never"]
+    "import/extensions": ["error", "ignorePackages"]
   },
   "env": {
     "browser": true
   },
-  "ignorePatterns": ["src", "public"]
+  "ignorePatterns": ["playground", "dist", "examples/**/src", "**/*.d.ts"]
 }
