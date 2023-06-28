@@ -1,6 +1,6 @@
 ## 1.0.0 (2023-06-27)
 * feat: stable 1.0 release, vite ^4.3.9
-* read more about changes and how to upgrade from 0.0.x [here](https://vituum.dev/guide/migrating-1.0.html)
+* read more about changes and how to upgrade from 0.0.x [here](https://vituum.dev/guide/migrating-1-0.html)
 
 ## 0.0.42 (2023-04-14)
 * feat: deps update, vite ^4.2.1
