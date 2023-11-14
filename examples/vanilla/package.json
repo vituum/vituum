@@ -9,9 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "canvas-confetti": "^1.6.0"
+    "canvas-confetti": "^1"
   },
   "devDependencies": {
-    "vituum": "^1.0.0"
+    "vituum": "^1"
   }
 }

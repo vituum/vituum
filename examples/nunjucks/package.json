@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@vituum/vite-plugin-nunjucks": "^1.0.0",
-    "vituum": "^1.0.0"
+    "@vituum/vite-plugin-nunjucks": "^1",
+    "vituum": "^1"
   }
 }
