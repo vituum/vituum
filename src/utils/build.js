@@ -68,7 +68,7 @@ export const renameGenerateBundle = async (bundle, { files = [], root = process.
 
             if (normalizeBasePath) {
                 // @ts-ignore
-                bundle[path].source = bundle[path].source.replaceAll(relative(file, root).replace('../', ''), '.')
+                bundle[path].source = bundle[path].source.replaceAll(normalizePath(relative(file, root)).replace('../', ''), '.')
             }
 
             if (formats) {
