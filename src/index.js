@@ -32,6 +32,10 @@ const pluginCore = (pluginUserConfig) => {
         config (config) {
             userConfig = config
 
+            if (!userConfig?.optimizeDeps?.entries) {
+                userConfig.optimizeDeps.entries = []
+            }
+
             if (userConfig?.build?.rollupOptions?.input) {
                 userConfig.build.rollupOptions.input = resolveInputPaths({ paths: userConfig.build.rollupOptions.input, root: userConfig.root }, pluginUserConfig.formats)
             } else {
