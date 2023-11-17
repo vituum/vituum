@@ -20,7 +20,7 @@ const defaultInput = [
 ]
 
 /**
- * @param {import('vituum/types').UserConfig} pluginUserConfig
+ * @param {import('vituum').UserConfig} pluginUserConfig
  * @returns {import('vite').Plugin}
  */
 const pluginCore = (pluginUserConfig) => {
@@ -31,6 +31,11 @@ const pluginCore = (pluginUserConfig) => {
         enforce: 'pre',
         config (config) {
             userConfig = config
+
+            if (!userConfig?.optimizeDeps?.entries) {
+                userConfig.optimizeDeps = userConfig.optimizeDeps || {}
+                userConfig.optimizeDeps.entries = []
+            }
 
             if (userConfig?.build?.rollupOptions?.input) {
                 userConfig.build.rollupOptions.input = resolveInputPaths({ paths: userConfig.build.rollupOptions.input, root: userConfig.root }, pluginUserConfig.formats)
@@ -45,8 +50,8 @@ const pluginCore = (pluginUserConfig) => {
 }
 
 /**
- * @param {import('vituum/types').UserConfig} pluginUserConfig
- * @returns [import('vite').Plugin]
+ * @param {import('vituum').UserConfig} pluginUserConfig
+ * @returns [...import('vite').Plugin]
  */
 const plugin = (pluginUserConfig = {}) => {
     pluginUserConfig = merge(defaultConfig, pluginUserConfig)
