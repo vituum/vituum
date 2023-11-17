@@ -1,3 +1,8 @@
+## 1.1.0 (2023-11-17)
+* feat: upgrade to vite ^5
+* feat: deps update
+* fix: warning message with optimizeDeps
+
 ## 1.0.1 (2023-11-14)
 * fix: #27 normalizePath on windows
 
