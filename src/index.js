@@ -33,6 +33,7 @@ const pluginCore = (pluginUserConfig) => {
             userConfig = config
 
             if (!userConfig?.optimizeDeps?.entries) {
+                userConfig.optimizeDeps = userConfig.optimizeDeps || {}
                 userConfig.optimizeDeps.entries = []
             }
 
