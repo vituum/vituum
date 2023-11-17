@@ -20,7 +20,7 @@ const defaultInput = [
 ]
 
 /**
- * @param {import('vituum/types').UserConfig} pluginUserConfig
+ * @param {import('vituum').UserConfig} pluginUserConfig
  * @returns {import('vite').Plugin}
  */
 const pluginCore = (pluginUserConfig) => {
@@ -49,8 +49,8 @@ const pluginCore = (pluginUserConfig) => {
 }
 
 /**
- * @param {import('vituum/types').UserConfig} pluginUserConfig
- * @returns [import('vite').Plugin]
+ * @param {import('vituum').UserConfig} pluginUserConfig
+ * @returns [...import('vite').Plugin]
  */
 const plugin = (pluginUserConfig = {}) => {
     pluginUserConfig = merge(defaultConfig, pluginUserConfig)
