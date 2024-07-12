@@ -3,6 +3,7 @@
   "version": "1.1.0",
   "type": "module",
   "main": "src/index.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "tsc": "tsc",
     "eslint": "eslint '**/*.js' --fix"
