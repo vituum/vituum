@@ -65,8 +65,8 @@ const plugin = (pluginUserConfig = {}) => {
                     normalizeBasePath: pluginUserConfig.normalizeBasePath
                 },
                 file => {
-                    const pagesDir = normalizePath(relative(resolvedConfig.root, pluginUserConfig.dir))
-                    const pagesRoot = pluginUserConfig.root ? normalizePath(relative(resolvedConfig.root, pluginUserConfig.root)) : null
+                    const pagesDir = normalizePath(pluginUserConfig.dir)
+                    const pagesRoot = normalizePath(pluginUserConfig.root)
 
                     if (file.includes(pagesDir)) {
                         return relative(pagesDir, file)
