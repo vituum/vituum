@@ -85,9 +85,9 @@ const imports = (options, config) => {
                         }
 
                         if (fs.statSync(path).isFile()) {
-                            imports = imports + `@import "${relativePath}";\r\n`
+                            imports = imports + `@import "./${relativePath}";\r\n`
                         } else {
-                            imports = imports + `@import "${relativePath}/${filename}";\r\n`
+                            imports = imports + `@import "./${relativePath}/${filename}";\r\n`
                         }
                     })
                 }

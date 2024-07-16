@@ -1,3 +1,6 @@
+## 1.1.1 (2023-11-17)
+* fix: css imports paths
+
 ## 1.1.0 (2023-11-17)
 * feat: upgrade to vite ^5
 * feat: deps update
