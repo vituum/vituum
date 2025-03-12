@@ -1,3 +1,6 @@
+## 1.2.0 (2025-03-12)
+* feat: upgrade to vite ^6
+
 ## 1.1.1 (2023-11-17)
 * fix: css imports paths
 
