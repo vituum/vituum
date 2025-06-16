@@ -17,6 +17,12 @@ export const merge = (object, sources) => lodash.mergeWith(object, sources, (a, 
 export const getPackageInfo = (path) => JSON.parse(fs.readFileSync(resolve(dirname((fileURLToPath(path))), 'package.json')).toString())
 
 /**
+ * @type {typeof import("vituum/types/utils/common").resolveRollupInput}
+ * if input is with named entrypoints it will just return the filenames and leaves the names behind
+ */
+export const resolveRollupInput = input => Array.isArray(input) ? input : Object.values(input)
+
+/**
  * @type {typeof import("vituum/types/utils/common").pluginError}
  */
 export const pluginError = (error, server, name) => {
@@ -72,7 +78,7 @@ export const pluginBundle = (formats, name = '@vituum/vite-plugin-core') => {
             await renameGenerateBundle(
                 bundle,
                 {
-                    files: [...resolvedConfig.build.rollupOptions.input],
+                    files: [...resolveRollupInput(resolvedConfig.build.rollupOptions.input)],
                     root: resolvedConfig.root,
                     formats
                 }
