@@ -1,5 +1,5 @@
 import { resolve, relative } from 'node:path'
-import { merge } from '../utils/common.js'
+import { merge, resolveRollupInput } from '../utils/common.js'
 import { normalizePath } from 'vite'
 import { renameGenerateBundle } from '../utils/build.js'
 
@@ -60,11 +60,20 @@ const plugin = (pluginUserConfig = {}) => {
             await renameGenerateBundle(
                 bundle,
                 {
-                    files: [...resolvedConfig.build.rollupOptions.input],
+                    files: [...resolveRollupInput(resolvedConfig.build.rollupOptions.input)],
                     root: resolvedConfig.root,
                     normalizeBasePath: pluginUserConfig.normalizeBasePath
                 },
                 file => {
+                    // if it's a named entrypoint it find its name to use it as filename
+                    const input = resolvedConfig.build.rollupOptions.input
+                    if (!Array.isArray(input) && typeof input === 'object') {
+                        // entrypoints are named
+                        const extname = file.split('.').pop()
+                        const name = Object.entries(input).find(([key, value]) => value.endsWith(file))[0]
+                        file = name + '.' + extname
+                    }
+
                     const pagesDir = normalizePath(relative(resolvedConfig.root, pluginUserConfig.dir))
                     const pagesRoot = pluginUserConfig.root ? normalizePath(relative(resolvedConfig.root, pluginUserConfig.root)) : null
 

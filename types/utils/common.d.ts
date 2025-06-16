@@ -48,6 +48,8 @@ declare interface PluginTransformOptions {
 
 export declare function getPackageInfo(path: string) : Package
 
+export declare function resolveRollupInput(input: string[] | string | Record<string, string>): string | string[]
+
 export declare function pluginError(error: Error | string, server: import('vite').ViteDevServer, name: string) : boolean | Promise<string>
 
 export declare function pluginReload(config: HmrContext, options: ReloadOptions) : void

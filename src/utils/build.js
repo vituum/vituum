@@ -6,21 +6,29 @@ import FastGlob from 'fast-glob'
 /**
  * @param {import('vituum/types/utils/build').resolveInputPathsOptions} options
  * @param {string[]} formats
- * @returns {string[]}
+ * @returns {string[] | Record<string, string>}
  */
 export const resolveInputPaths = ({ paths, root = process.cwd() }, formats) => {
-    return FastGlob.sync(
-        Array.isArray(paths) ? [...paths] : (typeof paths === 'string' ? paths : null),
-        {
-            cwd: root
-        }
-    ).map(entry => {
+    const entryTransform = entry => {
         if (formats.find(format => entry.endsWith(format.toString()))) {
             entry = `${entry}.html`
         }
 
         return normalizePath(resolve(root, entry))
-    })
+    }
+
+    if (!Array.isArray(paths) && typeof paths === 'object') {
+        return Object.fromEntries(Object.entries(paths).map(([output, input]) => {
+            return [output, entryTransform(input)]
+        }))
+    }
+
+    return FastGlob.sync(
+        Array.isArray(paths) ? [...paths] : (typeof paths === 'string' ? paths : null),
+        {
+            cwd: root
+        }
+    ).map(entryTransform)
 }
 
 /**
