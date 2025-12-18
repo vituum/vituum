@@ -1,4 +1,4 @@
-import { EmittedFile } from "rollup"
+import { EmittedFile } from "rolldown"
 
 export declare function transformPath(file: EmittedFile["fileName"]) : string
 
@@ -10,6 +10,6 @@ export interface renameGenerateBundleOptions {
 }
 
 export interface resolveInputPathsOptions {
-    paths: import('rollup').InputOption
+    paths: import('rolldown').InputOption
     root: string
 }

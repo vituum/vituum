@@ -1,23 +1,27 @@
 {
   "name": "vituum",
-  "version": "1.2.0",
+  "version": "2.0.0-next.1",
   "type": "module",
   "main": "src/index.js",
   "scripts": {
     "tsc": "tsc",
-    "eslint": "eslint '**/*.js' --fix"
+    "eslint": "eslint '**/*.js'",
+    "eslint-fix": "eslint '**/*.js' --fix"
   },
   "dependencies": {
     "chokidar": "^3.5",
     "fast-glob": "^3.3",
     "lodash": "^4.17",
-    "vite": "^6.2",
-    "minimatch": "^10.0"
+    "minimatch": "^10.1",
+    "vite": "^8.0.0-beta.3"
   },
   "devDependencies": {
-    "@types/node": "^20.9",
-    "eslint": "^8.53",
-    "eslint-config-standard": "^17.1",
+    "@eslint/js": "^9.39",
+    "@stylistic/eslint-plugin": "^5.6",
+    "@types/node": "^25",
+    "eslint": "^9.39",
+    "globals": "^16.5.0",
+    "rolldown": "^1.0.0-beta.55",
     "typescript": "^5.2"
   },
   "files": [
