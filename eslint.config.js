@@ -17,6 +17,6 @@ export default defineConfig([
         ...globals.browser,
       },
     },
-    ignores: ['playground', 'dist', 'examples/**/src', '**/*.d.ts'],
+    ignores: ['playground', '**/dist/**', 'examples/**/src', '**/*.d.ts'],
   },
 ])

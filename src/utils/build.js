@@ -1,4 +1,5 @@
 import { rename } from 'node:fs/promises'
+import process from 'node:process'
 import { relative, resolve } from 'path'
 import { normalizePath } from 'vite'
 import FastGlob from 'fast-glob'
@@ -9,18 +10,18 @@ import FastGlob from 'fast-glob'
  * @returns {string[]}
  */
 export const resolveInputPaths = ({ paths, root = process.cwd() }, formats) => {
-    return FastGlob.sync(
-        Array.isArray(paths) ? [...paths] : (typeof paths === 'string' ? paths : null),
-        {
-            cwd: root
-        }
-    ).map(entry => {
-        if (formats.find(format => entry.endsWith(format.toString()))) {
-            entry = `${entry}.html`
-        }
+  return FastGlob.sync(
+    Array.isArray(paths) ? [...paths] : (typeof paths === 'string' ? paths : null),
+    {
+      cwd: root,
+    },
+  ).map((entry) => {
+    if (formats.find(format => entry.endsWith(format.toString()))) {
+      entry = `${entry}.html`
+    }
 
-        return normalizePath(resolve(root, entry))
-    })
+    return normalizePath(resolve(root, entry))
+  })
 }
 
 /**
@@ -29,14 +30,14 @@ export const resolveInputPaths = ({ paths, root = process.cwd() }, formats) => {
  * @returns void
  */
 export const renameBuildStart = async (files, formats) => {
-    for (const file of files) {
-        const format = formats.find(format => file.endsWith(format.replace(format, `${format}.html`)))
-        const initialFile = file.replace('.html', '')
+  for (const file of files) {
+    const format = formats.find(format => file.endsWith(format.replace(format, `${format}.html`)))
+    const initialFile = file.replace('.html', '')
 
-        if (format) {
-            await rename(initialFile, file).catch(() => {})
-        }
+    if (format) {
+      await rename(initialFile, file).catch(() => {})
     }
+  }
 }
 
 /**
@@ -45,14 +46,14 @@ export const renameBuildStart = async (files, formats) => {
  * @returns void
  */
 export const renameBuildEnd = async (files, formats) => {
-    for (const file of files) {
-        const format = formats.find(format => file.endsWith(format.replace(format, `${format}.html`)))
-        const initialFile = file.replace('.html', '')
+  for (const file of files) {
+    const format = formats.find(format => file.endsWith(format.replace(format, `${format}.html`)))
+    const initialFile = file.replace('.html', '')
 
-        if (format) {
-            await rename(file, initialFile).catch(() => {})
-        }
+    if (format) {
+      await rename(file, initialFile).catch(() => {})
     }
+  }
 }
 
 /**
@@ -62,42 +63,45 @@ export const renameBuildEnd = async (files, formats) => {
  * @returns {Promise<void>}
  */
 export const renameGenerateBundle = async (bundle, { files = [], root = process.cwd(), formats, normalizeBasePath = false }, transformPath) => {
-    for (const file of files) {
-        if (file.endsWith('html')) {
-            const path = Object.keys(bundle).find(key => {
-                const entry = bundle[key]
+  for (const file of files) {
+    if (file.endsWith('html')) {
+      const path = Object.keys(bundle).find((key) => {
+        const entry = bundle[key]
 
-                if (entry.type === 'asset') {
-                    return entry.originalFileNames && entry.originalFileNames.includes(file)
-                } else {
-                    return null
-                }
-            })
-
-            if (!path) continue
-
-            if (normalizeBasePath) {
-                // @ts-ignore
-                bundle[path].source = bundle[path].source.replaceAll(normalizePath(relative(file, root)).replace('../', ''), '.')
-            }
-
-            if (formats) {
-                const format = formats.find(format => file.endsWith(format.replace(format, `${format}.html`)))
-
-                if (format) {
-                    const replaceExt = path.endsWith(`.json.${format}.html`) ? `.${format}.html` : `.${format}`
-
-                    if (bundle[path] && formats.find(format => normalizePath(bundle[path].fileName).endsWith(format.replace(format, `${format}.html`)))) {
-                        if (transformPath) {
-                            bundle[path].fileName = normalizePath(transformPath(bundle[path].fileName).replace(replaceExt, ''))
-                        } else {
-                            bundle[path].fileName = normalizePath(bundle[path].fileName.replace(replaceExt, ''))
-                        }
-                    }
-                }
-            } else if (transformPath) {
-                bundle[path].fileName = normalizePath(transformPath(bundle[path].fileName))
-            }
+        if (entry.type === 'asset') {
+          return entry.originalFileNames && entry.originalFileNames.includes(file)
         }
+        else {
+          return null
+        }
+      })
+
+      if (!path) continue
+
+      if (normalizeBasePath) {
+        // @ts-ignore
+        bundle[path].source = bundle[path].source.replaceAll(normalizePath(relative(file, root)).replace('../', ''), '.')
+      }
+
+      if (formats) {
+        const format = formats.find(format => file.endsWith(format.replace(format, `${format}.html`)))
+
+        if (format) {
+          const replaceExt = path.endsWith(`.json.${format}.html`) ? `.${format}.html` : `.${format}`
+
+          if (bundle[path] && formats.find(format => normalizePath(bundle[path].fileName).endsWith(format.replace(format, `${format}.html`)))) {
+            if (transformPath) {
+              bundle[path].fileName = normalizePath(transformPath(bundle[path].fileName).replace(replaceExt, ''))
+            }
+            else {
+              bundle[path].fileName = normalizePath(bundle[path].fileName.replace(replaceExt, ''))
+            }
+          }
+        }
+      }
+      else if (transformPath) {
+        bundle[path].fileName = normalizePath(transformPath(bundle[path].fileName))
+      }
     }
+  }
 }
