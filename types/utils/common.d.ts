@@ -46,6 +46,14 @@ declare interface PluginTransformOptions {
     }>
 }
 
+export declare function merge<
+    T extends object,
+    S extends object
+>(
+    object: T,
+    sources: S
+): T & S;
+
 export declare function getPackageInfo(path: string) : Package
 
 export declare function pluginError(error: Error | string, server: import('vite').ViteDevServer, name: string) : boolean | Promise<string>

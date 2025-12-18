@@ -37,14 +37,14 @@ const pluginCore = (pluginUserConfig) => {
         userConfig.optimizeDeps.entries = []
       }
 
-      if (userConfig?.build?.rollupOptions?.input) {
-        userConfig.build.rollupOptions.input = resolveInputPaths({ paths: userConfig.build.rollupOptions.input, root: userConfig.root }, pluginUserConfig.formats)
+      if (userConfig?.build?.rolldownOptions?.input) {
+        userConfig.build.rolldownOptions.input = resolveInputPaths({ paths: userConfig.build.rolldownOptions.input, root: userConfig.root }, pluginUserConfig.formats)
       }
       else {
         defaultInput.push(...pluginUserConfig.input)
         userConfig.build = userConfig.build || {}
-        userConfig.build.rollupOptions = userConfig.build.rollupOptions || {}
-        userConfig.build.rollupOptions.input = resolveInputPaths({ paths: defaultInput, root: userConfig.root }, pluginUserConfig.formats)
+        userConfig.build.rolldownOptions = userConfig.build.rolldownOptions || {}
+        userConfig.build.rolldownOptions.input = resolveInputPaths({ paths: defaultInput, root: userConfig.root }, pluginUserConfig.formats)
       }
     },
   }

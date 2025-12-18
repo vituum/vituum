@@ -1,12 +1,14 @@
 {
   "name": "vituum",
-  "version": "2.0.0-next.1",
+  "version": "2.0.0-next.5",
   "type": "module",
   "main": "src/index.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "tsc": "tsc",
     "eslint": "eslint '**/*.js'",
-    "eslint-fix": "eslint '**/*.js' --fix"
+    "eslint-fix": "eslint '**/*.js' --fix",
+    "publish-next": "npm publish --tag next"
   },
   "dependencies": {
     "chokidar": "^3.5",
@@ -30,9 +32,17 @@
   ],
   "exports": {
     ".": "./src/index.js",
-    "./plugins/*": "./src/plugins/*",
-    "./utils/*": "./src/utils/*",
-    "./types": "./types/*",
+    "./plugins/*": {
+      "default": "./src/plugins/*",
+      "types": "./types/plugins/*"
+    },
+    "./utils/*": {
+      "default": "./src/utils/*",
+      "types": "./types/utils/*"
+    },
+    "./types/*": {
+      "types": "./types/*"
+    },
     "./package.json": "./package.json"
   },
   "engines": {

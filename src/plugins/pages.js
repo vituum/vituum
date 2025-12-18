@@ -61,7 +61,7 @@ const plugin = (pluginUserConfig = {}) => {
       await renameGenerateBundle(
         bundle,
         {
-          files: [...resolvedConfig.build.rollupOptions.input],
+          files: [...resolvedConfig.build.rolldownOptions.input],
           root: resolvedConfig.root,
           normalizeBasePath: pluginUserConfig.normalizeBasePath,
         },

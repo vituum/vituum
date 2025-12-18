@@ -73,7 +73,7 @@ export const pluginBundle = (formats, name = '@vituum/vite-plugin-core') => {
       await renameGenerateBundle(
         bundle,
         {
-          files: [...resolvedConfig.build.rollupOptions.input],
+          files: [...resolvedConfig.build.rolldownOptions.input],
           root: resolvedConfig.root,
           formats,
         },
