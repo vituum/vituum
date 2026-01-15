@@ -158,7 +158,7 @@ const plugin = (pluginUserConfig = {}) => {
     configResolved(config) {
       imports(pluginUserConfig, config)
 
-      const watcher = chokidar.watch(pluginUserConfig.paths, {
+      const watcher = chokidar.watch(fs.globSync(pluginUserConfig.paths), {
         ignored: /(^|[/\\])\../,
         persistent: true,
       })
