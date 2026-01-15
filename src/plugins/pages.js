@@ -1,5 +1,5 @@
 import { resolve, relative } from 'node:path'
-import { merge } from '../utils/common.js'
+import { deepMergeWith } from '../utils/common.js'
 import { normalizePath } from 'vite'
 import { renameGenerateBundle } from '../utils/build.js'
 
@@ -18,7 +18,7 @@ export const defaultConfig = {
  * @returns [import('vite').Plugin]
  */
 const plugin = (pluginUserConfig = {}) => {
-  pluginUserConfig = merge(defaultConfig, pluginUserConfig)
+  pluginUserConfig = deepMergeWith(defaultConfig, pluginUserConfig)
 
   let resolvedConfig
 

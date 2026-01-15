@@ -1,8 +1,8 @@
 import { rename } from 'node:fs/promises'
+import { globSync } from 'node:fs'
 import process from 'node:process'
 import { relative, resolve } from 'path'
 import { normalizePath } from 'vite'
-import FastGlob from 'fast-glob'
 
 /**
  * @param {import('vituum/types/utils/build').resolveInputPathsOptions} options
@@ -10,12 +10,12 @@ import FastGlob from 'fast-glob'
  * @returns {string[]}
  */
 export const resolveInputPaths = ({ paths, root = process.cwd() }, formats) => {
-  return FastGlob.sync(
-    Array.isArray(paths) ? [...paths] : (typeof paths === 'string' ? paths : null),
-    {
-      cwd: root,
-    },
-  ).map((entry) => {
+  const patterns = Array.isArray(paths) ? paths : (typeof paths === 'string' ? [paths] : [])
+
+  const include = patterns.filter(p => !p.startsWith('!'))
+  const exclude = patterns.filter(p => p.startsWith('!')).map(p => p.slice(1))
+
+  return globSync(include, { cwd: root, exclude }).map((entry) => {
     if (formats.find(format => entry.endsWith(format.toString()))) {
       entry = `${entry}.html`
     }

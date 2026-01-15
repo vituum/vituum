@@ -1,7 +1,7 @@
 import pluginPages, { defaultConfig as defaultConfigPages } from './plugins/pages.js'
 import pluginImports, { defaultConfig as defaultConfigImports } from './plugins/imports.js'
 import { resolveInputPaths } from './utils/build.js'
-import { merge } from './utils/common.js'
+import { deepMergeWith } from './utils/common.js'
 
 const defaultConfig = {
   input: [
@@ -55,7 +55,7 @@ const pluginCore = (pluginUserConfig) => {
  * @returns [...import('vite').Plugin]
  */
 const plugin = (pluginUserConfig = {}) => {
-  pluginUserConfig = merge(defaultConfig, pluginUserConfig)
+  pluginUserConfig = deepMergeWith(defaultConfig, pluginUserConfig)
 
   return [pluginCore(pluginUserConfig), pluginPages(pluginUserConfig.pages), pluginImports(pluginUserConfig.imports)]
 }

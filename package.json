@@ -11,10 +11,8 @@
     "publish-next": "npm publish --tag next"
   },
   "dependencies": {
-    "chokidar": "^3.5",
-    "fast-glob": "^3.3",
-    "lodash": "^4.17",
-    "minimatch": "^10.1",
+    "chokidar": "^5.0",
+    "picomatch": "^4.0",
     "vite": "^8.0.0-beta.3"
   },
   "devDependencies": {

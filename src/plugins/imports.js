@@ -1,6 +1,5 @@
-import FastGlob from 'fast-glob'
 import { dirname, normalize, relative, resolve, extname } from 'node:path'
-import { merge } from '../utils/common.js'
+import { deepMergeWith } from '../utils/common.js'
 import fs from 'node:fs'
 import chokidar from 'chokidar'
 import { normalizePath } from 'vite'
@@ -27,7 +26,8 @@ export const defaultConfig = {
 const imports = (options, config) => {
   const filenamePattern = options.filenamePattern
   const ignoredPaths = Object.keys(filenamePattern).map(filename => `!**/${filename}`)
-  const paths = FastGlob.sync(options.paths.map(path => normalizePath(path)), { onlyFiles: false, ignore: ignoredPaths }).map(entry => normalizePath(resolve(config.root, entry)))
+  const exclude = ignoredPaths.filter(p => p.startsWith('!')).map(p => p.slice(1))
+  const paths = fs.globSync(options.paths.map(path => normalizePath(path)), { exclude }).map(entry => normalizePath(resolve(config.root, entry)))
   const dirPaths = {}
 
   function isRoot(path) {
@@ -150,7 +150,7 @@ const fileChanged = (file, pluginUserConfig, config) => {
  * @returns {import('vite').Plugin}
  */
 const plugin = (pluginUserConfig = {}) => {
-  pluginUserConfig = merge(defaultConfig, pluginUserConfig)
+  pluginUserConfig = deepMergeWith(defaultConfig, pluginUserConfig)
 
   return {
     name: '@vituum/vite-plugin-imports',

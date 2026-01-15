@@ -1,15 +1,14 @@
 import fs from 'fs'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
-import lodash from 'lodash'
-import FastGlob from 'fast-glob'
 import process from 'node:process'
 import { renameGenerateBundle } from './build.js'
 import { join } from 'node:path'
-import { minimatch } from 'minimatch'
+import picomatch from 'picomatch'
 import { normalizePath } from 'vite'
+import { merge, mergeWith } from './merge.js'
 
-export const merge = (object, sources) => lodash.mergeWith(object, sources, (a, b) => lodash.isArray(b) ? b : undefined)
+export const deepMergeWith = (object, sources) => mergeWith(object, sources, (a, b) => Array.isArray(b) ? b : undefined)
 
 /**
  * @type {typeof import("vituum/types/utils/common").getPackageInfo}
@@ -141,14 +140,14 @@ export const pluginMiddleware = (name = '@vituum/vite-plugin-core', formats = []
 export const processData = ({ paths, root = process.cwd() }, data = {}) => {
   let context = {}
 
-  lodash.merge(context, data)
+  merge(context, data)
 
   const normalizePaths = Array.isArray(paths) ? paths.map(path => normalizePath(path)) : normalizePath(paths)
 
-  FastGlob.sync(normalizePaths).forEach((entry) => {
+  fs.globSync(normalizePaths).forEach((entry) => {
     const path = resolve(root, entry)
 
-    context = lodash.merge(context, JSON.parse(fs.readFileSync(path).toString()))
+    context = merge(context, JSON.parse(fs.readFileSync(path).toString()))
   })
 
   return context
@@ -172,7 +171,7 @@ export const pluginTransform = async (content, { path, filename, server }, { nam
     return content
   }
 
-  if (options.ignoredPaths.find(ignoredPath => minimatch(path.replace('.html', ''), ignoredPath) === true)) {
+  if (options.ignoredPaths.find(ignoredPath => picomatch(ignoredPath)(path.replace('.html', '')) === true)) {
     return content
   }
 
