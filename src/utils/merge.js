@@ -121,6 +121,7 @@ export function mergeWith(
     }
     else if (Array.isArray(sourceValue)) {
       if (Array.isArray(targetValue)) {
+        // @ts-ignore
         target[key] = mergeWith(targetValue, sourceValue, merge)
       }
       else {
