@@ -46,7 +46,7 @@ declare interface PluginTransformOptions {
     }>
 }
 
-export declare function merge<
+export declare function deepMergeWith<
     T extends object,
     S extends object
 >(
