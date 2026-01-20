@@ -13,3 +13,11 @@ export interface resolveInputPathsOptions {
     paths: import('rolldown').InputOption
     root: string
 }
+
+export declare function resolveInputPaths(options: resolveInputPathsOptions, formats: string[]) : string[]
+
+export declare function renameBuildStart(files: string[], formats: string[]) : Promise<void>
+
+export declare function renameBuildEnd(files: string[], formats: string[]) : Promise<void>
+
+export declare function renameGenerateBundle(bundle: import('rolldown').OutputBundle, options: renameGenerateBundleOptions, transformPath?: (file: EmittedFile["fileName"]) => string) : Promise<void>

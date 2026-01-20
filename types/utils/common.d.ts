@@ -63,3 +63,9 @@ export declare function pluginReload(config: HmrContext, options: ReloadOptions)
 export declare function pluginTransform(html: string, ctx: import('vite').IndexHtmlTransformContext, options: PluginTransformOptions) : string | Promise<Object>
 
 export declare function processData(paths: ProcessDataOptions, data: object) : object
+
+export declare function pluginBundle(formats: string[], name?: string) : import('vite').Plugin
+
+export declare function pluginMiddleware(name?: string, formats?: string[]) : import('vite').Plugin
+
+export declare function normalizePath(path: string) : string
