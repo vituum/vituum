@@ -60,7 +60,7 @@ export declare function pluginError(error: Error | string, server: import('vite'
 
 export declare function pluginReload(config: HmrContext, options: ReloadOptions) : void
 
-export declare function pluginTransform(html: string, ctx: import('vite').IndexHtmlTransformContext, options: PluginTransformOptions) : string | Promise<Object>
+export declare function pluginTransform(html: string, ctx: import('vite').IndexHtmlTransformContext, options: PluginTransformOptions) : Promise<string | Object>
 
 export declare function processData(paths: ProcessDataOptions, data: object) : object
 
