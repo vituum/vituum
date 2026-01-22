@@ -1,5 +1,5 @@
 {
-  "name": "@example/boostrap",
+  "name": "@example/juice",
   "version": "0.0.1",
   "type": "module",
   "private": true,
@@ -8,12 +8,10 @@
     "build": "vite build",
     "preview": "vite preview"
   },
-  "dependencies": {
-    "@popperjs/core": "^2"
-  },
   "devDependencies": {
     "vituum": "^2.0.0-next.13",
-    "sass": "^1",
-    "bootstrap": "^5"
+    "@vituum/vite-plugin-css-inline": "^2.0.0-next.1",
+    "@vituum/vite-plugin-postcss": "^2.0.0-next.1",
+    "@vituum/vite-plugin-posthtml": "^2.0.0-next.2"
   }
 }

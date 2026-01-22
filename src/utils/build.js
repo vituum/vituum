@@ -57,7 +57,7 @@ export const renameBuildEnd = async (files, formats) => {
 }
 
 /**
- * @param {import('rolldown').OutputBundle} bundle
+ * @param {import('vite').Rolldown.OutputBundle} bundle
  * @param {import('vituum/types/utils/build').renameGenerateBundleOptions} options
  * @param {import('vituum/types/utils/build').transformPath} [transformPath]
  * @returns {Promise<void>}

@@ -12,6 +12,6 @@
     "canvas-confetti": "^1"
   },
   "devDependencies": {
-    "vituum": "^1"
+    "vituum": "^2.0.0-next.13"
   }
 }

@@ -3,6 +3,7 @@ import { deepMergeWith } from '../utils/common.js'
 import fs from 'node:fs'
 import chokidar from 'chokidar'
 import { normalizePath } from 'vite'
+import picomatch from 'picomatch'
 
 /**
  * @type {import('vituum/types/plugins/imports').UserConfig}
@@ -26,8 +27,23 @@ export const defaultConfig = {
 const imports = (options, config) => {
   const filenamePattern = options.filenamePattern
   const ignoredPaths = Object.keys(filenamePattern).map(filename => `!**/${filename}`)
+  const pathsWithoutNegative = options.paths.filter(p => !p.startsWith('!'))
+  const negativePaths = options.paths.filter(p => p.startsWith('!'))
   const exclude = ignoredPaths.filter(p => p.startsWith('!')).map(p => p.slice(1))
-  const paths = fs.globSync(options.paths.map(path => normalizePath(path)), { exclude }).map(entry => normalizePath(resolve(config.root, entry)))
+  const allPaths = fs.globSync(pathsWithoutNegative.map(path => normalizePath(path)), { exclude }).map(entry => normalizePath(resolve(config.root, entry)))
+
+  const paths = allPaths.filter((path) => {
+    const relativePath = normalizePath(relative(config.root, path))
+
+    return !negativePaths.some((negPattern) => {
+      const pattern = normalizePath(negPattern.slice(1))
+      const isMatch = picomatch(pattern, { dot: true })
+      const isSubdirectoryMatch = picomatch(normalizePath(pattern + '/**'), { dot: true })
+
+      return isMatch(relativePath) && !isSubdirectoryMatch(relativePath)
+    })
+  }).sort()
+
   const dirPaths = {}
 
   function isRoot(path) {

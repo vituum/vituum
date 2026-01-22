@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@vituum/vite-plugin-tailwindcss": "^1",
-    "vituum": "^1"
+    "@vituum/vite-plugin-tailwindcss": "^2.0.0-next.2",
+    "vituum": "^2.0.0-next.13"
   }
 }

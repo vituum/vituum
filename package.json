@@ -1,6 +1,6 @@
 {
   "name": "vituum",
-  "version": "2.0.0-next.9",
+  "version": "2.0.0-next.14",
   "type": "module",
   "main": "src/index.js",
   "types": "types/index.d.ts",
@@ -30,17 +30,17 @@
     "types"
   ],
   "exports": {
-    ".": "./src/index.js",
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./src/index.js"
+    },
     "./plugins/*": {
-      "default": "./src/plugins/*",
-      "types": "./types/plugins/*"
+      "types": "./types/plugins/*",
+      "default": "./src/plugins/*"
     },
     "./utils/*": {
-      "default": "./src/utils/*",
-      "types": "./types/utils/*"
-    },
-    "./types/*": {
-      "types": "./types/*"
+      "types": "./types/utils/*",
+      "default": "./src/utils/*"
     },
     "./package.json": "./package.json"
   },
