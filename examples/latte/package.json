@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@vituum/vite-plugin-latte": "^2.0.0-next.5",
-    "vituum": "^2.0.0-next.13"
+    "@vituum/vite-plugin-latte": "^2",
+    "vituum": "^2"
   }
 }

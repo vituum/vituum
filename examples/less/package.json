@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vituum": "^2.0.0-next.9",
+    "vituum": "^2",
     "less": "^4"
   }
 }

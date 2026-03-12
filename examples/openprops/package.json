@@ -11,6 +11,6 @@
   "devDependencies": {
     "postcss-jit-props": "^1",
     "open-props": "^1",
-    "vituum": "^2.0.0-next.9"
+    "vituum": "^2"
   }
 }
