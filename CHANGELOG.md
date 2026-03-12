@@ -1,3 +1,14 @@
+# 2.0.0 (2025-03-12)
+* feat(bc): upgrade to vite ^8
+* feat(bc): bumped Node.js to ^24
+* feat: changed minimatch to picomatch
+* feat: updated chokidar to ^5.0
+* feat: removed fast-glob as a dependency
+* feat: removed lodash as a dependency
+* feat(plugins): removed picocolors as a dependency
+* feat(plugins): removed dotenv as a dependency
+* fix: TypeScript problems
+
 ## 1.2.0 (2025-03-12)
 * feat: upgrade to vite ^6
 
