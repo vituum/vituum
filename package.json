@@ -14,6 +14,7 @@
   "dependencies": {
     "chokidar": "^5.0",
     "picomatch": "^4.0",
+    "tinyglobby": "^0.2",
     "vite": "^8.0"
   },
   "devDependencies": {
@@ -45,7 +46,7 @@
     "./package.json": "./package.json"
   },
   "engines": {
-    "node": ">=25.0.0"
+    "node": "^20.19.0 || >=22.12.0"
   },
   "repository": {
     "type": "git",

@@ -2,6 +2,7 @@ import { dirname, normalize, relative, resolve, extname } from 'node:path'
 import { deepMergeWith } from '../utils/common.js'
 import fs from 'node:fs'
 import chokidar from 'chokidar'
+import { globSync } from 'tinyglobby'
 import { normalizePath } from 'vite'
 import picomatch from 'picomatch'
 
@@ -30,7 +31,10 @@ const imports = (options, config) => {
   const pathsWithoutNegative = options.paths.filter(p => !p.startsWith('!'))
   const negativePaths = options.paths.filter(p => p.startsWith('!'))
   const exclude = ignoredPaths.filter(p => p.startsWith('!')).map(p => p.slice(1))
-  const allPaths = fs.globSync(pathsWithoutNegative.map(path => normalizePath(path)), { exclude }).map(entry => normalizePath(resolve(config.root, entry)))
+  const allPaths = globSync(pathsWithoutNegative.map(path => normalizePath(path)), {
+    ignore: exclude,
+    onlyFiles: false,
+  }).map(entry => normalizePath(resolve(config.root, entry)))
 
   const paths = allPaths.filter((path) => {
     const relativePath = normalizePath(relative(config.root, path))
@@ -174,7 +178,9 @@ const plugin = (pluginUserConfig = {}) => {
     configResolved(config) {
       imports(pluginUserConfig, config)
 
-      const watcher = chokidar.watch(fs.globSync(pluginUserConfig.paths), {
+      const watcher = chokidar.watch(globSync(pluginUserConfig.paths, {
+        onlyFiles: false,
+      }), {
         ignored: /(^|[/\\])\../,
         persistent: true,
       })

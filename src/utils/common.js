@@ -5,6 +5,7 @@ import process from 'node:process'
 import { renameGenerateBundle } from './build.js'
 import { join } from 'node:path'
 import picomatch from 'picomatch'
+import { globSync } from 'tinyglobby'
 import { normalizePath } from 'vite'
 import { merge, mergeWith } from './merge.js'
 
@@ -144,7 +145,7 @@ export const processData = ({ paths, root = process.cwd() }, data = {}) => {
 
   const normalizePaths = Array.isArray(paths) ? paths.map(path => normalizePath(path)) : normalizePath(paths)
 
-  fs.globSync(normalizePaths).forEach((entry) => {
+  globSync(normalizePaths).forEach((entry) => {
     const path = resolve(root, entry)
 
     context = merge(context, JSON.parse(fs.readFileSync(path).toString()))
