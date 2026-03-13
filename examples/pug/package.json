@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@vituum/vite-plugin-pug": "^1",
-    "vituum": "^1"
+    "@vituum/vite-plugin-pug": "^2",
+    "vituum": "^2"
   }
 }

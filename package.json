@@ -1,38 +1,52 @@
 {
   "name": "vituum",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "type": "module",
   "main": "src/index.js",
+  "types": "types/index.d.ts",
   "scripts": {
+    "lint": "npm run eslint && npm run tsc",
     "tsc": "tsc",
-    "eslint": "eslint '**/*.js' --fix"
+    "eslint": "eslint '**/*.js'",
+    "eslint-fix": "eslint '**/*.js' --fix",
+    "publish-next": "npm publish --tag next"
   },
   "dependencies": {
-    "chokidar": "^3.5",
-    "fast-glob": "^3.3",
-    "lodash": "^4.17",
-    "vite": "^6.2",
-    "minimatch": "^10.0"
+    "chokidar": "^5.0",
+    "picomatch": "^4.0",
+    "tinyglobby": "^0.2",
+    "vite": "^8.0"
   },
   "devDependencies": {
-    "@types/node": "^20.9",
-    "eslint": "^8.53",
-    "eslint-config-standard": "^17.1",
-    "typescript": "^5.2"
+    "@eslint/js": "^10.0",
+    "@stylistic/eslint-plugin": "^5.10",
+    "@types/node": "^25",
+    "eslint": "^10.0",
+    "globals": "^17.4",
+    "rolldown": "^1.0.0-rc.9",
+    "typescript": "^5.9"
   },
   "files": [
     "src",
     "types"
   ],
   "exports": {
-    ".": "./src/index.js",
-    "./plugins/*": "./src/plugins/*",
-    "./utils/*": "./src/utils/*",
-    "./types": "./types/*",
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./plugins/*": {
+      "types": "./types/plugins/*",
+      "default": "./src/plugins/*"
+    },
+    "./utils/*": {
+      "types": "./types/utils/*",
+      "default": "./src/utils/*"
+    },
     "./package.json": "./package.json"
   },
   "engines": {
-    "node": "^18.0.0 || >=20.0.0"
+    "node": "^20.19.0 || >=22.12.0"
   },
   "repository": {
     "type": "git",

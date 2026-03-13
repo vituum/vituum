@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vituum": "^1",
+    "vituum": "^2",
     "sass": "^1",
-    "bulma": "^0.9.4"
+    "bulma": "^1"
   }
 }

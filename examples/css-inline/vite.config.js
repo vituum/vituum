@@ -1,7 +1,7 @@
 import vituum from 'vituum'
 import postcss from '@vituum/vite-plugin-postcss'
 import posthtml from '@vituum/vite-plugin-posthtml'
-import juice from '@vituum/vite-plugin-juice'
+import cssInline from '@vituum/vite-plugin-css-inline'
 
 export default {
   plugins: [
@@ -10,6 +10,6 @@ export default {
     posthtml({
       root: './src/emails',
     }),
-    juice(),
+    cssInline(),
   ],
 }

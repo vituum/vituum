@@ -1,5 +1,5 @@
 export default {
-    content: [
-        './src/**/*.{js,html}'
-    ]
+  content: [
+    './src/**/*.{js,html}',
+  ],
 }

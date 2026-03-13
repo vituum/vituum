@@ -1,6 +1,6 @@
 import vituum from 'vituum'
-import tailwindcss from '@vituum/vite-plugin-tailwindcss'
+import tailwindcss from '@tailwindcss/vite'
 
 export default {
-    plugins: [vituum(), tailwindcss()]
+  plugins: [vituum(), tailwindcss()],
 }

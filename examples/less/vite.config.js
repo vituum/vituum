@@ -1,14 +1,14 @@
 import vituum from 'vituum'
 
 export default {
-    plugins: [
-        vituum({
-            imports: {
-                filenamePattern: {
-                    '+.css': [],
-                    '+.less': 'src/styles'
-                }
-            }
-        })
-    ]
+  plugins: [
+    vituum({
+      imports: {
+        filenamePattern: {
+          '+.css': [],
+          '+.less': 'src/styles',
+        },
+      },
+    }),
+  ],
 }

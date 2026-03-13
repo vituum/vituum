@@ -1,5 +1,5 @@
 {
-  "name": "@example/liquid",
+  "name": "@example/juice",
   "version": "0.0.1",
   "type": "module",
   "private": true,
@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@vituum/vite-plugin-liquid": "^2",
-    "vituum": "^2"
+    "vituum": "^2",
+    "@vituum/vite-plugin-css-inline": "^2",
+    "@vituum/vite-plugin-postcss": "^2",
+    "@vituum/vite-plugin-posthtml": "^2"
   }
 }

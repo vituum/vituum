@@ -12,8 +12,8 @@
     "@popperjs/core": "^2"
   },
   "devDependencies": {
-    "vituum": "^1",
-    "sass": "^1.69",
+    "vituum": "^2",
+    "sass": "^1",
     "bootstrap": "^5"
   }
 }
